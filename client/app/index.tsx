@@ -1,21 +1,35 @@
-import React from 'react';
-import { Link } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
 import { Text, View } from 'react-native';
+import Head from 'expo-router/head';
+import { useRouter } from 'expo-router';
 
-import { NativeWindStyleSheet } from 'nativewind';
+const Login = () => {
+	const router = useRouter();
 
-NativeWindStyleSheet.setOutput({
-	default: 'native',
-});
+	const SendToSignUp = () => {
+		router.push('/SignUp');
+	};
 
-const Home = () => {
+	const SendToUserFrontPage = () => {
+		router.push('/FrontPage');
+	};
+
 	return (
-		<View className='flex-1 items-center justify-center bg-red-600 h-full'>
-			<Text>Open up App.js to start working on your app!</Text>
-			<StatusBar style='auto' />
-		</View>
+		<>
+			<Head>
+				<title>Login</title>
+				<meta name='Login' content='Login' />
+			</Head>
+			<View className='h-full bg-gray-400 justify-center items-center'>
+				<View className='border-2 w-64 p-8 border-black gap-8'>
+					<Text>First Page User Will See</Text>
+					<Text className='text-xl uppercase' onPress={SendToSignUp}>
+						Sign Up
+					</Text>
+					<Text onPress={SendToUserFrontPage}>User Home Page</Text>
+				</View>
+			</View>
+		</>
 	);
 };
 
-export default Home;
+export default Login;

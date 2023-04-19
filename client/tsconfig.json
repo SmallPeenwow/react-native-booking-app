@@ -1,5 +1,4 @@
 {
-    "include": ["**/*"],
-    "exclude": [],
-    "extends": "@tsconfig/react-native/tsconfig.json",
+  "compilerOptions": {},
+  "extends": "expo/tsconfig.base"
 }

@@ -9,6 +9,23 @@
     "splash": {
       "backgroundColor": "#1d4ed8",
       "resizeMode": "cover"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "027d18c1-baec-49f1-b804-24c8b593a16c"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/027d18c1-baec-49f1-b804-24c8b593a16c"
+    },
+    "android": {
+      "package": "com.justinbowdenbiokineticist"
+    },
+    "ios": {
+      "bundleIdentifier": "com.justinbowdenbiokineticist"
     }
   }
 }

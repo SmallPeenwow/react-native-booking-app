@@ -1,11 +1,5 @@
 {
     "version": 2,
-    "builds": [
-      {
-        "src" : "app.json",
-        "use": "@vercel/static-build"
-      }
-    ],
     "routes": [
       {
         "src": "/(.*)",

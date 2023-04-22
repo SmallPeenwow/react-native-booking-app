@@ -5,6 +5,10 @@
       "bundler": "metro"
     },
     "name": "client",
-    "slug": "client"
+    "slug": "client",
+    "splash": {
+      "backgroundColor": "#1d4ed8",
+      "resizeMode": "cover"
+    }
   }
 }

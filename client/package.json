@@ -14,6 +14,7 @@
     "expo-router": "^1.5.3",
     "expo-splash-screen": "~0.18.1",
     "expo-status-bar": "~1.4.4",
+    "expo-updates": "~0.16.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.3",
@@ -23,8 +24,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-web": "~0.18.7",
     "socket.io-client": "^4.6.1",
-    "zod": "^3.21.4",
-    "expo-updates": "~0.16.4"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

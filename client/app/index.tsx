@@ -1,9 +1,12 @@
 import { Text, View } from 'react-native';
-import { SplashScreen, Stack, useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
+// import * as SplashScreen from 'expo-splash-screen';
 
 // SplashScreen styling is in app.json
+
+// SplashScreen.preventAutoHideAsync();
 
 const Login = () => {
 	const router = useRouter();
@@ -20,18 +23,18 @@ const Login = () => {
 		router.push('/BookingRequests');
 	};
 
-	const [isReady, setIsReady] = useState(false);
+	//const [isReady, setIsReady] = useState(false);
 
 	// Must do better useEffect
-	useEffect(() => {
-		setTimeout(() => {
-			setIsReady(true);
-		}, 3000);
-	}, []);
+	// useEffect(() => {
+	// 	setTimeout(() => {
+	// 		SplashScreen.hideAsync();
+	// 	}, 1000);
+	// }, []);
 
 	return (
 		<>
-			{!isReady && <SplashScreen />}
+			{/* {!isReady && <SplashScreen />} */}
 			<View className='h-full bg-gray-400 justify-center items-center'>
 				<Stack.Screen
 					options={{

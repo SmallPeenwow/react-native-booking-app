@@ -1,26 +1,48 @@
-import { Stack } from 'expo-router';
-import Footer from '../components/Footer';
-import * as SplashScreen from 'expo-splash-screen';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useFonts } from 'expo-font';
+import { SplashScreen, Stack } from 'expo-router';
 import { useEffect } from 'react';
 
+import { NativeWindStyleSheet } from 'nativewind';
+
+NativeWindStyleSheet.setOutput({
+	default: 'native',
+});
+
+export {
+	// Catch any errors thrown by the Layout component.
+	ErrorBoundary,
+} from 'expo-router';
+
 export const unstable_settings = {
-	// Ensure any route can link back to `/`
+	// Ensure that reloading on `/modal` keeps a back button present.
 	initialRouteName: 'index',
 };
 
-SplashScreen.preventAutoHideAsync();
+export default function RootLayout() {
+	const [loaded, error] = useFonts({
+		SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+		...FontAwesome.font,
+	});
 
-export default function Layout() {
+	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {
-		setTimeout(() => {
-			SplashScreen.hideAsync();
-		}, 1000);
-	}, []);
+		if (error) throw error;
+	}, [error]);
 
 	return (
 		<>
+			{/* Keep the splash screen open until the assets have loaded. In the future, we should just support async font loading with a native version of font-display. */}
+			{!loaded && <SplashScreen />}
+			{loaded && <RootLayoutNav />}
+		</>
+	);
+}
+
+function RootLayoutNav() {
+	return (
+		<>
 			<Stack />
-			<Footer />
 		</>
 	);
 }

@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
+import { AntDesign } from '@expo/vector-icons';
 
 const FrontPage = () => {
 	const router = useRouter();
@@ -16,6 +17,14 @@ const FrontPage = () => {
 					headerTitle: 'Booking Dates',
 					headerRight: () => <UserProfile />,
 					headerTitleAlign: 'center',
+					headerLeft: () => (
+						<AntDesign
+							onPress={() => router.back()}
+							name='leftcircleo'
+							size={24}
+							color='black'
+						/>
+					),
 				}}
 			/>
 			<View className='gap-6'>

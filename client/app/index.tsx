@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 // TODO: Make Landing Page This
@@ -11,8 +11,8 @@ const index = () => {
 		router.push('/SignUp');
 	};
 
-	const SendToUserFrontPage = () => {
-		router.push('/FrontPage');
+	const SendToUserPage = () => {
+		router.push('/UserPages');
 	};
 
 	const SendToBookingRequests = () => {
@@ -31,7 +31,7 @@ const index = () => {
 				<Text className='text-xl uppercase' onPress={SendToSignUp}>
 					Sign Up
 				</Text>
-				<Text onPress={SendToUserFrontPage}>User Home Page</Text>
+				<Text onPress={SendToUserPage}>User Home Page</Text>
 			</View>
 			<View className='border-purple-300 border-2 p-2'>
 				<Text onPress={SendToBookingRequests}>Login as Admin</Text>

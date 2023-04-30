@@ -42,7 +42,7 @@ export default function RootLayout() {
 function RootLayoutNav() {
 	return (
 		<>
-			<Stack />
+			<Stack screenOptions={{ headerShown: false }} />
 		</>
 	);
 }

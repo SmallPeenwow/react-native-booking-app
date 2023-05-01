@@ -1,9 +1,8 @@
 import { View, Text } from 'react-native';
-import { Link, Stack, useRouter } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { useRouter } from 'expo-router';
 import Button from '../components/Button';
 
-// TODO: Make Landing Page This
+import textShadowStyle from '../styles/textShadowStyle';
 
 const index = () => {
 	const router = useRouter();
@@ -18,8 +17,15 @@ const index = () => {
 
 	return (
 		<View className='h-full bg-white items-center justify-center flex-col'>
-			<View className='gap-20 flex-col items-center justify-center border-2 border-black'>
-				<Text className='text-main-color text-5xl'>Welcome</Text>
+			<View className='items-center justify-center mb-8'>
+				<Text
+					style={textShadowStyle.textShadow}
+					className='text-main-color text-7xl'
+				>
+					Welcome
+				</Text>
+			</View>
+			<View className='flex-col items-center justify-center'>
 				<Button title='Sign In' onPress={SendToSignIn} />
 				<Button title='Sign Up' onPress={SendToSignUp} />
 			</View>

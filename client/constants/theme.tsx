@@ -8,4 +8,12 @@ const SHADOWS = {
 	},
 };
 
-export { SHADOWS };
+const TEXTSHADOW = {
+	textShadow: {
+		textShadowOffset: { width: 0, height: 4 },
+		textShadowColor: 'rgba(0, 0, 0, 0.25)',
+		textShadowRadius: 4,
+	},
+};
+
+export { SHADOWS, TEXTSHADOW };

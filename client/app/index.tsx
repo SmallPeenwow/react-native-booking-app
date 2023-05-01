@@ -1,42 +1,28 @@
 import { View, Text } from 'react-native';
 import { Link, Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import Button from '../components/Button';
 
 // TODO: Make Landing Page This
 
 const index = () => {
 	const router = useRouter();
 
+	const SendToSignIn = () => {
+		router.push('/SignInPage');
+	};
+
 	const SendToSignUp = () => {
-		router.push('/SignUp');
-	};
-
-	const SendToUserPage = () => {
-		router.push('/UserPages');
-	};
-
-	const SendToBookingRequests = () => {
-		router.push('/BookingRequests');
+		router.push('/SignUpPage');
 	};
 
 	return (
-		<View className='h-full bg-gray-400 justify-center items-center'>
-			<Stack.Screen
-				options={{
-					title: 'Login',
-				}}
-			/>
-			<View className='border-2 w-64 p-8 border-black gap-8'>
-				<Text>First Page User Will See</Text>
-				<Text className='text-xl uppercase' onPress={SendToSignUp}>
-					Sign Up
-				</Text>
-				<Text onPress={SendToUserPage}>User Home Page</Text>
+		<View className='h-full bg-white items-center justify-center flex-col'>
+			<View className='gap-20 flex-col items-center justify-center border-2 border-black'>
+				<Text className='text-main-color text-5xl'>Welcome</Text>
+				<Button title='Sign In' onPress={SendToSignIn} />
+				<Button title='Sign Up' onPress={SendToSignUp} />
 			</View>
-			<View className='border-purple-300 border-2 p-2'>
-				<Text onPress={SendToBookingRequests}>Login as Admin</Text>
-			</View>
-			<StatusBar style='auto' />
 		</View>
 	);
 };

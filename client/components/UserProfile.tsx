@@ -19,7 +19,7 @@ const UserProfile = () => {
 			<Text className='underline' onPress={SentToEditProfile}>
 				Edit
 			</Text>
-			<Text className='bg-gray-500 h-8 w-8 text-xl text-center  rounded-full'>
+			<Text className='bg-gray-500 h-8 w-8 text-xl text-center rounded-full'>
 				C
 			</Text>
 		</View>

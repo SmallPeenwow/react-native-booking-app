@@ -9,6 +9,8 @@ NativeWindStyleSheet.setOutput({
 	default: 'native',
 });
 
+// TODO: Use async for this
+
 export {
 	// Catch any errors thrown by the Layout component.
 	ErrorBoundary,

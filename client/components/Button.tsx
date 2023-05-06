@@ -15,14 +15,14 @@ type ButtonProps = {
 const Button = ({ title, onPress }: ButtonProps) => {
 	return (
 		<Pressable
-			className='mt-8 bg-white rounded-md sh shadow-button-shadow active:bg-main-color'
+			className='mt-8 bg-main-color items-center rounded-md active:bg-white'
 			style={buttonStyles.button}
 			onPress={onPress}
 		>
 			{({ pressed }) => (
 				<Text
 					className={`${
-						pressed ? 'text-white' : 'text-main-color'
+						pressed ? 'text-main-color' : 'text-white'
 					} w-36 py-3 text-center text-xl font-semibold`}
 				>
 					{title}

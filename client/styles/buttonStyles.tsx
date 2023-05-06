@@ -4,7 +4,7 @@ import { SHADOWS } from '../constants/theme';
 
 const buttonStyles = StyleSheet.create({
 	button: {
-		...SHADOWS.button,
+		...SHADOWS.shadow,
 	},
 	buttonTextActive: {
 		color: '#ffffff',

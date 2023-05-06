@@ -7,7 +7,7 @@ module.exports = {
 				'main-color': '#0085FF',
 			},
 			boxShadow: {
-				'button-shadow': '0px 4px 4px rgba(0, 0, 0, 0.25)',
+				'default-shadow': '0px 4px 4px rgba(0, 0, 0, 0.25)',
 			},
 		},
 	},

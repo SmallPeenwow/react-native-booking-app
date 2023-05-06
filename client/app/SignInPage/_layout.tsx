@@ -4,7 +4,7 @@ export default function SignInLayout() {
 	return (
 		<Stack
 			screenOptions={{
-				headerShown: true,
+				headerShown: false,
 			}}
 		/>
 	);

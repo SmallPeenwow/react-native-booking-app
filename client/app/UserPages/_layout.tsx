@@ -1,10 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Foundation, FontAwesome } from '@expo/vector-icons';
 
-export const unstable_settings = {
-	initialRouteName: 'userFrontPage',
-};
-
 const _layout = () => {
 	return (
 		<Tabs

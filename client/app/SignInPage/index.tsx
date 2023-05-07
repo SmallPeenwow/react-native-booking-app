@@ -50,7 +50,7 @@ const index = () => {
 						</View>
 						<View className='justify-end items-end'>
 							<View className='w-28'>
-								<Button title='Sign In' onPress={SendToBookingRequests} />
+								<Button title='Sign In' onPress={SendToUserPage} />
 							</View>
 						</View>
 					</View>

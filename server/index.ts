@@ -15,14 +15,20 @@ app.register(cors, {
 	credentials: true,
 });
 
-app.addHook('onRequest', (req, res, done) => {
+app.addHook('onRequest', (req: any, res: any, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
 	// if (req.cookies.userId !== CURRENT_USER_ID) {
 	// 	req.cookies.userId = CURRENT_USER_ID;
 	// 	res.clearCookie('userId');
 	// 	res.setCookie('userId', CURRENT_USER_ID);
 	// }
-	// done();
+	done();
 });
 
-app.listen({ port: 19000 });
+app.get('/login', (req: any, res: any) => {
+	console.log('work');
+	console.log(req);
+	console.log(res);
+});
+
+app.listen({ port: 3001 });

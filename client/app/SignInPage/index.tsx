@@ -4,9 +4,13 @@ import { StatusBar } from 'expo-status-bar';
 import Button from '../../components/Button';
 import textShadowStyle from '../../styles/textShadowStyle';
 import Input from '../../components/Input';
+import { useState } from 'react';
 
 const index = () => {
 	const router = useRouter();
+
+	const [userEmail, setUserEmail] = useState('');
+	const [userPassword, setUserPassword] = useState('');
 
 	const SendToUserPage = () => {
 		router.push('/UserPages');
@@ -32,17 +36,27 @@ const index = () => {
 					<View className='w-80 p-6 gap-4'>
 						<View>
 							<Text className='text-xl mb-2 font-semibold'>Email</Text>
-							<Input placeholder='Enter your email..' />
+							<Input
+								placeholder='Enter your email..'
+								useStateChange={setUserEmail}
+							/>
 						</View>
 						<View>
 							<Text className='text-xl mb-2 font-semibold'>Password</Text>
-							<Input placeholder='Enter your password..' />
+							<Input
+								placeholder='Enter your password..'
+								useStateChange={setUserPassword}
+							/>
 						</View>
 						<View className='justify-end items-end'>
 							<View className='w-28'>
 								<Button title='Sign In' onPress={SendToBookingRequests} />
 							</View>
 						</View>
+					</View>
+					<View className='flex-col p-5'>
+						<Text>{userEmail}</Text>
+						<Text>{userPassword}</Text>
 					</View>
 				</KeyboardAvoidingView>
 			</View>

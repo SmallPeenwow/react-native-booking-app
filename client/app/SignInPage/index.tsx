@@ -5,7 +5,6 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { useState } from 'react';
 import Header from '../../components/Header';
-import textStyles from '../../styles/textStyles';
 
 const index = () => {
 	const router = useRouter();
@@ -36,21 +35,14 @@ const index = () => {
 				>
 					<KeyboardAvoidingView behavior='height'>
 						<View className='w-80 p-6 gap-4'>
-							{/* TODO: make inputs all reusable */}
-							<View>
-								<Text className={textStyles.default}>Email</Text>
-								<Input
-									placeholder='Enter your email..'
-									useStateChange={setUserEmail}
-								/>
-							</View>
-							<View>
-								<Text className={textStyles.default}>Password</Text>
-								<Input
-									placeholder='Enter your password..'
-									useStateChange={setUserPassword}
-								/>
-							</View>
+							<Input
+								placeholder='Enter your email..'
+								useStateChange={setUserEmail}
+							/>
+							<Input
+								placeholder='Enter your password..'
+								useStateChange={setUserPassword}
+							/>
 							<View className='justify-end items-end'>
 								<View className='w-28'>
 									<Button title='Sign In' onPress={SendToUserPage} />
@@ -58,6 +50,8 @@ const index = () => {
 							</View>
 						</View>
 					</KeyboardAvoidingView>
+					<Text>{userEmail}</Text>
+					<Text>{userPassword}</Text>
 				</ScrollView>
 			</View>
 

@@ -8,10 +8,14 @@ const SignUp = () => {
 	const [name, setName] = useState('');
 	const [surname, setSurname] = useState('');
 	const [email, setEmail] = useState('');
-	const [dateOfBirth, setDateOfBirth] = useState('');
+	// TODO: will either need to do some value check to make sure new date will be null when entered into database or convert to string or leave note for user
+	const [dateOfBirth, setDateOfBirth] = useState(new Date());
 	const [password, setPassword] = useState('');
 	const [cellNumber, setCellNumber] = useState('');
+
 	//TODO: fix up positions and spacing for both sign in and up
+	// TODO: make sure client knows what must be required for database
+
 	return (
 		<View className='h-full bg-white flex-col'>
 			<Header />
@@ -21,44 +25,49 @@ const SignUp = () => {
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center',
-					flex: 1,
 				}}
 			>
-				<View className='flex-1 items-center justify-center'>
-					<KeyboardAvoidingView behavior='height'>
-						<Input
-							title='Name'
-							placeholder='Enter your Name...'
-							useStateChange={setName}
-						/>
-						<Input
-							title='Surname'
-							placeholder='Enter your Surname...'
-							useStateChange={setSurname}
-						/>
-						<Input
-							title='Email'
-							placeholder='Enter your Email...'
-							useStateChange={setEmail}
-						/>
-						<Input
-							title='Password'
-							placeholder='Enter your Password...'
-							useStateChange={setPassword}
-						/>
-						<DateOfBirth
-							title='Date of Birth'
-							placeholder='Enter your Date of Birth...'
-							useStateChange={setDateOfBirth}
-						/>
-						<Input
-							title='Cell Number'
-							placeholder='Enter your Cell Number...'
-							useStateChange={setCellNumber}
-						/>
-					</KeyboardAvoidingView>
+				<View className='flex-1  justify-center'>
+					<Input
+						title='Name'
+						placeholder='Enter your Name...'
+						useStateChange={setName}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<Input
+						title='Surname'
+						placeholder='Enter your Surname...'
+						useStateChange={setSurname}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<Input
+						title='Email'
+						placeholder='Enter your Email...'
+						useStateChange={setEmail}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<Input
+						title='Password'
+						placeholder='Enter your Password...'
+						useStateChange={setPassword}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<DateOfBirth
+						title='Date of Birth'
+						placeholder='Enter your Date of Birth...'
+						dateSelected={dateOfBirth}
+						useStateChange={setDateOfBirth}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<Input
+						title='Cell Number'
+						placeholder='Enter your Cell Number...'
+						useStateChange={setCellNumber}
+					/>
+					<View className='border-2 border-black rounded my-3'></View>
+					<Text>{dateOfBirth.toLocaleDateString()}</Text>
+					<Text>{new Date().toLocaleDateString()}</Text>
 				</View>
-				<Text>{dateOfBirth}</Text>
 			</ScrollView>
 		</View>
 	);

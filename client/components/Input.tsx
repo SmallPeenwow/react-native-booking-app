@@ -21,7 +21,7 @@ const Input = ({ title, placeholder, useStateChange }: InputProps) => {
 	};
 
 	return (
-		<View>
+		<View className='gap-1 py-3'>
 			<Text className={textStyles.default}>{title}</Text>
 			<TextInput
 				className='py-3 px-4 text-lg rounded-md bg-slate-100 border-2 border-gray-500 w-64'

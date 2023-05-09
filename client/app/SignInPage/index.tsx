@@ -34,7 +34,7 @@ const index = () => {
 					}}
 				>
 					<KeyboardAvoidingView behavior='height'>
-						<View className='w-80 p-6 gap-4'>
+						<View className='w-80 p-6'>
 							<Input
 								title='Email'
 								placeholder='Enter your Email..'
@@ -52,8 +52,6 @@ const index = () => {
 							</View>
 						</View>
 					</KeyboardAvoidingView>
-					<Text>{userEmail}</Text>
-					<Text>{userPassword}</Text>
 				</ScrollView>
 			</View>
 

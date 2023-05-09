@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+//TODO: delete node_modules and install
+
 const app = fastify();
 app.register(sensible);
 
@@ -15,7 +17,11 @@ app.register(cors, {
 	credentials: true,
 });
 
-app.addHook('onRequest', (req: any, res: any, done) => {
+app.get('/', function (req, res) {
+	// res.send(supabase);
+});
+
+app.addHook('onRequest', (req, res, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
 	// if (req.cookies.userId !== CURRENT_USER_ID) {
 	// 	req.cookies.userId = CURRENT_USER_ID;
@@ -25,7 +31,7 @@ app.addHook('onRequest', (req: any, res: any, done) => {
 	done();
 });
 
-app.get('/login', (req: any, res: any) => {
+app.get('/login', (req, res) => {
 	console.log('work');
 	console.log(req);
 	console.log(res);

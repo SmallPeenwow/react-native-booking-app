@@ -1,34 +1,17 @@
-import { KeyboardAvoidingView, ScrollView, View } from 'react-native';
+import { KeyboardAvoidingView, ScrollView, View, Text } from 'react-native';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import { useState } from 'react';
-
-type UserSignUpDetails = {
-	name: string | undefined;
-	surname: string | undefined;
-	email: string | undefined;
-	dateOfBirth: string | undefined;
-	password: string | undefined;
-	cellNumber: string | undefined;
-};
+import DateOfBirth from '../../components/DateOfBirth';
 
 const SignUp = () => {
-	const [userDetails, setUserDetails] = useState<UserSignUpDetails>({
-		name: '',
-		surname: '',
-		email: '',
-		dateOfBirth: '',
-		password: '',
-		cellNumber: '',
-	});
-
 	const [name, setName] = useState('');
 	const [surname, setSurname] = useState('');
 	const [email, setEmail] = useState('');
 	const [dateOfBirth, setDateOfBirth] = useState('');
 	const [password, setPassword] = useState('');
 	const [cellNumber, setCellNumber] = useState('');
-
+	//TODO: fix up positions and spacing for both sign in and up
 	return (
 		<View className='h-full bg-white flex-col'>
 			<Header />
@@ -43,29 +26,39 @@ const SignUp = () => {
 			>
 				<View className='flex-1 items-center justify-center'>
 					<KeyboardAvoidingView behavior='height'>
-						<Input placeholder='Enter your Name...' useStateChange={setName} />
 						<Input
+							title='Name'
+							placeholder='Enter your Name...'
+							useStateChange={setName}
+						/>
+						<Input
+							title='Surname'
 							placeholder='Enter your Surname...'
 							useStateChange={setSurname}
 						/>
 						<Input
+							title='Email'
 							placeholder='Enter your Email...'
 							useStateChange={setEmail}
 						/>
 						<Input
+							title='Password'
 							placeholder='Enter your Password...'
 							useStateChange={setPassword}
 						/>
-						<Input
+						<DateOfBirth
+							title='Date of Birth'
 							placeholder='Enter your Date of Birth...'
 							useStateChange={setDateOfBirth}
 						/>
 						<Input
+							title='Cell Number'
 							placeholder='Enter your Cell Number...'
 							useStateChange={setCellNumber}
 						/>
 					</KeyboardAvoidingView>
 				</View>
+				<Text>{dateOfBirth}</Text>
 			</ScrollView>
 		</View>
 	);

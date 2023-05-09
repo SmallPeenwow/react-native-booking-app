@@ -36,11 +36,13 @@ const index = () => {
 					<KeyboardAvoidingView behavior='height'>
 						<View className='w-80 p-6 gap-4'>
 							<Input
-								placeholder='Enter your email..'
+								title='Email'
+								placeholder='Enter your Email..'
 								useStateChange={setUserEmail}
 							/>
 							<Input
-								placeholder='Enter your password..'
+								title='Password'
+								placeholder='Enter your Password..'
 								useStateChange={setUserPassword}
 							/>
 							<View className='justify-end items-end'>

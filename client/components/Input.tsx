@@ -8,11 +8,12 @@ import {
 import textStyles from '../styles/textStyles';
 
 type InputProps = {
+	title: string;
 	placeholder: string;
 	useStateChange: (active: string) => void;
 };
 
-const Input = ({ placeholder, useStateChange }: InputProps) => {
+const Input = ({ title, placeholder, useStateChange }: InputProps) => {
 	const onPlayerNameChange = (
 		e: NativeSyntheticEvent<TextInputChangeEventData>
 	) => {
@@ -21,7 +22,7 @@ const Input = ({ placeholder, useStateChange }: InputProps) => {
 
 	return (
 		<View>
-			<Text className={textStyles.default}>Email</Text>
+			<Text className={textStyles.default}>{title}</Text>
 			<TextInput
 				className='py-3 px-4 text-lg rounded-md bg-slate-100 border-2 border-gray-500 w-64'
 				placeholder={placeholder}

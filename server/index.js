@@ -3,23 +3,28 @@ import sensible from '@fastify/sensible';
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 import dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client';
 
 dotenv.config();
 
-//TODO: delete node_modules and install
-
 const app = fastify();
+const prisma = new PrismaClient();
+
 app.register(sensible);
 
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
 	// origin: process.env.CLIENT_URL,
+	origin: 'exp://192.168.1.51:19000',
+	// origin: 'http://10.0.2.2:19000',
+	// origin: 'http://192.168.1.51:19000',
+	// origin: 'http://localhost:19000',
 	credentials: true,
 });
 
-app.get('/', function (req, res) {
-	// res.send(supabase);
-});
+// app.get('/', function (req, res) {
+// 	// res.send(supabase);
+// });
 
 app.addHook('onRequest', (req, res, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
@@ -31,10 +36,38 @@ app.addHook('onRequest', (req, res, done) => {
 	done();
 });
 
-app.get('/login', (req, res) => {
+app.get('/SignInPage/:email/:password', async (req, res) => {
 	console.log('work');
-	console.log(req);
-	console.log(res);
+	// console.log(req);
+	// console.log(res);
+	return await commitToDb(
+		prisma.user.findFirst({
+			where: {
+				email: req.params.email,
+				password: req.params.password,
+			},
+			select: {
+				access_level: true,
+			},
+		})
+	);
 });
 
-app.listen({ port: 3001 });
+// Return error to user or take data
+async function commitToDb(promise) {
+	const [error, data] = await app.to(promise);
+	// console.log(error);
+	// console.log(data);
+	// console.log(promise);
+	if (error) return app.httpErrors.internalServerError(error.message);
+	return data;
+}
+
+// app.listen({ port: 3001 });
+app.listen({ port: 3001, host: '192.168.1.51', backlog: 511 }, (error) => {
+	if (error) {
+		app.log.error(error.message);
+		app.log.error(error.name);
+		// process.exit(1);
+	}
+});

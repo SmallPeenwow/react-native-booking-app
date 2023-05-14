@@ -17,7 +17,7 @@ const Input = ({ title, placeholder, useStateChange }: InputProps) => {
 	const onPlayerNameChange = (
 		e: NativeSyntheticEvent<TextInputChangeEventData>
 	) => {
-		useStateChange(e.nativeEvent.text);
+		useStateChange(e.nativeEvent.text.trim());
 	};
 
 	return (

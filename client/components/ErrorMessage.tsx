@@ -1,21 +1,28 @@
 import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 type ErrorMessageProps = {
 	message: string;
-	isVisible: boolean;
+	isError: boolean;
 	activeStateChange: (active: boolean) => void;
 };
 
-// Must accept in some values to be used
 const ErrorMessage = ({
 	message,
-	isVisible,
+	isError,
 	activeStateChange,
 }: ErrorMessageProps) => {
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			activeStateChange(false);
+		}, 5000);
+
+		return () => clearTimeout(timer);
+	}, [isError]);
+
 	return (
-		<View className='hidden'>
-			<Text>ErrorMessage</Text>
+		<View className='bg-gray-700/90 w-72 break-words p-3 items-center rounded'>
+			<Text className='text-xl text-white'>{message}</Text>
 		</View>
 	);
 };

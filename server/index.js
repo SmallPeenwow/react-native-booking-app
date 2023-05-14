@@ -22,10 +22,6 @@ app.register(cors, {
 	credentials: true,
 });
 
-// app.get('/', function (req, res) {
-// 	// res.send(supabase);
-// });
-
 app.addHook('onRequest', (req, res, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
 	// if (req.cookies.userId !== CURRENT_USER_ID) {
@@ -37,9 +33,6 @@ app.addHook('onRequest', (req, res, done) => {
 });
 
 app.get('/SignInPage/:email/:password', async (req, res) => {
-	console.log('work');
-	// console.log(req);
-	// console.log(res);
 	return await commitToDb(
 		prisma.user.findFirst({
 			where: {
@@ -56,18 +49,14 @@ app.get('/SignInPage/:email/:password', async (req, res) => {
 // Return error to user or take data
 async function commitToDb(promise) {
 	const [error, data] = await app.to(promise);
-	// console.log(error);
-	// console.log(data);
-	// console.log(promise);
 	if (error) return app.httpErrors.internalServerError(error.message);
 	return data;
 }
 
-// app.listen({ port: 3001 });
 app.listen({ port: 3001, host: '192.168.1.51', backlog: 511 }, (error) => {
 	if (error) {
 		app.log.error(error.message);
 		app.log.error(error.name);
-		// process.exit(1);
+		process.exit(1);
 	}
 });

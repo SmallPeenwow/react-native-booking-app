@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import { useState } from 'react';

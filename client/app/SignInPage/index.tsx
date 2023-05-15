@@ -21,13 +21,13 @@ const index = () => {
 	const getUserAccess = async (email: string, password: string) => {
 		// The if and else if are used for testing offline
 		if (
-			email.toLocaleLowerCase() === 'client' &&
-			password.toLocaleLowerCase() === 'client'
+			email.toLowerCase() === 'client' &&
+			password.toLowerCase() === 'client'
 		) {
 			push('/UserPages');
 		} else if (
-			email.toLocaleLowerCase() === 'admin' &&
-			password.toLocaleLowerCase() === 'admin'
+			email.toLowerCase() === 'admin' &&
+			password.toLowerCase() === 'admin'
 		) {
 			push('/AdminPages');
 		} else {
@@ -40,10 +40,10 @@ const index = () => {
 			const value: any | undefined = await Login(email, password);
 
 			// Maybe make hook
-			if (value.access_level.toLocaleLowerCase() === 'admin') {
+			if (value.access_level.toLowerCase() === 'admin') {
 				push('/AdminPages');
 				return;
-			} else if (value.access_level.toLocaleLowerCase() === 'client') {
+			} else if (value.access_level.toLowerCase() === 'client') {
 				push('/UserPages');
 				return;
 			}

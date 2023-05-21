@@ -34,13 +34,14 @@ app.addHook('onRequest', (req, res, done) => {
 
 app.get('/SignInPage/:email/:password', async (req, res) => {
 	return await commitToDb(
-		prisma.user.findFirst({
+		prisma.user.findUniqueOrThrow({
 			where: {
 				email: req.params.email,
 				password: req.params.password,
 			},
 			select: {
 				access_level: true,
+				id: true,
 			},
 		})
 	);
@@ -59,6 +60,7 @@ app.post('/SignUpPage/create', async (req, res) => {
 			},
 			select: {
 				access_level: true,
+				id: true,
 			},
 		})
 	);
@@ -67,7 +69,9 @@ app.post('/SignUpPage/create', async (req, res) => {
 // Return error to user or take data
 async function commitToDb(promise) {
 	const [error, data] = await app.to(promise);
-	if (error) return app.httpErrors.internalServerError(error.message);
+	// Will be used for just basic server side issues when interacting with database
+	if (error) return 'error';
+	// if (error) return app.httpErrors.internalServerError(error.message);
 	return data;
 }
 

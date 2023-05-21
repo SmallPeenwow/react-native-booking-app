@@ -30,7 +30,7 @@ const DateOfBirth = ({
 				new Date(
 					selectedDate.getUTCFullYear(),
 					selectedDate.getUTCMonth(),
-					selectedDate.getUTCDate()
+					selectedDate.getDate()
 				)
 			);
 		}
@@ -58,7 +58,13 @@ const DateOfBirth = ({
 					mode={'date'}
 					display='spinner'
 					minimumDate={new Date(1900, 0, 1)}
-					maximumDate={new Date()}
+					maximumDate={
+						new Date(
+							new Date().getFullYear(),
+							new Date().getMonth(),
+							new Date().getDate() - 1
+						)
+					}
 					onChange={onDateChanged}
 				/>
 			)}

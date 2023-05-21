@@ -37,10 +37,18 @@ const index = () => {
 				return;
 			}
 
-			//TODO: must do some handling error here for null
-			const value: any | undefined = await Login(email.toLowerCase(), password);
+			const value: any = await Login(email.toLowerCase(), password);
+
+			if (value === 'error') {
+				setIsError(true);
+				setErrorMessage(
+					'Check that your details are correct or make an Account.'
+				);
+				return;
+			}
 
 			// Maybe make hook
+			// TODO: pass id through with both sign in and up
 			if (value.access_level.toLowerCase() === 'admin') {
 				push('/AdminPages');
 				return;
@@ -48,11 +56,6 @@ const index = () => {
 				push('/UserPages');
 				return;
 			}
-
-			setIsError(true);
-			setErrorMessage(
-				'Check that your details are correct or make an Account.'
-			);
 		}
 	};
 
@@ -87,8 +90,8 @@ const index = () => {
 							placeholder='Enter your Password..'
 							useStateChange={setUserPassword}
 						/>
-						<View className='justify-end items-end'>
-							<View className='w-28'>
+						<View className='justify-end items-end mr-4'>
+							<View className='w-32'>
 								<Button
 									title='Sign In'
 									onPress={() => getUserAccess(userEmail, userPassword)}

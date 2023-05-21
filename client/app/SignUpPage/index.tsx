@@ -22,8 +22,6 @@ const SignUp = () => {
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	//TODO: fix up positions and spacing for both sign in and up
-	// TODO: date running into error when switching doesn't go to correct number
 	const addUserDetails = async (
 		cellNumber: string,
 		email: string,
@@ -50,6 +48,7 @@ const SignUp = () => {
 				dateOfBirth
 			);
 
+			//TODO: error handling
 			if (value.access_level.toLowerCase() === 'client') {
 				push('/UserPages');
 				return;
@@ -134,8 +133,8 @@ const SignUp = () => {
 						useStateChange={setCellNumber}
 					/>
 					<View className='border-2 border-black rounded mt-3'></View>
-					<View className='justify-end items-end mb-3'>
-						<View className='w-28'>
+					<View className='justify-end items-end mb-10'>
+						<View className='w-36'>
 							<Button
 								title='Sign Up'
 								onPress={() =>

@@ -46,6 +46,8 @@ app.get('/SignInPage/:email/:password', async (req, res) => {
 	);
 });
 
+app.get('/SignUpPage/:/', async (req, res) => {});
+
 // Return error to user or take data
 async function commitToDb(promise) {
 	const [error, data] = await app.to(promise);

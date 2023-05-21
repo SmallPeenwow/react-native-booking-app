@@ -1,4 +1,4 @@
-import { View, Text, Button, TextInput, Keyboard } from 'react-native';
+import { View, Text, TextInput, Keyboard } from 'react-native';
 import React, { useState } from 'react';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import textStyles from '../styles/textStyles';
@@ -22,9 +22,18 @@ const DateOfBirth = ({
 		setShow(!show);
 	};
 
-	const onDateChanged = (event: any, selectedDate: any) => {
+	const onDateChanged = (event: any, selectedDate: Date | undefined) => {
 		displayDatePicker();
-		useStateChange(selectedDate);
+
+		if (selectedDate !== undefined && event.type !== 'dismissed') {
+			useStateChange(
+				new Date(
+					selectedDate.getUTCFullYear(),
+					selectedDate.getUTCMonth(),
+					selectedDate.getUTCDate()
+				)
+			);
+		}
 	};
 
 	return (
@@ -49,7 +58,7 @@ const DateOfBirth = ({
 					mode={'date'}
 					display='spinner'
 					minimumDate={new Date(1900, 0, 1)}
-					maximumDate={new Date(Date.now() + 1)}
+					maximumDate={new Date()}
 					onChange={onDateChanged}
 				/>
 			)}

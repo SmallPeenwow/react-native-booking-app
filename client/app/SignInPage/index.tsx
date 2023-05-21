@@ -37,7 +37,7 @@ const index = () => {
 				return;
 			}
 
-			const value: any | undefined = await Login(email, password);
+			const value: any | undefined = await Login(email.toLowerCase(), password);
 
 			// Maybe make hook
 			if (value.access_level.toLowerCase() === 'admin') {

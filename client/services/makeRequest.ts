@@ -8,9 +8,8 @@ const api = axios.create({
 	withCredentials: true,
 });
 
-export async function makeRequest(url: string) {
-	return api
-		.get(url)
+export async function makeRequest(url: string, options: any) {
+	return api(url, options)
 		.then((res) => {
 			return res.data;
 		})

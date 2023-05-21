@@ -46,7 +46,23 @@ app.get('/SignInPage/:email/:password', async (req, res) => {
 	);
 });
 
-app.get('/SignUpPage/:/', async (req, res) => {});
+app.post('/SignUpPage/create', async (req, res) => {
+	return await commitToDb(
+		prisma.user.create({
+			data: {
+				name: req.body.name,
+				surname: req.body.surname,
+				age: req.body.dateOfBirth,
+				email: req.body.email,
+				password: req.body.password,
+				cell_number: req.body.cellNumber,
+			},
+			select: {
+				access_level: true,
+			},
+		})
+	);
+});
 
 // Return error to user or take data
 async function commitToDb(promise) {
@@ -56,9 +72,9 @@ async function commitToDb(promise) {
 }
 
 app.listen({ port: 3001, host: '192.168.1.51', backlog: 511 }, (error) => {
-	if (error) {
-		app.log.error(error.message);
-		app.log.error(error.name);
-		process.exit(1);
-	}
+	// if (error) {
+	// 	app.log.error(error.message);
+	// 	app.log.error(error.name);
+	// 	process.exit(1);
+	// }
 });

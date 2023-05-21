@@ -34,12 +34,10 @@ export const validateUserDetails = async ({
 	} else if (!(await PasswordValidation({ password: password }))) {
 		return {
 			errorResult: true,
-			responseMessage: 'Password invalid',
+			responseMessage: 'Password requirements not met',
 		};
 	} else if (
-		dateOfBirth.getUTCDate() === new Date().getUTCDate() &&
-		dateOfBirth.getUTCFullYear() === new Date().getUTCFullYear() &&
-		dateOfBirth.getUTCMonth() === new Date().getUTCMonth()
+		dateOfBirth.toLocaleDateString() === new Date().toLocaleDateString()
 	) {
 		return {
 			errorResult: true,

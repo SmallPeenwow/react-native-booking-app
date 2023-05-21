@@ -6,12 +6,15 @@ import DateOfBirth from '../../components/DateOfBirth';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
 import { validateUserDetails } from '../../hooks/SignUpPage/validateUserDetails';
+import { CreateAccount } from '../../services/createAccount';
+import { SendToPage } from '../../hooks/SendToPage';
 
 const SignUp = () => {
+	const { push } = SendToPage();
+
 	const [name, setName] = useState('');
 	const [surname, setSurname] = useState('');
 	const [email, setEmail] = useState('');
-	// TODO: validation check for date
 	const [dateOfBirth, setDateOfBirth] = useState(new Date());
 	const [password, setPassword] = useState('');
 	const [cellNumber, setCellNumber] = useState('');
@@ -20,7 +23,7 @@ const SignUp = () => {
 	const [errorMessage, setErrorMessage] = useState('');
 
 	//TODO: fix up positions and spacing for both sign in and up
-
+	// TODO: date running into error when switching doesn't go to correct number
 	const addUserDetails = async (
 		cellNumber: string,
 		email: string,
@@ -38,12 +41,23 @@ const SignUp = () => {
 		});
 
 		if (!errorResult) {
-			console.log(dateOfBirth);
+			const value: any | undefined = await CreateAccount(
+				name,
+				surname,
+				email.toLowerCase(),
+				password,
+				cellNumber,
+				dateOfBirth
+			);
+
+			if (value.access_level.toLowerCase() === 'client') {
+				push('/UserPages');
+				return;
+			}
 		}
 
 		setIsError(errorResult);
 		setErrorMessage(responseMessage);
-
 		return;
 	};
 
@@ -138,7 +152,6 @@ const SignUp = () => {
 						</View>
 					</View>
 				</View>
-				<Text>{dateOfBirth.toLocaleDateString()}</Text>
 			</ScrollView>
 		</View>
 	);

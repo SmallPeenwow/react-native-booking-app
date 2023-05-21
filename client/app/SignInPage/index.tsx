@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Header from '../../components/Header';
 import { Login } from '../../services/login';
 import ErrorMessage from '../../components/ErrorMessage';
-import { SendToPage } from '../../hooks/SendToUserHomePage';
+import { SendToPage } from '../../hooks/SendToPage';
 import { EmailValidation } from '../../hooks/EmailValidation';
 
 const index = () => {
@@ -37,6 +37,7 @@ const index = () => {
 				return;
 			}
 
+			//TODO: must do some handling error here for null
 			const value: any | undefined = await Login(email.toLowerCase(), password);
 
 			// Maybe make hook

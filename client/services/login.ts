@@ -1,8 +1,8 @@
 import { makeRequest } from './makeRequest';
 
 export async function Login(email: string, password: string) {
-	return await makeRequest(`/SignInPage/${email}/${password}`, {
-		method: 'GET',
+	return await makeRequest(`/SignInPage/login`, {
+		method: 'POST',
 		data: { email, password },
 	});
 }

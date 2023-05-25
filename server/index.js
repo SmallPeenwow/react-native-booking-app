@@ -32,12 +32,12 @@ app.addHook('onRequest', (req, res, done) => {
 	done();
 });
 
-app.get('/SignInPage/:email/:password', async (req, res) => {
+app.post('/SignInPage/login', async (req, res) => {
 	return await commitToDb(
-		prisma.user.findUniqueOrThrow({
+		prisma.user.findFirstOrThrow({
 			where: {
-				email: req.params.email,
-				password: req.params.password,
+				email: req.body.email,
+				password: req.body.password,
 			},
 			select: {
 				access_level: true,
@@ -70,12 +70,19 @@ app.post('/SignUpPage/create', async (req, res) => {
 async function commitToDb(promise) {
 	const [error, data] = await app.to(promise);
 	// Will be used for just basic server side issues when interacting with database
-	if (error) return 'error';
-	// if (error) return app.httpErrors.internalServerError(error.message);
+	//if (error) return 'error';
+
+	//TODO: check for 'No user found' then return
+	//TODO-CHECK if the error must be a link back in some way with nested-comments
+	console.log(error.message);
+	if (error.message === 'No user found') {
+		return 'No user found'; // Work around but maybe fix
+	}
+	//if (error) return app.httpErrors.internalServerError(error.message);
 	return data;
 }
 
-app.listen({ port: 3001, host: '192.168.1.51', backlog: 511 }, (error) => {
+app.listen({ port: 3001, host: '192.168.1.51' }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);
 	// 	app.log.error(error.name);

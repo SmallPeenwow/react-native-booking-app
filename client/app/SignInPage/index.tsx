@@ -8,6 +8,7 @@ import { Login } from '../../services/login';
 import ErrorMessage from '../../components/ErrorMessage';
 import { SendToPage } from '../../hooks/SendToPage';
 import { EmailValidation } from '../../hooks/EmailValidation';
+import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
 
 const index = () => {
 	const { push } = SendToPage();
@@ -39,7 +40,7 @@ const index = () => {
 
 			const value: any = await Login(email.toLowerCase(), password);
 
-			if (value === 'error') {
+			if (value === 'No user found') {
 				setIsError(true);
 				setErrorMessage(
 					'Check that your details are correct or make an Account.'
@@ -48,14 +49,16 @@ const index = () => {
 			}
 
 			// Maybe make hook
-			// TODO: pass id through with both sign in and up
 			if (value.access_level.toLowerCase() === 'admin') {
+				await SaveInStorage(value.id);
 				push('/AdminPages');
 				return;
 			} else if (value.access_level.toLowerCase() === 'client') {
+				await SaveInStorage(value.id);
 				push('/UserPages');
 				return;
 			}
+			return;
 		}
 	};
 

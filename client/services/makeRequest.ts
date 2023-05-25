@@ -9,7 +9,7 @@ const api = axios.create({
 });
 
 export async function makeRequest(url: string, options: any) {
-	return api(url, options)
+	return await api(url, options)
 		.then((res) => {
 			return res.data;
 		})

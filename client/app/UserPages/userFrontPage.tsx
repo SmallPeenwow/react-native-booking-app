@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
 import { AntDesign } from '@expo/vector-icons';
+import { AsyncStorageRetrieve } from '../../hooks/LocalStorage/AsyncStorageRetrieve';
 
 const FrontPage = () => {
 	const router = useRouter();
@@ -9,6 +10,11 @@ const FrontPage = () => {
 	const SendToUserBookingTimes = () => {
 		router.push('/UserBookingTimes');
 	};
+
+	AsyncStorageRetrieve('Justin-Bowden-booking-application-id').then((data) => {
+		console.log(data);
+		// How to get the value because of some promise thing
+	});
 
 	return (
 		<View className='h-full bg-green-400 p-2'>

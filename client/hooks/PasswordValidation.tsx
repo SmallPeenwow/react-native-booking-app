@@ -9,10 +9,7 @@ export const PasswordValidation = async ({
 }: PasswordValidationProps) => {
 	const schema = z
 		.string()
-		.min(7)
-		.regex(/[A-Z]/)
-		.regex(/\d/)
-		.regex(/[!@#$%^&*(),.?":{}|<>]/);
+		.regex(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?!.*\s).{7,}$/);
 
 	try {
 		return schema.parse(password);

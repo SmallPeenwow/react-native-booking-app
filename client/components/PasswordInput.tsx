@@ -7,17 +7,21 @@ import {
 } from 'react-native';
 import textStyles from '../styles/textStyles';
 
-type InputProps = {
+type PasswordInputProps = {
 	title: string;
 	placeholder: string;
 	useStateChange: (active: string) => void;
 };
 
-const Input = ({ title, placeholder, useStateChange }: InputProps) => {
+const PasswordInput = ({
+	title,
+	placeholder,
+	useStateChange,
+}: PasswordInputProps) => {
 	const onPlayerNameChange = (
 		e: NativeSyntheticEvent<TextInputChangeEventData>
 	) => {
-		useStateChange(e.nativeEvent.text.trim());
+		useStateChange(e.nativeEvent.text);
 	};
 
 	return (
@@ -25,6 +29,7 @@ const Input = ({ title, placeholder, useStateChange }: InputProps) => {
 			<Text className={textStyles.default}>{title}</Text>
 			<TextInput
 				className='py-3 px-4 text-lg rounded-md bg-slate-100 border-2 border-gray-500 w-64'
+				secureTextEntry={true}
 				placeholder={placeholder}
 				onChange={onPlayerNameChange}
 			/>
@@ -32,4 +37,4 @@ const Input = ({ title, placeholder, useStateChange }: InputProps) => {
 	);
 };
 
-export default Input;
+export default PasswordInput;

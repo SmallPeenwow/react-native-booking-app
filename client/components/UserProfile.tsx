@@ -6,7 +6,7 @@ const UserProfile = () => {
 	const { push } = SendToPage();
 
 	const SentToEditProfile = () => {
-		push('/EditProfile');
+		push('EditProfile');
 	};
 
 	return (

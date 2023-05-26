@@ -8,6 +8,8 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { validateUserDetails } from '../../hooks/SignUpPage/validateUserDetails';
 import { CreateAccount } from '../../services/createAccount';
 import { SendToPage } from '../../hooks/SendToPage';
+import PasswordInput from '../../components/PasswordInput';
+import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
 
 const SignUp = () => {
 	const { push } = SendToPage();
@@ -48,8 +50,8 @@ const SignUp = () => {
 				dateOfBirth
 			);
 
-			//TODO: error handling
 			if (value.access_level.toLowerCase() === 'client') {
+				await SaveInStorage(value.id);
 				push('/UserPages');
 				return;
 			}
@@ -107,12 +109,12 @@ const SignUp = () => {
 					<View className='border-2 border-black rounded my-3'></View>
 					<View className='bg-gray-300 p-1 pl-3 rounded'>
 						<Text className='text-xs '>
-							Password must be 7 characters.{' \n'}
+							Password must be equal or greater than 7 letters.{' \n'}
 							Have a Capital letter, Number, Special character.
 						</Text>
 					</View>
 					<View className='flex-row items-center'>
-						<Input
+						<PasswordInput
 							title='Password'
 							placeholder='Enter your Password...'
 							useStateChange={setPassword}

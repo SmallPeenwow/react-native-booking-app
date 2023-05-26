@@ -10,6 +10,7 @@ import { SendToPage } from '../../hooks/SendToPage';
 import { EmailValidation } from '../../hooks/EmailValidation';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
 import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
+import PasswordInput from '../../components/PasswordInput';
 
 const index = () => {
 	const { push } = SendToPage();
@@ -86,7 +87,7 @@ const index = () => {
 							placeholder='Enter your Email..'
 							useStateChange={setUserEmail}
 						/>
-						<Input
+						<PasswordInput
 							title='Password'
 							placeholder='Enter your Password..'
 							useStateChange={setUserPassword}

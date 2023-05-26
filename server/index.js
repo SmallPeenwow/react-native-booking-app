@@ -46,6 +46,7 @@ app.post('/SignInPage/login', async (req, res) => {
 	});
 });
 
+// Will need to test again with commitToDb removed
 app.post('/SignUpPage/create', async (req, res) => {
 	return await commitToDb(
 		prisma.user.create({

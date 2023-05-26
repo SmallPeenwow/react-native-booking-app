@@ -1,19 +1,19 @@
 import { Text, View } from 'react-native';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { AntDesign } from '@expo/vector-icons';
 import { AsyncStorageRetrieve } from '../../hooks/LocalStorage/AsyncStorageRetrieve';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 
 const FrontPage = () => {
-	const router = useRouter();
-
-	const SendToUserBookingTimes = () => {
-		router.push('/UserBookingTimes');
-	};
-
 	AsyncStorageRetrieve('Justin-Bowden-booking-application-id').then((data) => {
 		console.log(data);
 		// How to get the value because of some promise thing
+	});
+
+	BackActionEvent({
+		title: 'Hold on!',
+		message: 'Are you sure you want to go back?',
+		page: '/',
 	});
 
 	return (
@@ -23,22 +23,10 @@ const FrontPage = () => {
 					headerTitle: 'Booking Dates',
 					headerRight: () => <UserProfile />,
 					headerTitleAlign: 'center',
-					headerLeft: () => (
-						<AntDesign
-							onPress={() => router.back()}
-							name='leftcircleo'
-							size={24}
-							color='black'
-						/>
-					),
 				}}
 			/>
 			<View className='gap-6'>
-				<View className='items-end '>
-					<Text className='font-bold' onPress={SendToUserBookingTimes}>
-						Will send to user booking page
-					</Text>
-				</View>
+				<View className='items-end '></View>
 				<View>
 					<Text>
 						Page User Can See What Dates/Times Are Available Or Booked

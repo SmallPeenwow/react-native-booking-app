@@ -33,18 +33,17 @@ app.addHook('onRequest', (req, res, done) => {
 });
 
 app.post('/SignInPage/login', async (req, res) => {
-	return await commitToDb(
-		prisma.user.findFirstOrThrow({
-			where: {
-				email: req.body.email,
-				password: req.body.password,
-			},
-			select: {
-				access_level: true,
-				id: true,
-			},
-		})
-	);
+	// Was using findFirstOrThrow and maybe check into it more with return response but was having Unhandled Promise Rejection with Object return type
+	return await prisma.user.findFirst({
+		where: {
+			email: req.body.email,
+			password: req.body.password,
+		},
+		select: {
+			access_level: true,
+			id: true,
+		},
+	});
 });
 
 app.post('/SignUpPage/create', async (req, res) => {
@@ -67,6 +66,7 @@ app.post('/SignUpPage/create', async (req, res) => {
 });
 
 // Return error to user or take data
+// TODO: This shit fucks up magically and will remove and run over my other stuff after completing update
 async function commitToDb(promise) {
 	const [error, data] = await app.to(promise);
 	// Will be used for just basic server side issues when interacting with database

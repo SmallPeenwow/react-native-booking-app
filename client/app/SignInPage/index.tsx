@@ -9,6 +9,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { SendToPage } from '../../hooks/SendToPage';
 import { EmailValidation } from '../../hooks/EmailValidation';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
+import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
 
 const index = () => {
 	const { push } = SendToPage();
@@ -20,46 +21,41 @@ const index = () => {
 	const [userPassword, setUserPassword] = useState('');
 
 	const getUserAccess = async (email: string, password: string) => {
-		// The if and else if are used for testing offline
-		if (
-			email.toLowerCase() === 'client' &&
-			password.toLowerCase() === 'client'
-		) {
-			push('/UserPages');
-		} else if (
-			email.toLowerCase() === 'admin' &&
-			password.toLowerCase() === 'admin'
-		) {
-			push('/AdminPages');
-		} else {
-			if (!(await EmailValidation({ email: email }))) {
-				setIsError(true);
-				setErrorMessage('Email is not valid format');
-				return;
-			}
-
-			const value: any = await Login(email.toLowerCase(), password);
-
-			if (value === 'No user found') {
-				setIsError(true);
-				setErrorMessage(
-					'Check that your details are correct or make an Account.'
-				);
-				return;
-			}
-
-			// Maybe make hook
-			if (value.access_level.toLowerCase() === 'admin') {
-				await SaveInStorage(value.id);
-				push('/AdminPages');
-				return;
-			} else if (value.access_level.toLowerCase() === 'client') {
-				await SaveInStorage(value.id);
-				push('/UserPages');
-				return;
-			}
+		if (!(await EmailValidation({ email: email }))) {
+			setIsError(true);
+			setErrorMessage('Email is not valid format');
 			return;
 		}
+
+		console.log(password);
+
+		if (await IsPasswordEmpty({ password: password })) {
+			setIsError(true);
+			setErrorMessage('Password must not be empty or contain spaces');
+			return;
+		}
+
+		const value: any = await Login(email.toLowerCase(), password);
+
+		if (value === null) {
+			setIsError(true);
+			setErrorMessage(
+				'Check that your details are correct or make an Account.'
+			);
+			return;
+		}
+
+		// Maybe make hook
+		if (value.access_level.toLowerCase() === 'admin') {
+			await SaveInStorage(value.id);
+			push('/AdminPages');
+			return;
+		} else if (value.access_level.toLowerCase() === 'client') {
+			await SaveInStorage(value.id);
+			push('/UserPages');
+			return;
+		}
+		return;
 	};
 
 	return (
@@ -76,11 +72,13 @@ const index = () => {
 					}}
 				>
 					{isError && (
-						<ErrorMessage
-							message={errorMessage}
-							isError={isError}
-							activeStateChange={setIsError}
-						/>
+						<View className='absolute items-center z-20 bottom-[80%] w-3/4'>
+							<ErrorMessage
+								message={errorMessage}
+								isError={isError}
+								activeStateChange={setIsError}
+							/>
+						</View>
 					)}
 					<View className='w-80 p-6'>
 						<Input

@@ -1,27 +1,22 @@
-import { useRouter } from 'expo-router';
-import { View, Text } from 'react-native';
-
-import { NativeWindStyleSheet } from 'nativewind';
-
-NativeWindStyleSheet.setOutput({
-	default: 'native',
-});
+import { View } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import { SendToPage } from '../hooks/SendToPage';
 
 const UserProfile = () => {
-	const router = useRouter();
+	const { push } = SendToPage();
 
 	const SentToEditProfile = () => {
-		router.push('/EditProfile');
+		push('/EditProfile');
 	};
 
 	return (
-		<View className='flex-row gap-3 justify-center items-center p-2'>
-			<Text className='underline' onPress={SentToEditProfile}>
-				Edit
-			</Text>
-			<Text className='bg-gray-500 h-8 w-8 text-xl text-center rounded-full'>
-				C
-			</Text>
+		<View className='pr-4'>
+			<AntDesign
+				onPress={SentToEditProfile}
+				name='setting'
+				size={30}
+				color='black'
+			/>
 		</View>
 	);
 };

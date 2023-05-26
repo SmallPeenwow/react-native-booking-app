@@ -1,12 +1,6 @@
 import { Text, Pressable } from 'react-native';
 import buttonStyles from '../styles/buttonStyles';
 
-import { NativeWindStyleSheet } from 'nativewind';
-
-NativeWindStyleSheet.setOutput({
-	default: 'native',
-});
-
 type ButtonProps = {
 	title: string;
 	onPress: () => void;

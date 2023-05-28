@@ -139,6 +139,7 @@ const SignUp = () => {
 						<View className='w-36'>
 							<Button
 								title='Sign Up'
+								mainColor='main-color'
 								onPress={() =>
 									addUserDetails(
 										cellNumber,

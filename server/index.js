@@ -48,22 +48,20 @@ app.post('/SignInPage/login', async (req, res) => {
 
 // Will need to test again with commitToDb removed
 app.post('/SignUpPage/create', async (req, res) => {
-	return await commitToDb(
-		prisma.user.create({
-			data: {
-				name: req.body.name,
-				surname: req.body.surname,
-				age: req.body.dateOfBirth,
-				email: req.body.email,
-				password: req.body.password,
-				cell_number: req.body.cellNumber,
-			},
-			select: {
-				access_level: true,
-				id: true,
-			},
-		})
-	);
+	return await prisma.user.create({
+		data: {
+			name: req.body.name,
+			surname: req.body.surname,
+			age: req.body.dateOfBirth,
+			email: req.body.email,
+			password: req.body.password,
+			cell_number: req.body.cellNumber,
+		},
+		select: {
+			access_level: true,
+			id: true,
+		},
+	});
 });
 
 // Return error to user or take data

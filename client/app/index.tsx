@@ -26,8 +26,8 @@ const index = () => {
 				</Text>
 			</View>
 			<View className='flex-col items-center justify-center'>
-				<Button title='Sign In' onPress={SendToSignIn} />
-				<Button title='Sign Up' onPress={SendToSignUp} />
+				<Button title='Sign In' mainColor='main-color' onPress={SendToSignIn} />
+				<Button title='Sign Up' mainColor='main-color' onPress={SendToSignUp} />
 			</View>
 		</View>
 	);

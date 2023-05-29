@@ -40,13 +40,14 @@ const SignUp = () => {
 			dateOfBirth: dateOfBirth,
 		});
 
+		//TODO: test sign up again
 		if (!errorResult) {
 			const value: any | undefined = await CreateAccount(
 				name,
 				surname,
 				email.toLowerCase(),
 				password,
-				cellNumber,
+				cellNumber.replace(/\s/g, ''),
 				dateOfBirth
 			);
 

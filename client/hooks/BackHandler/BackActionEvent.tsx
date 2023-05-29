@@ -15,21 +15,14 @@ export const BackActionEvent = ({
 }: BackActionEventProps) => {
 	const { push } = SendToPage();
 
-	useEffect(() => {
-		const backAction = () => {
-			Alert.alert(title, message, [
-				{ text: 'Cancel', onPress: () => null, style: 'cancel' },
-				{ text: 'YES', onPress: () => push(page) },
-			]);
+	const backAction = () => {
+		Alert.alert(title, message, [
+			{ text: 'Cancel', onPress: () => null, style: 'cancel' },
+			{ text: 'YES', onPress: () => push(page) },
+		]);
 
-			return true;
-		};
+		return true;
+	};
 
-		const backHandler = BackHandler.addEventListener(
-			'hardwareBackPress',
-			backAction
-		);
-
-		return () => backHandler.remove();
-	}, []);
+	BackHandler.addEventListener('hardwareBackPress', backAction);
 };

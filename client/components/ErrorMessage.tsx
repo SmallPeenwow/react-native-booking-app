@@ -12,6 +12,7 @@ const ErrorMessage = ({
 	isError,
 	activeStateChange,
 }: ErrorMessageProps) => {
+	// Runs multiply times fix me
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			activeStateChange(false);

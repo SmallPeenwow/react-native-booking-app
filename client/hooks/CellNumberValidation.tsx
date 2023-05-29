@@ -7,6 +7,7 @@ type CellNumberValidationProp = {
 export const CellNumberValidation = async ({
 	cellNumber,
 }: CellNumberValidationProp) => {
+	//TODO: test again
 	const schema = z.coerce.number();
 	let value: any = cellNumber.replace(/ /g, '');
 

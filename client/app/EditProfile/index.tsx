@@ -1,5 +1,5 @@
 import { Stack } from 'expo-router';
-import { ScrollView, Text, View, ActivityIndicator } from 'react-native';
+import { ScrollView, Text, View, ActivityIndicator, Alert } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import Button from '../../components/Button';
@@ -7,15 +7,17 @@ import { Fetch } from '../../hooks/EditProfile/Fetch';
 import CancelButton from '../../components/CancelButton';
 import EditProfileInput from '../../components/EditProfile/EditProfileInput';
 import ErrorMessage from '../../components/ErrorMessage';
+import { SendToPage } from '../../hooks/SendToPage';
+import { ValidationUpdateCheck } from '../../hooks/EditProfile/ValidationUpdateCheck';
 
 const index = () => {
-	//TODO: make custom inputs for here and cancel button
-	// TODO: maybe make a thing to check for change when user does input
 	const [userEmailEdit, setUserEmailEdit] = useState('');
 	const [userCellNumberEdit, setUserCellNumberEdit] = useState('');
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+
+	const { push } = SendToPage();
 
 	BackActionEvent({
 		title: 'Hold on!',
@@ -23,28 +25,64 @@ const index = () => {
 		page: '/UserPages',
 	});
 
-	const UserDetailsEmpty = () => {
-		setUserEmailEdit('');
-		setUserCellNumberEdit('');
+	const CancelAction = () => {
+		Alert.alert('Cancel', 'Are you sure you want to cancel?', [
+			{
+				text: 'Cancel',
+				onPress: () => {},
+				style: 'cancel',
+			},
+			{
+				text: 'Yes',
+				onPress: () => {
+					setUserEmailEdit('');
+					setUserCellNumberEdit('');
+					push('..');
+				},
+			},
+		]);
+	};
+
+	const SaveAction = () => {
+		if (userEmailEdit === '' && userCellNumberEdit === '') {
+			setIsError(true);
+			setErrorMessage('No changes were made.');
+			return;
+		}
+
+		Alert.alert('Save', 'Do you want to save changes made?', [
+			{ text: 'No', onPress: () => {}, style: 'cancel' },
+			{
+				text: 'Yes',
+				onPress: () => {
+					SaveDetails();
+				},
+			},
+		]);
 	};
 
 	const SaveDetails = async () => {
 		setIsLoading(true);
-		console.log(userEmailEdit, ' new');
-		console.log(userCellNumberEdit, ' new');
-		const { email, cellNumber } = await Fetch();
-		console.log(email, ' old');
-		console.log(cellNumber, ' old');
 
-		// Do hook for validation check
-		if (email === userEmailEdit.toLocaleLowerCase()) {
-			setIsLoading(false);
-			setIsError(true);
-			setErrorMessage('Email is same as old email');
-			return;
+		const { oldEmail, oldCellNumber } = await Fetch();
+
+		console.log('run');
+
+		const { errorTrue, responseMessage } = await ValidationUpdateCheck({
+			email: userEmailEdit.toLocaleLowerCase(),
+			cellNumber: userCellNumberEdit,
+			oldEmail: oldEmail,
+			oldCellNumber: oldCellNumber,
+		});
+
+		if (!errorTrue) {
+			console.log('yes');
+			//TODO: finish this later
 		}
 
 		setIsLoading(false);
+		setIsError(errorTrue);
+		setErrorMessage(responseMessage);
 	};
 
 	return (
@@ -94,7 +132,11 @@ const index = () => {
 				</View>
 				<View className='items-start border-b-main-color border-b-2'>
 					<Text className='bg-blue-100 py-4 px-2 w-full text-base font-semibold'>
-						You can change your cell number here.
+						You can change your cell number here.{'\n'}
+						<Text className='text-sm w-10 font-normal'>
+							<Text className='text-red-600'>NB</Text>: You won't be allowed to
+							add spacing.{'\n'} Eg: 0781234567
+						</Text>
 					</Text>
 					<View className='items-center w-full justify-center'>
 						<EditProfileInput
@@ -106,10 +148,10 @@ const index = () => {
 				</View>
 				<View className='justify-around h-28 flex-row w-full'>
 					<View>
-						<Button title='Save' onPress={SaveDetails} />
+						<Button title='Save' onPress={SaveAction} />
 					</View>
 					<View>
-						<CancelButton title='Cancel' onPress={UserDetailsEmpty} />
+						<CancelButton title='Cancel' onPress={CancelAction} />
 					</View>
 				</View>
 			</ScrollView>

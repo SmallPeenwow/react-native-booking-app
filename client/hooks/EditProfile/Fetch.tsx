@@ -10,8 +10,8 @@ export const Fetch = async () => {
 
 	const userDetails = await FetchUserDetails(parseInt(id));
 
-	let email: string = userDetails.email;
-	let cellNumber: number = userDetails.cell_number;
+	let oldEmail: string = userDetails.email;
+	let oldCellNumber: number = userDetails.cell_number;
 
-	return { email, cellNumber };
+	return { oldEmail, oldCellNumber };
 };

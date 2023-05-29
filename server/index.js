@@ -76,22 +76,7 @@ app.post('/EditProfile/fetchUserDetails', async (req, res) => {
 	});
 });
 
-// Return error to user or take data
-// TODO: This shit fucks up magically and will remove and run over my other stuff after completing update
-async function commitToDb(promise) {
-	const [error, data] = await app.to(promise);
-	// Will be used for just basic server side issues when interacting with database
-	//if (error) return 'error';
-
-	//TODO: check for 'No user found' then return
-	//TODO-CHECK if the error must be a link back in some way with nested-comments
-	console.log(error.message);
-	if (error.message === 'No user found') {
-		return 'No user found'; // Work around but maybe fix
-	}
-	//if (error) return app.httpErrors.internalServerError(error.message);
-	return data;
-}
+app.post('/EditProfile/updateUserDetails', async (req, res) => {});
 
 app.listen({ port: 3001, host: '192.168.1.51' }, (error) => {
 	// if (error) {

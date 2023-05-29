@@ -11,7 +11,7 @@ type validateUserDetailsProps = {
 	dateOfBirth: Date;
 };
 
-export const validateUserDetails = async ({
+export const ValidateUserDetails = async ({
 	cellNumber,
 	email,
 	username,

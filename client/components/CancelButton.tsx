@@ -1,22 +1,22 @@
 import { Text, Pressable } from 'react-native';
 import buttonStyles from '../styles/buttonStyles';
 
-type ButtonProps = {
+type CancelButtonProps = {
 	title: string;
 	onPress: () => void;
 };
 
-const Button = ({ title, onPress }: ButtonProps) => {
+const CancelButton = ({ title, onPress }: CancelButtonProps) => {
 	return (
 		<Pressable
-			className='mt-8 bg-main-color items-center rounded-md active:bg-white'
+			className='mt-8 bg-cancel-button items-center rounded-md active:bg-white'
 			style={buttonStyles.button}
 			onPress={onPress}
 		>
 			{({ pressed }) => (
 				<Text
 					className={`${
-						pressed ? 'text-main-color' : 'text-white'
+						pressed ? 'text-cancel-button' : 'text-white'
 					} w-36 py-3 text-center text-xl font-semibold`}
 				>
 					{title}
@@ -26,4 +26,4 @@ const Button = ({ title, onPress }: ButtonProps) => {
 	);
 };
 
-export default Button;
+export default CancelButton;

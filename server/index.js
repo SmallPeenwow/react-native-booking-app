@@ -64,6 +64,18 @@ app.post('/SignUpPage/create', async (req, res) => {
 	});
 });
 
+app.post('/EditProfile/fetchUserDetails', async (req, res) => {
+	return await prisma.user.findUnique({
+		where: {
+			id: req.body.id,
+		},
+		select: {
+			email: true,
+			cell_number: true,
+		},
+	});
+});
+
 // Return error to user or take data
 // TODO: This shit fucks up magically and will remove and run over my other stuff after completing update
 async function commitToDb(promise) {

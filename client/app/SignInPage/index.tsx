@@ -96,7 +96,6 @@ const index = () => {
 							<View className='w-32'>
 								<Button
 									title='Sign In'
-									mainColor='main-color'
 									onPress={() => getUserAccess(userEmail, userPassword)}
 								/>
 							</View>

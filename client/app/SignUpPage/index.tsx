@@ -5,7 +5,7 @@ import { useState } from 'react';
 import DateOfBirth from '../../components/DateOfBirth';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
-import { validateUserDetails } from '../../hooks/SignUpPage/validateUserDetails';
+import { ValidateUserDetails } from '../../hooks/SignUpPage/ValidateUserDetails';
 import { CreateAccount } from '../../services/createAccount';
 import { SendToPage } from '../../hooks/SendToPage';
 import PasswordInput from '../../components/PasswordInput';
@@ -32,7 +32,7 @@ const SignUp = () => {
 		surname: string,
 		dateOfBirth: Date
 	) => {
-		const { errorResult, responseMessage } = await validateUserDetails({
+		const { errorResult, responseMessage } = await ValidateUserDetails({
 			cellNumber: cellNumber,
 			email: email,
 			password: password,
@@ -139,7 +139,6 @@ const SignUp = () => {
 						<View className='w-36'>
 							<Button
 								title='Sign Up'
-								mainColor='main-color'
 								onPress={() =>
 									addUserDetails(
 										cellNumber,

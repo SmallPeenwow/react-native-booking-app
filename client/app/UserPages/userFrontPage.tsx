@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import BackActionEvent from '../../hooks/BackHandler/BackActionEvent';
 
 const FrontPage = () => {
 	BackActionEvent({

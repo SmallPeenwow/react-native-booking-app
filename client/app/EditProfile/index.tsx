@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
-import { ScrollView, Text, View, ActivityIndicator, Alert } from 'react-native';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { ScrollView, Text, View, Alert } from 'react-native';
+import BackActionEvent from '../../hooks/BackHandler/BackActionEvent';
+import { useState } from 'react';
 import Button from '../../components/Button';
 import { Fetch } from '../../hooks/EditProfile/Fetch';
 import CancelButton from '../../components/CancelButton';
@@ -9,6 +9,7 @@ import EditProfileInput from '../../components/EditProfile/EditProfileInput';
 import ErrorMessage from '../../components/ErrorMessage';
 import { SendToPage } from '../../hooks/SendToPage';
 import { ValidationUpdateCheck } from '../../hooks/EditProfile/ValidationUpdateCheck';
+import LoadingDisplay from '../../components/LoadingDisplay';
 
 const index = () => {
 	const [userEmailEdit, setUserEmailEdit] = useState('');
@@ -103,15 +104,7 @@ const index = () => {
 				</View>
 			)}
 
-			{isLoading && (
-				<View className='absolute items-center h-full z-50 top-1/2 w-full'>
-					<ActivityIndicator
-						size='large'
-						style={{ transform: [{ scaleX: 3 }, { scaleY: 3 }] }}
-						color='#0085FF'
-					/>
-				</View>
-			)}
+			{isLoading && <LoadingDisplay header='Processing...' />}
 
 			<ScrollView>
 				<View className='items-start border-b-main-color border-b-2'>

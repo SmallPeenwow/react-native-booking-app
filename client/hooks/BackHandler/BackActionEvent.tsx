@@ -1,6 +1,5 @@
 import { BackHandler, Alert } from 'react-native';
 import { SendToPage } from '../SendToPage';
-import { useEffect } from 'react';
 
 type BackActionEventProps = {
 	title: string;
@@ -8,13 +7,11 @@ type BackActionEventProps = {
 	page: string;
 };
 
-export const BackActionEvent = ({
-	title,
-	message,
-	page,
-}: BackActionEventProps) => {
+const BackActionEvent = ({ title, message, page }: BackActionEventProps) => {
 	const { push } = SendToPage();
 
+	//ISSUE back handler on landing page fails when going back after going into sign in or sign up
+	console.log(page === 'exit');
 	const backAction = () => {
 		Alert.alert(title, message, [
 			{ text: 'Cancel', onPress: () => null, style: 'cancel' },
@@ -29,3 +26,5 @@ export const BackActionEvent = ({
 
 	BackHandler.addEventListener('hardwareBackPress', backAction);
 };
+
+export default BackActionEvent;

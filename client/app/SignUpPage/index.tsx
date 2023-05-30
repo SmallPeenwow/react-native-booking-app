@@ -10,7 +10,7 @@ import { CreateAccount } from '../../services/createAccount';
 import { SendToPage } from '../../hooks/SendToPage';
 import PasswordInput from '../../components/PasswordInput';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import BackActionEvent from '../../hooks/BackHandler/BackActionEvent';
 
 const SignUp = () => {
 	const { push } = SendToPage();
@@ -18,7 +18,7 @@ const SignUp = () => {
 	BackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
-		page: '/',
+		page: '..',
 	});
 
 	const [name, setName] = useState('');

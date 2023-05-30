@@ -11,9 +11,16 @@ import { EmailValidation } from '../../hooks/EmailValidation';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
 import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
 import PasswordInput from '../../components/PasswordInput';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 
 const index = () => {
 	const { push } = SendToPage();
+
+	BackActionEvent({
+		title: 'Hold on!',
+		message: 'Are you sure you want to go back?',
+		page: '/',
+	});
 
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');

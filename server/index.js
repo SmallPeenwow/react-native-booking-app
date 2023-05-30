@@ -15,10 +15,12 @@ app.register(sensible);
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
 	// origin: process.env.CLIENT_URL,
-	origin: 'exp://192.168.1.51:19000',
+	origin: process.env.CLIENT_URL_LIVE_UPDATE_IOS,
+	origin: process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
+	origin: process.env.CLIENT_URL_TEST,
 	// origin: 'http://10.0.2.2:19000',
 	// origin: 'http://192.168.1.51:19000',
-	// origin: 'http://localhost:19000',
+	origin: 'http://localhost:19000',
 	credentials: true,
 });
 
@@ -33,7 +35,6 @@ app.addHook('onRequest', (req, res, done) => {
 });
 
 app.post('/SignInPage/login', async (req, res) => {
-	// Was using findFirstOrThrow and maybe check into it more with return response but was having Unhandled Promise Rejection with Object return type
 	return await prisma.user.findFirst({
 		where: {
 			email: req.body.email,
@@ -78,7 +79,7 @@ app.post('/EditProfile/fetchUserDetails', async (req, res) => {
 
 app.post('/EditProfile/updateUserDetails', async (req, res) => {});
 
-app.listen({ port: 3001, host: '192.168.1.51' }, (error) => {
+app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);
 	// 	app.log.error(error.name);

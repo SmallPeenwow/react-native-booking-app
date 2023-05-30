@@ -18,7 +18,10 @@ export const BackActionEvent = ({
 	const backAction = () => {
 		Alert.alert(title, message, [
 			{ text: 'Cancel', onPress: () => null, style: 'cancel' },
-			{ text: 'YES', onPress: () => push(page) },
+			{
+				text: 'YES',
+				onPress: () => (page === 'exit' ? BackHandler.exitApp() : push(page)),
+			},
 		]);
 
 		return true;

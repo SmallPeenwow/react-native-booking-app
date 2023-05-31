@@ -7,7 +7,11 @@ type BackActionEventProps = {
 	page: string;
 };
 
-const BackActionEvent = ({ title, message, page }: BackActionEventProps) => {
+export const BackActionEvent = ({
+	title,
+	message,
+	page,
+}: BackActionEventProps) => {
 	const { push } = SendToPage();
 
 	//ISSUE back handler on landing page fails when going back after going into sign in or sign up
@@ -26,5 +30,3 @@ const BackActionEvent = ({ title, message, page }: BackActionEventProps) => {
 
 	BackHandler.addEventListener('hardwareBackPress', backAction);
 };
-
-export default BackActionEvent;

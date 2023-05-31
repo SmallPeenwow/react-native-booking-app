@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { ScrollView, Text, View, Alert } from 'react-native';
-import BackActionEvent from '../../hooks/BackHandler/BackActionEvent';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { useState } from 'react';
 import Button from '../../components/Button';
 import { Fetch } from '../../hooks/EditProfile/Fetch';
@@ -10,6 +10,9 @@ import ErrorMessage from '../../components/ErrorMessage';
 import { SendToPage } from '../../hooks/SendToPage';
 import { ValidationUpdateCheck } from '../../hooks/EditProfile/ValidationUpdateCheck';
 import LoadingDisplay from '../../components/LoadingDisplay';
+import { updateUserDetails } from '../../services/EditProfile/updateUserDetails';
+import { AsyncStorageRetrieve } from '../../hooks/LocalStorage/AsyncStorageRetrieve';
+import SuccessfulMessage from '../../components/SuccessfulMessage';
 
 const index = () => {
 	const [userEmailEdit, setUserEmailEdit] = useState('');
@@ -17,6 +20,7 @@ const index = () => {
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+	const [isSuccess, setIsSuccess] = useState(false);
 
 	const { push } = SendToPage();
 
@@ -67,8 +71,6 @@ const index = () => {
 
 		const { oldEmail, oldCellNumber } = await Fetch();
 
-		console.log('run');
-
 		const { errorTrue, responseMessage } = await ValidationUpdateCheck({
 			email: userEmailEdit.toLocaleLowerCase(),
 			cellNumber: userCellNumberEdit,
@@ -77,8 +79,20 @@ const index = () => {
 		});
 
 		if (!errorTrue) {
-			console.log('yes');
-			//TODO: finish this later
+			const userId: string | null = await AsyncStorageRetrieve(
+				'Justin-Bowden-booking-application-id'
+			);
+
+			await updateUserDetails(
+				userId!,
+				userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
+				userCellNumberEdit === ''
+					? oldCellNumber.toString()
+					: userCellNumberEdit
+			);
+
+			setIsSuccess(true);
+			setIsLoading(false);
 		}
 
 		setIsLoading(false);
@@ -105,6 +119,13 @@ const index = () => {
 			)}
 
 			{isLoading && <LoadingDisplay header='Processing...' />}
+			{isSuccess && (
+				<SuccessfulMessage
+					title='Update Was Successful'
+					isSuccess={isSuccess}
+					setIsSuccess={setIsSuccess}
+				/>
+			)}
 
 			<ScrollView>
 				<View className='items-start border-b-main-color border-b-2'>
@@ -128,7 +149,7 @@ const index = () => {
 						You can change your cell number here.{'\n'}
 						<Text className='text-sm w-10 font-normal'>
 							<Text className='text-red-600'>NB</Text>: You won't be allowed to
-							add spacing.{'\n'} Eg: 0781234567
+							add spacing.{'\n'}Eg: 0781234567
 						</Text>
 					</Text>
 					<View className='items-center w-full justify-center'>

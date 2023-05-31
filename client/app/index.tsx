@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import Button from '../components/Button';
-import BackActionEvent from '../hooks/BackHandler/BackActionEvent';
+import { BackActionEvent } from '../hooks/BackHandler/BackActionEvent';
 
 import textShadowStyle from '../styles/textShadowStyle';
 import { SendToPage } from '../hooks/SendToPage';

@@ -77,7 +77,12 @@ app.post('/EditProfile/fetchUserDetails', async (req, res) => {
 	});
 });
 
-app.post('/EditProfile/updateUserDetails', async (req, res) => {});
+app.post('/EditProfile/updateUserDetails/:id', async (req, res) => {
+	return await prisma.user.update({
+		where: { id: parseInt(req.params.id) },
+		data: { email: req.body.email, cell_number: req.body.cellNumber },
+	});
+});
 
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {

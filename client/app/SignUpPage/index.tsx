@@ -10,7 +10,8 @@ import { CreateAccount } from '../../services/createAccount';
 import { SendToPage } from '../../hooks/SendToPage';
 import PasswordInput from '../../components/PasswordInput';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
-import BackActionEvent from '../../hooks/BackHandler/BackActionEvent';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import LoadingDisplay from '../../components/LoadingDisplay';
 
 const SignUp = () => {
 	const { push } = SendToPage();
@@ -28,6 +29,7 @@ const SignUp = () => {
 	const [password, setPassword] = useState('');
 	const [cellNumber, setCellNumber] = useState('');
 
+	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -39,6 +41,7 @@ const SignUp = () => {
 		surname: string,
 		dateOfBirth: Date
 	) => {
+		setIsLoading(true);
 		const { errorResult, responseMessage } = await ValidateUserDetails({
 			cellNumber: cellNumber,
 			email: email,
@@ -60,11 +63,13 @@ const SignUp = () => {
 
 			if (value.access_level.toLowerCase() === 'client') {
 				await SaveInStorage(value.id);
+				setIsLoading(false);
 				push('/UserPages');
 				return;
 			}
 		}
 
+		setIsLoading(false);
 		setIsError(errorResult);
 		setErrorMessage(responseMessage);
 		return;
@@ -82,6 +87,8 @@ const SignUp = () => {
 					/>
 				</View>
 			)}
+
+			{isLoading && <LoadingDisplay header='Processing...' />}
 
 			<ScrollView
 				contentContainerStyle={{

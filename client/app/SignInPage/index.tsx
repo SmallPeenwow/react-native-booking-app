@@ -11,7 +11,7 @@ import { EmailValidation } from '../../hooks/EmailValidation';
 import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
 import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
 import PasswordInput from '../../components/PasswordInput';
-import BackActionEvent  from '../../hooks/BackHandler/BackActionEvent';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
 
 const index = () => {

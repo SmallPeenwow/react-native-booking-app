@@ -84,6 +84,16 @@ app.post('/EditProfile/updateUserDetails/:id', async (req, res) => {
 	});
 });
 
+app.get('/AdminPages/frontPage', async (req, res) => {
+	return await prisma.appointment.findMany({
+		where: {
+			appointment_status: {
+				contains: 'pending',
+			},
+		},
+	});
+});
+
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);

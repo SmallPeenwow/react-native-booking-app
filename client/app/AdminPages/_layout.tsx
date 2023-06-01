@@ -15,7 +15,7 @@ const _layout = () => {
 			}}
 		>
 			<Tabs.Screen
-				name='adminFrontPage'
+				name='frontPage'
 				options={{
 					tabBarLabel: 'Home',
 					tabBarIcon: ({ focused }) => (

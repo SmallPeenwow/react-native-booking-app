@@ -43,6 +43,7 @@ app.post('/SignInPage/login', async (req, res) => {
 		select: {
 			access_level: true,
 			id: true,
+			address: true,
 		},
 	});
 });
@@ -57,6 +58,7 @@ app.post('/SignUpPage/create', async (req, res) => {
 			email: req.body.email,
 			password: req.body.password,
 			cell_number: req.body.cellNumber,
+			address: req.body.address,
 		},
 		select: {
 			access_level: true,
@@ -79,7 +81,7 @@ app.post('/EditProfile/fetchUserDetails', async (req, res) => {
 
 app.post('/EditProfile/updateUserDetails/:id', async (req, res) => {
 	return await prisma.user.update({
-		where: { id: parseInt(req.params.id) },
+		where: { id: req.params.id },
 		data: { email: req.body.email, cell_number: req.body.cellNumber },
 	});
 });

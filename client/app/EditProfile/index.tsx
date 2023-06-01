@@ -3,7 +3,7 @@ import { ScrollView, Text, View, Alert } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { useState } from 'react';
 import Button from '../../components/Button';
-import { Fetch } from '../../hooks/EditProfile/Fetch';
+import { Fetch, UserStorage } from '../../hooks/EditProfile/Fetch';
 import CancelButton from '../../components/CancelButton';
 import EditProfileInput from '../../components/EditProfile/EditProfileInput';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -79,12 +79,20 @@ const index = () => {
 		});
 
 		if (!errorTrue) {
-			const userId: string | null = await AsyncStorageRetrieve(
+			const userInfo: string | null = await AsyncStorageRetrieve(
 				'Justin-Bowden-booking-application-id'
 			);
 
+			if (userInfo === null) {
+				setIsError(true);
+				setErrorMessage('Local Storage Error');
+				return;
+			}
+
+			let userId: UserStorage = JSON.parse(userInfo);
+
 			await updateUserDetails(
-				userId!,
+				userId.id,
 				userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
 				userCellNumberEdit === ''
 					? oldCellNumber.toString()

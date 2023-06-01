@@ -14,6 +14,12 @@ import PasswordInput from '../../components/PasswordInput';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
 
+type UserDetails = {
+	access_level: string;
+	address: string;
+	id: number;
+};
+
 const index = () => {
 	const { push } = SendToPage();
 
@@ -47,7 +53,7 @@ const index = () => {
 			return;
 		}
 
-		const value: any = await Login(email.toLowerCase(), password);
+		const value: UserDetails = await Login(email.toLowerCase(), password);
 
 		if (value === null) {
 			setIsLoading(false);
@@ -60,12 +66,12 @@ const index = () => {
 
 		// Maybe make hook
 		if (value.access_level.toLowerCase() === 'admin') {
-			await SaveInStorage(value.id);
+			await SaveInStorage(value.id, value.address);
 			setIsLoading(false);
 			push('/AdminPages');
 			return;
 		} else if (value.access_level.toLowerCase() === 'client') {
-			await SaveInStorage(value.id);
+			await SaveInStorage(value.id, value.address);
 			setIsLoading(false);
 			push('/UserPages');
 			return;

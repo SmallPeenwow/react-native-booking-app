@@ -47,6 +47,8 @@ const FrontPage = () => {
 				options={{
 					headerTitle: 'Home',
 					headerTitleAlign: 'center',
+					headerTitleStyle: { color: 'white' },
+					headerStyle: { backgroundColor: '#0085FF' },
 				}}
 			/>
 

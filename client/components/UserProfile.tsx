@@ -15,7 +15,7 @@ const UserProfile = () => {
 				onPress={SentToEditProfile}
 				name='setting'
 				size={30}
-				color='black'
+				color='white'
 			/>
 		</View>
 	);

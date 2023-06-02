@@ -109,11 +109,14 @@ const index = () => {
 	};
 
 	return (
-		<View className='h-full bg-neutral-50'>
+		<View className='h-full bg-white'>
 			<Stack.Screen
 				options={{
 					headerTitle: 'Edit Profile',
 					headerTitleAlign: 'center',
+					headerTitleStyle: { color: 'white' },
+					headerTintColor: 'white',
+					headerStyle: { backgroundColor: '#0085FF' },
 				}}
 			/>
 			{isError && (

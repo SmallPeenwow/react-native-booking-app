@@ -1,5 +1,6 @@
 import { Text, View } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { Stack } from 'expo-router';
 
 const AcceptedBookings = () => {
 	BackActionEvent({
@@ -9,7 +10,16 @@ const AcceptedBookings = () => {
 	});
 
 	return (
-		<View className='h-full bg-neutral-50'>
+		<View className='h-full bg-white'>
+			<Stack.Screen
+				options={{
+					headerTitle: 'Accepted Bookings',
+					headerTitleAlign: 'center',
+					headerTitleStyle: { color: 'white' },
+					headerStyle: { backgroundColor: '#0085FF' },
+				}}
+			/>
+
 			<Text>Page Admin Can See What Booking They Have For Day Or Week</Text>
 		</View>
 	);

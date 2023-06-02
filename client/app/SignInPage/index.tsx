@@ -80,7 +80,7 @@ const index = () => {
 	};
 
 	return (
-		<View className='h-full bg-neutral-50 flex-col'>
+		<View className='h-full bg-white flex-col'>
 			<Header />
 
 			<View className='flex-1 items-center justify-center'>

@@ -11,14 +11,17 @@ const FrontPage = () => {
 	});
 
 	return (
-		<View className='h-full bg-green-400 p-2'>
+		<View className='h-full bg-white p-2'>
 			<Stack.Screen
 				options={{
-					headerTitle: 'Booking Dates',
+					headerTitle: 'Home',
 					headerRight: () => <UserProfile />,
 					headerTitleAlign: 'center',
+					headerTitleStyle: { color: 'white' },
+					headerStyle: { backgroundColor: '#0085FF' },
 				}}
 			/>
+
 			<View className='gap-6'>
 				<View className='items-end '></View>
 				<View>

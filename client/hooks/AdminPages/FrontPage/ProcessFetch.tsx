@@ -6,11 +6,9 @@ type ProcessFetchProps = {
 };
 
 export const ProcessFetch = ({ setState }: ProcessFetchProps) => {
-	useMemo(
-		async () =>
-			await fetchPendingRequests().then((data) => {
-				setState(data);
-			}),
-		[]
-	);
+	useMemo(async () => {
+		await fetchPendingRequests().then((data) => {
+			setState(data);
+		});
+	}, []);
 };

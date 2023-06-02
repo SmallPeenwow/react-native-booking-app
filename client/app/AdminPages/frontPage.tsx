@@ -4,6 +4,8 @@ import { Stack, useFocusEffect } from 'expo-router';
 import { useState } from 'react';
 import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import SuccessfulMessage from '../../components/SuccessfulMessage';
+import LoadingDisplay from '../../components/LoadingDisplay';
 
 interface User {
 	address: string;
@@ -21,9 +23,10 @@ export interface Appointments {
 }
 
 const FrontPage = () => {
-	// TODO some type of is loading and onload of page thing
 	const [appointment, setAppointment] = useState([]);
-
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [responseMessage, setResponseMessage] = useState('');
 	// FIX: Make another function that runs and does this or component
 	ProcessFetch({ setState: setAppointment });
 
@@ -52,6 +55,16 @@ const FrontPage = () => {
 				}}
 			/>
 
+			{isSuccess && (
+				<SuccessfulMessage
+					title={responseMessage}
+					isSuccess={isSuccess}
+					setIsSuccess={setIsSuccess}
+				/>
+			)}
+
+			{isLoading && <LoadingDisplay header='Loading...' />}
+
 			<ScrollView
 				contentContainerStyle={{
 					display: 'flex',
@@ -63,8 +76,15 @@ const FrontPage = () => {
 					marginTop: 15,
 				}}
 			>
+				{/* // TODO: Remove view when either decline or accept is pressed */}
 				{appointment.map((data, index) => (
-					<BookingRequestCard key={index} appointment={data} />
+					<BookingRequestCard
+						key={index}
+						appointment={data}
+						setResponseMessage={setResponseMessage}
+						setIsSuccess={setIsSuccess}
+						setIsLoading={setIsLoading}
+					/>
 				))}
 			</ScrollView>
 		</View>

@@ -110,6 +110,19 @@ app.get('/AdminPages/frontPage', async (req, res) => {
 	});
 });
 
+app.post('/AdminPages/frontPage/bookingResponse', async (req, res) => {
+	await prisma.appointment.update({
+		where: {
+			appointment_id: req.body.appointmentId,
+		},
+		data: {
+			appointment_status: req.body.response,
+		},
+	});
+
+	return 'Process was completed successfully';
+});
+
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);

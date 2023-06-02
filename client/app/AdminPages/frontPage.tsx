@@ -1,12 +1,46 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
-import { Stack } from 'expo-router';
-import { fetchPendingRequests } from '../../services/FrontPage/fetchPendingRequests';
+import { Stack, useFocusEffect } from 'expo-router';
+import { useState } from 'react';
+import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
+import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+
+interface User {
+	address: string;
+	age: number;
+	cell_number: string;
+	name: string;
+	surname: string;
+}
+
+export interface Appointments {
+	appointment_id: number;
+	date: number;
+	location_type: string;
+	user: User;
+}
 
 const FrontPage = () => {
-	// TODO: do await with useCallback look at nested comments project
-	const bookings = fetchPendingRequests();
-	console.log(bookings);
+	// TODO some type of is loading and onload of page thing
+	const [appointment, setAppointment] = useState([]);
+
+	// FIX: Make another function that runs and does this or component
+	ProcessFetch({ setState: setAppointment });
+
+	BackActionEvent({
+		title: 'Hold on!',
+		message: 'Are you sure you want to go back?',
+		page: '/',
+	});
+
+	// useFocusEffect(
+	// 	useCallback( () => {
+	// 		// const bookings = await fetchPendingRequests();
+
+	// 		return () =>  fetchPendingRequests()
+	// 	}, [])
+	// )
+
 	return (
 		<View className='h-full bg-neutral-50'>
 			<Stack.Screen
@@ -27,7 +61,9 @@ const FrontPage = () => {
 					marginTop: 15,
 				}}
 			>
-				<BookingRequestCard />
+				{appointment.map((data, index) => (
+					<BookingRequestCard key={index} appointment={data} />
+				))}
 			</ScrollView>
 		</View>
 	);

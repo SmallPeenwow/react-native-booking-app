@@ -1,50 +1,75 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import containerStyles from '../../../styles/containerStyles';
+import { Appointments } from '../../../app/AdminPages/frontPage';
+import { CellNumberSpacing } from '../../../hooks/CellNumberSpacing';
+import { DateTimeMaking } from '../../../hooks/DateTimeMaking';
+import buttonStyles from '../../../styles/buttonStyles';
 
-// TODO: should be one object and do the custom stuff inside the here
 type BookingRequestCardProps = {
-	fullName: string;
-	cellNumber: string;
-	time: string;
-	date: string;
-	visit: string;
-	location: string;
+	appointment: Appointments;
 };
 
-//TODO: pass in the booking id into the pressable stuff
+const BookingRequestCard = ({ appointment }: BookingRequestCardProps) => {
+	const { spacedNumber } = CellNumberSpacing({
+		number: appointment.user.cell_number,
+	});
+	const { time, day } = DateTimeMaking({
+		dateTime: appointment.date.toString(),
+	});
 
-const BookingRequestCard = () => {
 	return (
 		<View
-			className='w-11/12 h-32 border-main-color border-2 bg-white rounded-lg p-2 flex-row'
+			className='w-11/12 h-32 bg-main-color rounded-lg p-2 flex-row'
 			style={containerStyles.container}
 		>
 			<View className='basis-[55%] justify-between'>
 				<View>
-					<Text className='text-base'>Joe Dirt</Text>
-					<Text className='text-base'>078 890 2345</Text>
+					<Text className='text-base text-white'>
+						{appointment.user.name} {appointment.user.surname}
+					</Text>
+					<Text className='text-base text-white'>{spacedNumber}</Text>
 				</View>
 
 				<View className='pb-2'>
-					<Text className='text-base'>10:00 AM</Text>
-					<Text className='text-base'>9 Friday June 2023</Text>
+					<Text className='text-base text-white'>{time}</Text>
+					<Text className='text-base text-white'>{day}</Text>
 				</View>
 			</View>
 			<View className='basis-[45%] items-start justify-between'>
 				<View className='flex-row gap-2'>
-					<Text className='font-bold'>Visit:</Text>
-					<Text>Home</Text>
+					<Text className='font-bold text-white'>Visit:</Text>
+					<Text className='text-white'>{appointment.location_type}</Text>
 				</View>
-
+				{/* TODO: Put Age here */}
 				<View className='pt-1'>
-					<Text className='font-bold'>Location:</Text>
-					<Text className='flex-wrap'>1 Street Rd Nahoon</Text>
+					<Text className='font-bold text-white'>Location:</Text>
+					<Text className='flex-wrap text-white'>
+						{appointment.location_type === 'office'
+							? '---'
+							: appointment.location_type}
+					</Text>
 				</View>
 
 				{/* TODO: make these pressable and then style again */}
 				<View className='flex-row w-full justify-end'>
-					<Text className='text-red-500 font-semibold text-base'>Decline</Text>
-					<Text className='text-green-500 font-semibold text-base'>Accept</Text>
+					<TouchableOpacity
+						style={buttonStyles.button}
+						className='p-1 px-2 rounded bg-slate-200 mr-2'
+						onPress={() => {}}
+					>
+						<Text className='text-red-500 font-semibold text-base'>
+							Decline
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={buttonStyles.button}
+						className='p-1 px-2 rounded bg-slate-200'
+						onPress={() => {}}
+					>
+						<Text className='text-green-600 font-semibold text-base'>
+							Accept
+						</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</View>

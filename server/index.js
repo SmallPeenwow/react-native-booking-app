@@ -93,6 +93,20 @@ app.get('/AdminPages/frontPage', async (req, res) => {
 				contains: 'pending',
 			},
 		},
+		select: {
+			appointment_id: true,
+			date: true,
+			location_type: true,
+			user: {
+				select: {
+					name: true,
+					surname: true,
+					age: true,
+					cell_number: true,
+					address: true,
+				},
+			},
+		},
 	});
 });
 

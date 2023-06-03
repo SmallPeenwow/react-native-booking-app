@@ -6,11 +6,10 @@ export async function CreateAccount(
 	email: string,
 	password: string,
 	cellNumber: string,
-	dateOfBirth: Date,
-	address: string
+	dateOfBirth: Date
 ) {
 	return await makeRequest('/SignUpPage/create', {
 		method: 'POST',
-		data: { name, surname, email, password, cellNumber, dateOfBirth, address },
+		data: { name, surname, email, password, cellNumber, dateOfBirth },
 	});
 }

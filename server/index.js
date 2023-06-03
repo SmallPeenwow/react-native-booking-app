@@ -43,7 +43,6 @@ app.post('/SignInPage/login', async (req, res) => {
 		select: {
 			access_level: true,
 			id: true,
-			address: true,
 		},
 	});
 });
@@ -58,7 +57,6 @@ app.post('/SignUpPage/create', async (req, res) => {
 			email: req.body.email,
 			password: req.body.password,
 			cell_number: req.body.cellNumber,
-			address: req.body.address,
 		},
 		select: {
 			access_level: true,
@@ -97,13 +95,13 @@ app.get('/AdminPages/frontPage', async (req, res) => {
 			appointment_id: true,
 			date: true,
 			location_type: true,
+			address: true,
 			user: {
 				select: {
 					name: true,
 					surname: true,
 					age: true,
 					cell_number: true,
-					address: true,
 				},
 			},
 		},

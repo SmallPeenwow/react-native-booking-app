@@ -66,12 +66,12 @@ const index = () => {
 
 		// Maybe make hook
 		if (value.access_level.toLowerCase() === 'admin') {
-			await SaveInStorage(value.id, value.address);
+			await SaveInStorage(value.id);
 			setIsLoading(false);
 			push('/AdminPages');
 			return;
 		} else if (value.access_level.toLowerCase() === 'client') {
-			await SaveInStorage(value.id, value.address);
+			await SaveInStorage(value.id);
 			setIsLoading(false);
 			push('/UserPages');
 			return;

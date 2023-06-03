@@ -8,6 +8,8 @@ import { ResponseToBooking } from '../../../hooks/AdminPages/FrontPage/ResponseT
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
+	appointmentArray: any[];
+	setAppointmentArray: (action: any[]) => void;
 	setResponseMessage: (action: string) => void;
 	setIsSuccess: (action: boolean) => void;
 	setIsLoading: (action: boolean) => void;
@@ -15,6 +17,8 @@ type BookingRequestCardProps = {
 
 const BookingRequestCard = ({
 	appointment,
+	appointmentArray,
+	setAppointmentArray,
 	setResponseMessage,
 	setIsSuccess,
 	setIsLoading,
@@ -27,12 +31,22 @@ const BookingRequestCard = ({
 		dateTime: appointment.date.toString(),
 	});
 
+	const RemoveDiv = () => {
+		setAppointmentArray(
+			appointmentArray.filter((value) => value !== appointment)
+		);
+	};
+
 	const ResponseFunction = (id: number, response: string) => {
 		Alert.alert(
 			'Booking Request',
 			`Do you want to ${response.toUpperCase()} this booking?`,
 			[
-				{ text: 'No', onPress: () => {}, style: 'cancel' },
+				{
+					text: 'No',
+					onPress: () => {},
+					style: 'cancel',
+				},
 				{
 					text: 'Yes',
 					onPress: async () => {
@@ -42,6 +56,7 @@ const BookingRequestCard = ({
 							response: response,
 						});
 
+						RemoveDiv();
 						setResponseMessage(responseMessage);
 						setIsLoading(false);
 						setIsSuccess(true);
@@ -88,7 +103,7 @@ const BookingRequestCard = ({
 					<Text className='flex-wrap text-white'>
 						{appointment.location_type === 'office'
 							? '---'
-							: appointment.user.address}
+							: appointment.address}
 					</Text>
 				</View>
 

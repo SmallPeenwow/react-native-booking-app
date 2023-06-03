@@ -3,7 +3,6 @@ import { AsyncStorageRetrieve } from '../LocalStorage/AsyncStorageRetrieve';
 
 export interface UserStorage {
 	id: string;
-	address: string;
 }
 
 export const Fetch = async () => {

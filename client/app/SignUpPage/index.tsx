@@ -28,7 +28,6 @@ const SignUp = () => {
 	const [dateOfBirth, setDateOfBirth] = useState(new Date());
 	const [password, setPassword] = useState('');
 	const [cellNumber, setCellNumber] = useState('');
-	const [address, setAddress] = useState('');
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
@@ -40,8 +39,7 @@ const SignUp = () => {
 		password: string,
 		name: string,
 		surname: string,
-		dateOfBirth: Date,
-		address: string
+		dateOfBirth: Date
 	) => {
 		setIsLoading(true);
 		const { errorResult, responseMessage } = await ValidateUserDetails({
@@ -60,12 +58,11 @@ const SignUp = () => {
 				email.toLowerCase(),
 				password,
 				cellNumber.replace(/\s/g, ''),
-				dateOfBirth,
-				address
+				dateOfBirth
 			);
 
 			if (value.access_level.toLowerCase() === 'client') {
-				await SaveInStorage(value.id, address);
+				await SaveInStorage(value.id);
 				setIsLoading(false);
 				push('/UserPages');
 				return;
@@ -153,12 +150,6 @@ const SignUp = () => {
 						useStateChange={setCellNumber}
 					/>
 					<View className='border-2 border-black rounded mt-3'></View>
-					<Input
-						title='Address'
-						placeholder='Enter your address...'
-						useStateChange={setAddress}
-					/>
-					<View className='border-2 border-black rounded mt-3'></View>
 					<View className='justify-end items-end mb-10'>
 						<View className='w-36'>
 							<Button
@@ -170,8 +161,7 @@ const SignUp = () => {
 										password,
 										name,
 										surname,
-										dateOfBirth,
-										address
+										dateOfBirth
 									)
 								}
 							/>

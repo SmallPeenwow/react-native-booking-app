@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// MAYBE make string a CONST in constants folder to import
 export const SaveInStorage = async (id: number) => {
 	let userObject = {
 		id: id,

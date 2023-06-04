@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { fetchAcceptedBookings } from '../../../services/AcceptedBookings/fetchAcceptedBookings';
 import { AcceptedBookingsTypes } from '../../../shared/types/acceptedBookings.type';
 
@@ -15,6 +15,6 @@ export const useFetchAcceptedBookings = ({
 			await fetchAcceptedBookings().then((data) => {
 				setAcceptedBookings(data);
 			}),
-		[setAcceptedBookings]
+		[]
 	);
 };

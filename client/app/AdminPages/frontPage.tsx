@@ -64,8 +64,8 @@ const FrontPage = () => {
 					justifyContent: 'flex-start',
 					gap: 30,
 					alignItems: 'center',
-					flex: 1,
 					marginTop: 15,
+					paddingBottom: 40,
 				}}
 			>
 				{appointmentArray === undefined ? (

@@ -14,12 +14,9 @@ app.register(sensible);
 
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
-	// origin: process.env.CLIENT_URL,
 	origin: process.env.CLIENT_URL_LIVE_UPDATE_IOS,
 	origin: process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
 	origin: process.env.CLIENT_URL_TEST,
-	// origin: 'http://10.0.2.2:19000',
-	// origin: 'http://192.168.1.51:19000',
 	origin: 'http://localhost:19000',
 	credentials: true,
 });

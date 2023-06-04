@@ -2,6 +2,7 @@ import { View, Text } from 'react-native';
 import { AcceptedBookingsTypes } from '../../../shared/types/acceptedBookings.type';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
+import { useGiveAcceptedBookingsStatus } from '../../../hooks/AdminPages/AcceptedBookings/useGiveAcceptedBookingStatus';
 
 type AcceptedBookingsCardProps = {
 	acceptedBooking: AcceptedBookingsTypes;
@@ -18,10 +19,20 @@ const AcceptedBookingsCard = ({
 		number: acceptedBooking.user.cell_number,
 	});
 
-	// TODO: make something for when time is equal or past the time
+	const { status } = useGiveAcceptedBookingsStatus({
+		dateCompare: new Date(acceptedBooking.date),
+	});
 
 	return (
-		<View className='w-11/12 h-44 bg-white border-2 border-main-color rounded-lg p-2 flex-row'>
+		<View
+			className={`w-11/12 h-44 bg-white border-2 rounded-lg p-2 flex-row ${
+				status === 'In Progress...'
+					? 'border-amber-600'
+					: status === 'Waiting...'
+					? 'border-main-color'
+					: 'border-green-600'
+			}`}
+		>
 			<View className='basis-[45%] items-start gap-2'>
 				<View className='flex-row'>
 					<Text className='font-bold pr-2'>Name:</Text>
@@ -69,7 +80,7 @@ const AcceptedBookingsCard = ({
 				</View>
 
 				<View className='absolute bottom-1 right-5'>
-					<Text className='text-xl font-semibold'>Waiting...</Text>
+					<Text className='text-xl font-semibold'>{status}</Text>
 				</View>
 			</View>
 		</View>

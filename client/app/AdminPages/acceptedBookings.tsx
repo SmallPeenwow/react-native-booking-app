@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { Stack } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
@@ -18,11 +18,12 @@ const AcceptedBookings = () => {
 	});
 
 	// FUTURE UPDATE: Make drop down to select max day to view
-	// Maybe plain useEffect will work with setAcceptedBookings as dependency
+
+	// Must do socket.io and useEffect for update
+
 	useFetchAcceptedBookings({
 		setAcceptedBookings: setAcceptedBookings,
 	});
-	console.log(acceptedBookings);
 
 	return (
 		<View className='h-full bg-white'>
@@ -42,8 +43,8 @@ const AcceptedBookings = () => {
 					justifyContent: 'flex-start',
 					gap: 30,
 					alignItems: 'center',
-					flex: 1,
 					marginTop: 15,
+					paddingBottom: 40,
 				}}
 			>
 				{acceptedBookings === undefined ? (

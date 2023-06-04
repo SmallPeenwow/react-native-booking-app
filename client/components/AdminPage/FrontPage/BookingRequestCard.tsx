@@ -1,8 +1,8 @@
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import containerStyles from '../../../styles/containerStyles';
 import { Appointments } from '../../../app/AdminPages/frontPage';
-import { CellNumberSpacing } from '../../../hooks/CellNumberSpacing';
-import { DateTimeMaking } from '../../../hooks/DateTimeMaking';
+import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
+import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
 import { ResponseToBooking } from '../../../hooks/AdminPages/FrontPage/ResponseToBooking';
 
@@ -23,11 +23,11 @@ const BookingRequestCard = ({
 	setIsSuccess,
 	setIsLoading,
 }: BookingRequestCardProps) => {
-	const { spacedNumber } = CellNumberSpacing({
+	const { spacedNumber } = useCellNumberSpacing({
 		number: appointment.user.cell_number,
 	});
 
-	const { time, day } = DateTimeMaking({
+	const { time, day } = useDateTimeMaking({
 		dateTime: appointment.date.toString(),
 	});
 

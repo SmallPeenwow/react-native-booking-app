@@ -2,7 +2,7 @@ type DateTimeMakingProps = {
 	dateTime: string;
 };
 
-export const DateTimeMaking = ({ dateTime }: DateTimeMakingProps) => {
+export const useDateTimeMaking = ({ dateTime }: DateTimeMakingProps) => {
 	let dateTimeSeparated = dateTime.split('T');
 
 	let day: string =

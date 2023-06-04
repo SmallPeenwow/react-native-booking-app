@@ -121,6 +121,37 @@ app.post('/AdminPages/frontPage/bookingResponse', async (req, res) => {
 	return 'Process was completed successfully';
 });
 
+app.get('/AdminPages/acceptedBookings/', async (req, res) => {
+	// FUTURE UPDATE: Will also be able to set how many days ahead to look
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+	const maxDays = new Date(today);
+	maxDays.setDate(today.getDate() + 7);
+
+	return await prisma.appointment.findMany({
+		where: {
+			appointment_status: 'accept',
+			date: {
+				lte: maxDays,
+				gte: today,
+			},
+		},
+		select: {
+			date: true,
+			location_type: true,
+			address: true,
+			user: {
+				select: {
+					name: true,
+					surname: true,
+					age: true,
+					cell_number: true,
+				},
+			},
+		},
+	});
+});
+
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);

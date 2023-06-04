@@ -2,7 +2,7 @@ type CellNumberSpacing = {
 	number: string;
 };
 
-export const CellNumberSpacing = ({ number }: CellNumberSpacing) => {
+export const useCellNumberSpacing = ({ number }: CellNumberSpacing) => {
 	const COUNT_EQUAL: number = 3;
 	const SPACING_MAX_LESS: number = 2;
 

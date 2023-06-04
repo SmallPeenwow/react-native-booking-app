@@ -68,7 +68,6 @@ const FrontPage = () => {
 					marginTop: 15,
 				}}
 			>
-				{/* // TODO: Remove view when either decline or accept is pressed */}
 				{appointmentArray === undefined ? (
 					<LoadingDisplay header='Loading...' />
 				) : (

@@ -35,6 +35,7 @@ const UserBookingTimes = () => {
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		selectedDropdownValue: selected,
+		setIsLoading: setIsLoading,
 		setBookings: setBookings,
 	});
 

@@ -150,12 +150,18 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 });
 
 app.post('/UserPages/userBookingTimes/', async (req, res) => {
-	// TODO: make time thing so doesn't pull in previous days
-	// TODO: order by accepted when All
+	const today = new Date();
+	today.setMinutes(0);
+	today.setSeconds(0);
+	today.setMilliseconds(0);
+
 	if (req.body.appointmentStatus === 'All') {
 		return await prisma.appointment.findMany({
 			where: {
 				user_id: req.body.userId,
+				date: {
+					gte: today,
+				},
 			},
 			select: {
 				date: true,
@@ -168,6 +174,9 @@ app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	return await prisma.appointment.findMany({
 		where: {
 			user_id: req.body.userId,
+			date: {
+				gte: today,
+			},
 			appointment_status: {
 				equals: req.body.appointmentStatus,
 			},

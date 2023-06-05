@@ -149,6 +149,37 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 	});
 });
 
+app.post('/UserPages/userBookingTimes/', async (req, res) => {
+	// TODO: make time thing so doesn't pull in previous days
+	// TODO: order by accepted when All
+	if (req.body.appointmentStatus === 'All') {
+		return await prisma.appointment.findMany({
+			where: {
+				user_id: req.body.userId,
+			},
+			select: {
+				date: true,
+				location_type: true,
+				appointment_status: true,
+			},
+		});
+	}
+
+	return await prisma.appointment.findMany({
+		where: {
+			user_id: req.body.userId,
+			appointment_status: {
+				equals: req.body.appointmentStatus,
+			},
+		},
+		select: {
+			date: true,
+			location_type: true,
+			appointment_status: true,
+		},
+	});
+});
+
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);

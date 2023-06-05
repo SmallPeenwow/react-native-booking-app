@@ -1,12 +1,9 @@
 import { FetchUserDetails } from '../../services/EditProfile/fetchUserDetails';
-import { AsyncStorageRetrieve } from '../LocalStorage/AsyncStorageRetrieve';
-
-export interface UserStorage {
-	id: string;
-}
+import { UserStorage } from '../../shared/interfaces/userStorage.interface';
+import { useAsyncStorageRetrieve } from '../LocalStorage/useAsyncStorageRetrieve';
 
 export const Fetch = async () => {
-	const jsonString: string | null = await AsyncStorageRetrieve(
+	const jsonString: string | null = await useAsyncStorageRetrieve(
 		'Justin-Bowden-booking-application-id'
 	);
 

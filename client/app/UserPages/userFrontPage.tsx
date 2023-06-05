@@ -4,6 +4,7 @@ import UserProfile from '../../components/UserProfile';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 
 const FrontPage = () => {
+	// MAYBE put on _layout.tsx to see what happens
 	BackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',

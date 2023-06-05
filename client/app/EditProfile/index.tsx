@@ -3,7 +3,7 @@ import { ScrollView, Text, View, Alert } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { useState } from 'react';
 import Button from '../../components/Button';
-import { Fetch, UserStorage } from '../../hooks/EditProfile/Fetch';
+import { Fetch } from '../../hooks/EditProfile/Fetch';
 import CancelButton from '../../components/CancelButton';
 import EditProfileInput from '../../components/EditProfile/EditProfileInput';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -11,8 +11,9 @@ import { SendToPage } from '../../hooks/SendToPage';
 import { ValidationUpdateCheck } from '../../hooks/EditProfile/ValidationUpdateCheck';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { updateUserDetails } from '../../services/EditProfile/updateUserDetails';
-import { AsyncStorageRetrieve } from '../../hooks/LocalStorage/AsyncStorageRetrieve';
+import { useAsyncStorageRetrieve } from '../../hooks/LocalStorage/useAsyncStorageRetrieve';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
+import { UserStorage } from '../../shared/interfaces/userStorage.interface';
 
 const index = () => {
 	const [userEmailEdit, setUserEmailEdit] = useState('');
@@ -79,7 +80,7 @@ const index = () => {
 		});
 
 		if (!errorTrue) {
-			const userInfo: string | null = await AsyncStorageRetrieve(
+			const userInfo: string | null = await useAsyncStorageRetrieve(
 				'Justin-Bowden-booking-application-id'
 			);
 

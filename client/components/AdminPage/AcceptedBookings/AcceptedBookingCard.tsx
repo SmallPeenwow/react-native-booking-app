@@ -3,6 +3,7 @@ import { AcceptedBookingsTypes } from '../../../shared/types/acceptedBookings.ty
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useGiveAcceptedBookingsStatus } from '../../../hooks/AdminPages/AcceptedBookings/useGiveAcceptedBookingStatus';
+import containerStyles from '../../../styles/containerStyles';
 
 type AcceptedBookingsCardProps = {
 	acceptedBooking: AcceptedBookingsTypes;
@@ -32,6 +33,7 @@ const AcceptedBookingsCard = ({
 					? 'border-main-color'
 					: 'border-green-600'
 			}`}
+			style={containerStyles.container}
 		>
 			<View className='basis-[45%] items-start gap-2'>
 				<View className='flex-row'>

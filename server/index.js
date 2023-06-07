@@ -189,6 +189,32 @@ app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	});
 });
 
+app.post('/UserPages/userFrontPage/', async (req, res) => {
+	const checkExistingBooking = await prisma.appointment.findFirst({
+		where: {
+			date: req.body.date,
+			appointment_status: {
+				not: 'decline',
+			},
+		},
+	});
+
+	if (checkExistingBooking) {
+		return 'Date Booked';
+	}
+
+	await prisma.appointment.create({
+		data: {
+			date: req.body.date,
+			address: req.body.address,
+			location_type: req.body.locationType,
+			user_id: req.body.userId,
+		},
+	});
+
+	return 'Booking Was Successfully';
+});
+
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
 	// if (error) {
 	// 	app.log.error(error.message);

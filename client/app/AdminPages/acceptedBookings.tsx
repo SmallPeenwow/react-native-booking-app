@@ -47,6 +47,7 @@ const AcceptedBookings = () => {
 					paddingBottom: 40,
 				}}
 			>
+				{/* // TODO: need to test */}
 				{acceptedBookings === undefined ? (
 					<LoadingDisplay header='Loading...' />
 				) : (

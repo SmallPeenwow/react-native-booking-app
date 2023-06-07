@@ -10,7 +10,7 @@ export const useFetchWeeks = ({
 	year,
 }: useFetchWeeks) => {
 	let monthNumber = monthArrayNames.indexOf(month);
-	let weeks: string[][] = [];
+	let weeksInMonth: string[][] = [];
 
 	// Something wrong with time and day on this
 	let dates = new Date(parseInt(year), monthNumber, 1);
@@ -36,11 +36,11 @@ export const useFetchWeeks = ({
 		// Checks to see if end of the week Saturday
 		if (dates.getDay() === 6) {
 			if (currentWeek.length > 0) {
-				weeks.push(currentWeek);
+				weeksInMonth.push(currentWeek);
 			}
 			currentWeek = [];
 		}
 	}
 
-	return { weeks };
+	return { weeksInMonth };
 };

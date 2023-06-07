@@ -1,11 +1,17 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFetchWeeks } from '../../hooks/UserPages/FrontPage/useFetchWeeks';
 import DisplayTime from '../../components/UserPages/FrontPage/DisplayTime';
+import DaySlotTableDisplay from '../../components/UserPages/FrontPage/DaySlotTableDisplay';
+import { monthArrayNames } from '../../shared/monthArrayNames';
+import { timeArrayNames } from '../../shared/timeArrayNames';
+import LoadingDisplay from '../../components/LoadingDisplay';
+import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDialogRequest';
+import { useFetchId } from '../../hooks/UserPages/FrontPage/useFetchId';
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
@@ -17,8 +23,11 @@ const FrontPage = () => {
 	);
 	const [currentWeekDays, setCurrentWeekDays] = useState<string[]>([]);
 	const [amountOfWeeks, setAmountOfWeeks] = useState<string[]>([]);
-	// const [weekDisplayDays, setWeekDisplayDays] = useState<string[]>([]);
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
+	const [selectedBooking, setSelectedBooking] = useState<string>('');
+	const [dateDialogDisplay, setDateDialogDisplay] = useState<string>('');
 
 	const yearArray = [
 		new Date().getFullYear(),
@@ -26,44 +35,18 @@ const FrontPage = () => {
 		new Date().getFullYear() + 2,
 	];
 
-	const monthArrayNames = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December',
-	];
+	const { userId } = useFetchId();
 
-	const timeArrayNames = [
-		'08:00 AM',
-		'09:00 AM',
-		'10:00 AM',
-		'11:00 AM',
-		'12:00 PM',
-		'13:00 PM',
-		'14:00 PM',
-		'15:00 PM',
-		'16:00 PM',
-		'17:00 PM',
-		'18:00 PM',
-	];
+	const SetWeekAmount = (weekArray: string[][]) => {
+		const weekAmount: string[] = [];
 
-	const SetDate = (weeks: string[][]) => {
-		const date: string[] = [];
-
-		weeks.map((value, index) => {
+		weekArray.map((value, index) => {
 			let weekNumber: number = index + 1;
-			date.push('Week ' + weekNumber);
+			weekAmount.push('Week ' + weekNumber);
 		});
 
-		setAmountOfWeeks(date);
+		setAmountOfWeeks(weekAmount);
+		setCurrentWeekDays(weekArray[0]);
 	};
 
 	const SelectYear = (value: string) => {
@@ -82,37 +65,33 @@ const FrontPage = () => {
 	});
 
 	const handleFetch = () => {
-		const { weeks } = useFetchWeeks({
+		const { weeksInMonth } = useFetchWeeks({
 			month: month,
 			monthArrayNames: monthArrayNames,
 			year: year,
 		});
-		return weeks;
+		return weeksInMonth;
 	};
 
 	// Runs multiply times
 	useEffect(() => {
+		console.log('run');
+
 		const weeksFetched = handleFetch();
 
 		setWeeks(weeksFetched);
-		SetDate(weeksFetched);
+		SetWeekAmount(weeksFetched);
 	}, [month]);
 
 	const SelectWeek = (value: string) => {
 		let weekNumber: number = parseInt(value.split(' ')[1]);
-		console.log(weekNumber);
 
 		setCurrentWeekDays(weeks[weekNumber - 1]);
 	};
 
-	// console.log(year, ' year');
-	// console.log(month, ' month');
-	// console.log(weeks, ' weeks');
-	// console.log(amountOfWeeks, ' amount');
-	// console.log(currentWeekDays, ' current');
-
 	return (
-		<View className='h-full bg-white'>
+		// Make relative and do absolute for booking dialog request
+		<View className='h-full bg-white relative'>
 			<Stack.Screen
 				options={{
 					headerTitle: 'Home',
@@ -122,6 +101,16 @@ const FrontPage = () => {
 					headerStyle: { backgroundColor: '#0085FF' },
 				}}
 			/>
+
+			{isLoading && <LoadingDisplay header='Loading...' />}
+			{show && (
+				<BookingDialogRequest
+					selectedBooking={selectedBooking}
+					dateDialogDisplay={dateDialogDisplay}
+					userId={userId}
+					setShow={setShow}
+				/>
+			)}
 
 			<View className='h-full w-full flex-col items-center'>
 				<View className='h-[25%] border-b-2 border-black w-full'>
@@ -179,6 +168,7 @@ const FrontPage = () => {
 							</View>
 						</View>
 
+						{/* Will just putting warning for now on week select */}
 						<View className='flex-row w-full h-20 items-center justify-around'>
 							<View className='w-[40%] items-start'>
 								<Text className='text-lg font-semibold'>Select Week:</Text>
@@ -204,17 +194,41 @@ const FrontPage = () => {
 					</ScrollView>
 				</View>
 
-				<View className='h-[75%] w-full p-2'>
+				{/* TODO: make a drag up MAYBE */}
+				<View className='h-[75%] w-full flex-row p-2'>
 					<ScrollView
 						contentContainerStyle={{
 							paddingBottom: 20,
+							flexDirection: 'row',
 						}}
 					>
-						<View className='w-[80px]'>
+						<View className='w-[80px] h-full'>
 							<View className='bg-blue-400 w-full p-2 h-10 border-[1px] border-black border-t-0 border-l-0'></View>
 							{timeArrayNames.map((value, index) => (
 								<DisplayTime time={value} key={index} />
 							))}
+						</View>
+
+						<View className='flex-row h-full'>
+							<ScrollView
+								horizontal={true}
+								contentContainerStyle={{
+									paddingRight: 100,
+								}}
+							>
+								{currentWeekDays.map((day, index) => (
+									<DaySlotTableDisplay
+										key={index}
+										year={year}
+										month={month}
+										day={day}
+										times={timeArrayNames}
+										setShow={setShow}
+										setSelectedBooking={setSelectedBooking}
+										setDateDialogDisplay={setDateDialogDisplay}
+									/>
+								))}
+							</ScrollView>
 						</View>
 					</ScrollView>
 				</View>

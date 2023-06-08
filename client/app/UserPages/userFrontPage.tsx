@@ -14,7 +14,6 @@ import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDi
 import { useFetchId } from '../../hooks/UserPages/FrontPage/useFetchId';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
-import { boolean } from 'zod';
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
@@ -223,6 +222,7 @@ const FrontPage = () => {
 				</View>
 
 				{/* TODO: make a drag up MAYBE */}
+				{/* TODO: MAYBE add awaits for map process for loading */}
 				<View className='h-[75%] w-full flex-row p-2'>
 					<ScrollView
 						contentContainerStyle={{

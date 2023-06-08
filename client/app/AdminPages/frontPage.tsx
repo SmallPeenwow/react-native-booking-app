@@ -1,7 +1,7 @@
 import { ScrollView, View } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
-import { Stack } from 'expo-router';
-import { useState } from 'react';
+import { Stack, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
 import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
@@ -28,7 +28,16 @@ const FrontPage = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [responseMessage, setResponseMessage] = useState('');
 
-	ProcessFetch({ setState: setAppointmentArray });
+	useFocusEffect(
+		useCallback(() => {
+			const fetch = async () => {
+				const fetched = await ProcessFetch({ setState: setAppointmentArray });
+			};
+
+			fetch();
+			return () => {};
+		}, [])
+	);
 
 	BackActionEvent({
 		title: 'Hold on!',
@@ -68,6 +77,7 @@ const FrontPage = () => {
 					paddingBottom: 40,
 				}}
 			>
+				{/* // DOESN'T WORK WELL */}
 				{appointmentArray === undefined ? (
 					<LoadingDisplay header='Loading...' />
 				) : (

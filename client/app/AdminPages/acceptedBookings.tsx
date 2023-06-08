@@ -1,8 +1,8 @@
 import { ScrollView, View } from 'react-native';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
-import { Stack } from 'expo-router';
+import { Stack, useFocusEffect } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import AcceptedBookingsCard from '../../components/AdminPage/AcceptedBookings/AcceptedBookingCard';
 import { AcceptedBookingsTypes } from '../../shared/types/acceptedBookings.type';
@@ -21,9 +21,18 @@ const AcceptedBookings = () => {
 
 	// Must do socket.io and useEffect for update
 
-	useFetchAcceptedBookings({
-		setAcceptedBookings: setAcceptedBookings,
-	});
+	useFocusEffect(
+		useCallback(() => {
+			const fetchAccepted = async () => {
+				const fetched = await useFetchAcceptedBookings({
+					setAcceptedBookings: setAcceptedBookings,
+				});
+			};
+
+			fetchAccepted();
+			return () => {};
+		}, [])
+	);
 
 	return (
 		<View className='h-full bg-white'>
@@ -47,7 +56,7 @@ const AcceptedBookings = () => {
 					paddingBottom: 40,
 				}}
 			>
-				{/* // TODO: need to test */}
+				{/* DOESN'T WORK as it clips at top. FUTURE FIX*/}
 				{acceptedBookings === undefined ? (
 					<LoadingDisplay header='Loading...' />
 				) : (

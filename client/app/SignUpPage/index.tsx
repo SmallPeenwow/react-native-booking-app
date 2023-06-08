@@ -78,6 +78,7 @@ const SignUp = () => {
 	return (
 		<View className='h-full relative w-full bg-white flex-col'>
 			<Header />
+			{/* // TODO: Fix error message to be one without view */}
 			{isError && (
 				<View className='absolute items-center z-50 top-1/3 w-full'>
 					<ErrorMessage

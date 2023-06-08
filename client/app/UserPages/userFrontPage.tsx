@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
 import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
@@ -12,6 +12,9 @@ import { timeArrayNames } from '../../shared/timeArrayNames';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDialogRequest';
 import { useFetchId } from '../../hooks/UserPages/FrontPage/useFetchId';
+import ErrorMessage from '../../components/ErrorMessage';
+import SuccessfulMessage from '../../components/SuccessfulMessage';
+import { boolean } from 'zod';
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
@@ -28,6 +31,9 @@ const FrontPage = () => {
 	const [show, setShow] = useState<boolean>(false);
 	const [selectedBooking, setSelectedBooking] = useState<string>('');
 	const [dateDialogDisplay, setDateDialogDisplay] = useState<string>('');
+	const [errorMessage, setErrorMessage] = useState<string>('');
+	const [isError, setIsError] = useState<boolean>(false);
+	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
 	const yearArray = [
 		new Date().getFullYear(),
@@ -102,13 +108,35 @@ const FrontPage = () => {
 				}}
 			/>
 
-			{isLoading && <LoadingDisplay header='Loading...' />}
+			{/* // TODO: will need a state to see when loading or processing */}
+			{isLoading && <LoadingDisplay header='Processing...' />}
+			{isError && (
+				<View className='absolute items-center z-50 top-1/3 w-full'>
+					<ErrorMessage
+						message={errorMessage}
+						isError={isError}
+						activeStateChange={setIsError}
+					/>
+				</View>
+			)}
+			{/* // TODO: do state for success message MAYBE */}
+			{isSuccess && (
+				<SuccessfulMessage
+					title='Booking Was Successful'
+					isSuccess={isSuccess}
+					setIsSuccess={setIsSuccess}
+				/>
+			)}
 			{show && (
 				<BookingDialogRequest
 					selectedBooking={selectedBooking}
 					dateDialogDisplay={dateDialogDisplay}
 					userId={userId}
 					setShow={setShow}
+					setIsLoading={setIsLoading}
+					setErrorMessage={setErrorMessage}
+					setIsError={setIsError}
+					setIsSuccess={setIsSuccess}
 				/>
 			)}
 

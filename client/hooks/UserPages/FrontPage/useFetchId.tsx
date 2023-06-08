@@ -7,15 +7,6 @@ export const useFetchId = () => {
 		const jsonString: string | null = await useAsyncStorageRetrieve(
 			'Justin-Bowden-booking-application-id'
 		);
-		// 	.then((data) => {
-		// 		return data;
-		// 	})
-		// 	.then((value) => {
-		// 		return value;
-		// 	});
-
-		// console.log(jsonString);
-		// return jsonString;
 
 		if (jsonString !== null) {
 			let id: UserStorage = JSON.parse(jsonString);
@@ -24,6 +15,5 @@ export const useFetchId = () => {
 		}
 	}, []);
 
-	console.log(userId, ' id');
 	return { userId };
 };

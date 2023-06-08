@@ -200,7 +200,7 @@ app.post('/UserPages/userFrontPage/', async (req, res) => {
 	});
 
 	if (checkExistingBooking) {
-		return 'Date Booked';
+		return 'Already Booked';
 	}
 
 	await prisma.appointment.create({
@@ -212,7 +212,7 @@ app.post('/UserPages/userFrontPage/', async (req, res) => {
 		},
 	});
 
-	return 'Booking Was Successfully';
+	return 'Successful';
 });
 
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {

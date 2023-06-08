@@ -15,7 +15,6 @@ export const useGiveAcceptedBookingsStatus = ({
 		dateCompare.getDate() === dateNow.getDate() &&
 		dateCompare.getMonth() === dateNow.getMonth()
 	) {
-		console.log('yes');
 		return { status: 'In Progress...' };
 	} else if (dateCompare > dateNow) {
 		return { status: 'Waiting...' };

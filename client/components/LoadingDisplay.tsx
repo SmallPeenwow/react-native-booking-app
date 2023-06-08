@@ -6,7 +6,7 @@ type LoadingDisplayProps = {
 
 const LoadingDisplay = ({ header }: LoadingDisplayProps) => {
 	return (
-		<View className='absolute items-center h-full z-50 top-1/3 w-full'>
+		<View className='absolute items-center h-full z-[1000] top-1/3 w-full'>
 			<View className='p-5 w-44 items-center bg-gray-500/80 rounded'>
 				<View className='gap-5'>
 					<Text className='text-lg text-white font-semibold'>{header}</Text>

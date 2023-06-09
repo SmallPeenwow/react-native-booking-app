@@ -3,7 +3,6 @@ import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequ
 import { Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import LoadingDisplay from '../../components/LoadingDisplay';
 
@@ -31,19 +30,13 @@ const FrontPage = () => {
 	useFocusEffect(
 		useCallback(() => {
 			const fetch = async () => {
-				const fetched = await ProcessFetch({ setState: setAppointmentArray });
+				await ProcessFetch({ setState: setAppointmentArray });
 			};
 
 			fetch();
 			return () => {};
 		}, [])
 	);
-
-	BackActionEvent({
-		title: 'Hold on!',
-		message: 'Are you sure you want to go back?',
-		page: '/',
-	});
 
 	return (
 		<View className='h-full bg-neutral-50'>
@@ -77,9 +70,10 @@ const FrontPage = () => {
 					paddingBottom: 40,
 				}}
 			>
-				{/* // DOESN'T WORK WELL */}
 				{appointmentArray === undefined ? (
-					<LoadingDisplay header='Loading...' />
+					<View className='h-screen items-center justify-center w-full'>
+						<LoadingDisplay header='Loading...' />
+					</View>
 				) : (
 					appointmentArray.map((appointment, index) => (
 						<BookingRequestCard

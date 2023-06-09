@@ -1,5 +1,4 @@
 import { ScrollView, View } from 'react-native';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
 import { useCallback, useState } from 'react';
@@ -11,12 +10,6 @@ const AcceptedBookings = () => {
 	const [acceptedBookings, setAcceptedBookings] =
 		useState<AcceptedBookingsTypes[]>();
 
-	BackActionEvent({
-		title: 'Hold on!',
-		message: 'Are you sure you want to go back?',
-		page: '/',
-	});
-
 	// FUTURE UPDATE: Make drop down to select max day to view
 
 	// Must do socket.io and useEffect for update
@@ -24,7 +17,7 @@ const AcceptedBookings = () => {
 	useFocusEffect(
 		useCallback(() => {
 			const fetchAccepted = async () => {
-				const fetched = await useFetchAcceptedBookings({
+				await useFetchAcceptedBookings({
 					setAcceptedBookings: setAcceptedBookings,
 				});
 			};
@@ -56,9 +49,10 @@ const AcceptedBookings = () => {
 					paddingBottom: 40,
 				}}
 			>
-				{/* DOESN'T WORK as it clips at top. FUTURE FIX*/}
 				{acceptedBookings === undefined ? (
-					<LoadingDisplay header='Loading...' />
+					<View className='h-screen items-center justify-center w-full'>
+						<LoadingDisplay header='Loading...' />
+					</View>
 				) : (
 					acceptedBookings.map((acceptedBooking, index) => (
 						<AcceptedBookingsCard

@@ -78,7 +78,7 @@ const FrontPage = () => {
 		return weeksInMonth;
 	};
 
-	// Runs multiply times
+	// Runs multiply times // it either runs unnecessary or just every time I refresh code
 	useEffect(() => {
 		console.log('run');
 

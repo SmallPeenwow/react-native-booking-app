@@ -76,7 +76,7 @@ app.post('/EditProfile/fetchUserDetails', async (req, res) => {
 
 app.post('/EditProfile/updateUserDetails/:id', async (req, res) => {
 	return await prisma.user.update({
-		where: { id: req.params.id },
+		where: { id: parseInt(req.params.id) },
 		data: { email: req.body.email, cell_number: req.body.cellNumber },
 	});
 });

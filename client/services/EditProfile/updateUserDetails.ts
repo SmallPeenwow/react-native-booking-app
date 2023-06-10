@@ -1,7 +1,7 @@
 import { makeRequest } from '../makeRequest';
 
 export async function updateUserDetails(
-	id: string,
+	id: number,
 	email: string,
 	cellNumber: string
 ) {

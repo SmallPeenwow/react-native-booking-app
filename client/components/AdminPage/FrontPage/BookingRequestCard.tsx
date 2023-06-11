@@ -1,15 +1,15 @@
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import containerStyles from '../../../styles/containerStyles';
-import { Appointments } from '../../../app/AdminPages/frontPage';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
 import { ResponseToBooking } from '../../../hooks/AdminPages/FrontPage/ResponseToBooking';
+import { Appointments } from '../../../shared/types/appointments.type';
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
-	appointmentArray: any[];
-	setAppointmentArray: (action: any[]) => void;
+	appointmentArray: Appointments[];
+	setAppointmentArray: (action: Appointments[]) => void;
 	setResponseMessage: (action: string) => void;
 	setIsSuccess: (action: boolean) => void;
 	setIsLoading: (action: boolean) => void;

@@ -42,6 +42,10 @@ const FrontPage = () => {
 
 	const { userId } = useFetchId();
 
+	// FUTURE UPDATE: make it so no week is selected but just display whole month
+	// ALSO: must make it be an array for it to hold a value to compare with filter
+	// FIX: do loading for the map part
+
 	const SetWeekAmount = (weekArray: string[][]) => {
 		const weekAmount: string[] = [];
 

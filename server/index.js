@@ -21,6 +21,7 @@ app.register(cors, {
 	credentials: true,
 });
 
+// FUTURE UPDATE: create remove for when admin logs in so database removes unwanted rows
 app.addHook('onRequest', (req, res, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
 	// if (req.cookies.userId !== CURRENT_USER_ID) {
@@ -44,7 +45,6 @@ app.post('/SignInPage/login', async (req, res) => {
 	});
 });
 
-// Will need to test again with commitToDb removed
 app.post('/SignUpPage/create', async (req, res) => {
 	return await prisma.user.create({
 		data: {
@@ -82,10 +82,16 @@ app.post('/EditProfile/updateUserDetails/:id', async (req, res) => {
 });
 
 app.get('/AdminPages/frontPage', async (req, res) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	return await prisma.appointment.findMany({
 		where: {
 			appointment_status: {
 				contains: 'pending',
+			},
+			date: {
+				gte: today,
 			},
 		},
 		select: {
@@ -151,6 +157,7 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 
 app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	const today = new Date();
+	// today.setHours(0, 0, 0, 0); Maybe try this out
 	today.setMinutes(0);
 	today.setSeconds(0);
 	today.setMilliseconds(0);

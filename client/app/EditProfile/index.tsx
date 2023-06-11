@@ -12,7 +12,7 @@ import { useCancelAction } from '../../hooks/EditProfile/useCancelAction';
 import useSaveAction from '../../hooks/EditProfile/useSaveAction';
 import useSaveDetails from '../../hooks/EditProfile/useSaveDetails';
 
-const index = () => {
+const Index = () => {
 	const [userEmailEdit, setUserEmailEdit] = useState('');
 	const [userCellNumberEdit, setUserCellNumberEdit] = useState('');
 	const [isError, setIsError] = useState(false);
@@ -113,4 +113,4 @@ const index = () => {
 	);
 };
 
-export default index;
+export default Index;

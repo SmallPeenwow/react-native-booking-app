@@ -5,7 +5,7 @@ const _layout = () => {
 	BackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
-		page: '/..',
+		page: '/UserPages',
 	});
 
 	return <Stack />;

@@ -5,27 +5,13 @@ import { useCallback, useState } from 'react';
 import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import LoadingDisplay from '../../components/LoadingDisplay';
-
-type User = {
-	age: number;
-	cell_number: string;
-	name: string;
-	surname: string;
-};
-
-export type Appointments = {
-	appointment_id: number;
-	date: number;
-	location_type: string;
-	address: string;
-	user: User;
-};
+import { Appointments } from '../../shared/types/appointments.type';
 
 const FrontPage = () => {
-	const [appointmentArray, setAppointmentArray] = useState<any[]>();
-	const [isSuccess, setIsSuccess] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [responseMessage, setResponseMessage] = useState('');
+	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
+	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [responseMessage, setResponseMessage] = useState<string>('');
 
 	useFocusEffect(
 		useCallback(() => {

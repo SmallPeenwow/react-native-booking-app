@@ -1,9 +1,9 @@
 import { View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { SendToPage } from '../hooks/SendToPage';
+import { useSendToPage } from '../hooks/useSendToPage';
 
 const UserProfile = () => {
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
 	const SentToEditProfile = () => {
 		push('EditProfile/');

@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
-type IsPasswordEmptyProp = {
+type useIsPasswordEmptyProp = {
 	password: string;
 };
 
-export const IsPasswordEmpty = async ({ password }: IsPasswordEmptyProp) => {
+export const useIsPasswordEmpty = async ({
+	password,
+}: useIsPasswordEmptyProp) => {
 	const schema = z.string().refine(async (value) => /\s/.test(value));
 
 	try {

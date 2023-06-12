@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from '../../components/Button';
 import CancelButton from '../../components/CancelButton';
 import ErrorMessage from '../../components/ErrorMessage';
-import { SendToPage } from '../../hooks/SendToPage';
+import { useSendToPage } from '../../hooks/useSendToPage';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import EditSections from '../../components/EditProfile/EditSections';
@@ -20,7 +20,7 @@ const Index = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSuccess, setIsSuccess] = useState(false);
 
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
 	const CancelAction = () => {
 		useCancelAction({

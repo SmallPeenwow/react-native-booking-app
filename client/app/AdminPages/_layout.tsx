@@ -1,9 +1,9 @@
 import { Tabs } from 'expo-router';
 import { FontAwesome, Foundation } from '@expo/vector-icons';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 
 const _layout = () => {
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '/',

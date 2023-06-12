@@ -6,12 +6,12 @@ import { useState } from 'react';
 import Header from '../../components/Header';
 import { Login } from '../../services/login';
 import ErrorMessage from '../../components/ErrorMessage';
-import { SendToPage } from '../../hooks/SendToPage';
-import { EmailValidation } from '../../hooks/EmailValidation';
-import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
-import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
+import { useSendToPage } from '../../hooks/useSendToPage';
+import { useEmailValidation } from '../../hooks/useEmailValidation';
+import { useSaveInStorage } from '../../hooks/LocalStorage/useAsyncStorageSetItemId';
+import { useIsPasswordEmpty } from '../../hooks/SignInPage/useIsPasswordEmpty';
 import PasswordInput from '../../components/PasswordInput';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
 
 type UserDetails = {
@@ -21,9 +21,9 @@ type UserDetails = {
 };
 
 const index = () => {
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '..',
@@ -39,14 +39,14 @@ const index = () => {
 	const getUserAccess = async (email: string, password: string) => {
 		setIsLoading(true);
 
-		if (!(await EmailValidation({ email: email }))) {
+		if (!(await useEmailValidation({ email: email }))) {
 			setIsLoading(false);
 			setIsError(true);
 			setErrorMessage('Email is not valid format');
 			return;
 		}
 
-		if (await IsPasswordEmpty({ password: password })) {
+		if (await useIsPasswordEmpty({ password: password })) {
 			setIsLoading(false);
 			setIsError(true);
 			setErrorMessage('Password must not be empty or contain spaces');
@@ -66,12 +66,12 @@ const index = () => {
 
 		// Maybe make hook
 		if (value.access_level.toLowerCase() === 'admin') {
-			await SaveInStorage(value.id);
+			await useSaveInStorage(value.id);
 			setIsLoading(false);
 			push('/AdminPages');
 			return;
 		} else if (value.access_level.toLowerCase() === 'client') {
-			await SaveInStorage(value.id);
+			await useSaveInStorage(value.id);
 			setIsLoading(false);
 			push('/UserPages');
 			return;

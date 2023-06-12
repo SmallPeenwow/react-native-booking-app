@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 
-export const SendToPage = () => {
+export const useSendToPage = () => {
 	const router = useRouter();
 
 	return {

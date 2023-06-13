@@ -8,7 +8,7 @@ type useSaveActionProps = {
 	SaveDetails: () => Promise<void>;
 };
 
-const useSaveAction = ({
+export const useSaveAction = ({
 	userEmailEdit,
 	userCellNumberEdit,
 	setIsError,
@@ -31,5 +31,3 @@ const useSaveAction = ({
 		},
 	]);
 };
-
-export default useSaveAction;

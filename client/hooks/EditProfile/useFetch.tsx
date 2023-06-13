@@ -13,7 +13,7 @@ export const useFetch = async () => {
 	if (jsonString !== null) {
 		let userId: UserStorage = JSON.parse(jsonString);
 
-		const userDetails = await FetchUserDetails(parseInt(userId.id));
+		const userDetails = await FetchUserDetails({ id: parseInt(userId.id) });
 
 		oldEmail = userDetails.email;
 		oldCellNumber = userDetails.cell_number;

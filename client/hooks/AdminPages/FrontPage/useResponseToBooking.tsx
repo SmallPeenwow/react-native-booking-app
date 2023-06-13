@@ -1,4 +1,4 @@
-import { sendBookingRequestResponse } from '../../../services/FrontPage/sendBookingRequestResponse';
+import { SendBookingRequestResponse } from '../../../services/FrontPage/sendBookingRequestResponse';
 
 type useResponseToBookingProps = {
 	appointmentId: number;
@@ -9,5 +9,8 @@ export const useResponseToBooking = async ({
 	appointmentId,
 	response,
 }: useResponseToBookingProps) => {
-	return await sendBookingRequestResponse(appointmentId, response);
+	return await SendBookingRequestResponse({
+		appointmentId: appointmentId,
+		response: response,
+	});
 };

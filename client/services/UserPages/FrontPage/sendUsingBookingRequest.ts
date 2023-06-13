@@ -1,18 +1,18 @@
 import { makeRequest } from '../../makeRequest';
 
-type sendUsingBookingRequestProps = {
+type SendUsingBookingRequestProps = {
 	userId: number;
 	address: string | null;
 	locationType: string;
 	date: Date;
 };
 
-export async function sendUsingBookingRequest({
+export async function SendUsingBookingRequest({
 	userId,
 	address,
 	locationType,
 	date,
-}: sendUsingBookingRequestProps) {
+}: SendUsingBookingRequestProps) {
 	return await makeRequest('/UserPages/userFrontPage/', {
 		method: 'POST',
 		data: { userId, address, locationType, date },

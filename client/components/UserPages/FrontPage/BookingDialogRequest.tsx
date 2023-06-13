@@ -11,7 +11,7 @@ import {
 import containerStyles from '../../../styles/containerStyles';
 import { useState } from 'react';
 import { SelectList } from 'react-native-dropdown-select-list';
-import { sendUsingBookingRequest } from '../../../services/UserPages/FrontPage/sendUsingBookingRequest';
+import { SendUsingBookingRequest } from '../../../services/UserPages/FrontPage/sendUsingBookingRequest';
 import { Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 
@@ -74,7 +74,7 @@ const BookingDialogRequest = ({
 			return;
 		}
 
-		let response = await sendUsingBookingRequest({
+		let response = await SendUsingBookingRequest({
 			userId: parseInt(id),
 			address: address,
 			locationType: visitType,

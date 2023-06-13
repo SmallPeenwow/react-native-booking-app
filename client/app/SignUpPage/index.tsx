@@ -5,22 +5,16 @@ import { useState } from 'react';
 import DateOfBirth from '../../components/DateOfBirth';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
-import { useValidateUserDetails } from '../../hooks/SignUpPage/useValidateUserDetails';
-import { CreateAccount } from '../../services/createAccount';
 import { useSendToPage } from '../../hooks/useSendToPage';
 import PasswordInput from '../../components/PasswordInput';
-import { useSaveInStorage } from '../../hooks/LocalStorage/useAsyncStorageSetItemId';
-import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
+import { useAddUserDetails } from '../../hooks/SignUpPage/useAddUserDetails';
 
 const SignUp = () => {
 	const { push } = useSendToPage();
 
-	useBackActionEvent({
-		title: 'Hold on!',
-		message: 'Are you sure you want to go back?',
-		page: '..',
-	});
+	// FUTURE FIX: Maybe have cell number required or do no validation check
+	// FUTURE FIX: Maybe display what special characters can be used
 
 	const [name, setName] = useState('');
 	const [surname, setSurname] = useState('');
@@ -33,46 +27,21 @@ const SignUp = () => {
 	const [isError, setIsError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const addUserDetails = async (
-		cellNumber: string,
-		email: string,
-		password: string,
-		name: string,
-		surname: string,
-		dateOfBirth: Date
-	) => {
-		setIsLoading(true);
-		const { errorResult, responseMessage } = await useValidateUserDetails({
-			cellNumber: cellNumber,
+	const AddUserDetails = async () => {
+		const { addUserDetails } = useAddUserDetails({
+			name: name,
+			surname: surname,
 			email: email,
-			password: password,
-			username: name,
 			dateOfBirth: dateOfBirth,
+			password: password,
+			cellNumber: cellNumber,
+			setIsLoading: setIsLoading,
+			setIsError: setIsError,
+			setErrorMessage: setErrorMessage,
+			push: push,
 		});
 
-		//TODO: test sign up again
-		if (!errorResult) {
-			const value: any | undefined = await CreateAccount(
-				name,
-				surname,
-				email.toLowerCase(),
-				password,
-				cellNumber.replace(/\s/g, ''),
-				dateOfBirth
-			);
-
-			if (value.access_level.toLowerCase() === 'client') {
-				await useSaveInStorage(value.id);
-				setIsLoading(false);
-				push('/UserPages');
-				return;
-			}
-		}
-
-		setIsLoading(false);
-		setIsError(errorResult);
-		setErrorMessage(responseMessage);
-		return;
+		await addUserDetails();
 	};
 
 	return (
@@ -153,19 +122,7 @@ const SignUp = () => {
 					<View className='border-2 border-black rounded mt-3'></View>
 					<View className='justify-end items-end mb-10'>
 						<View className='w-36'>
-							<Button
-								title='Sign Up'
-								onPress={() =>
-									addUserDetails(
-										cellNumber,
-										email,
-										password,
-										name,
-										surname,
-										dateOfBirth
-									)
-								}
-							/>
+							<Button title='Sign Up' onPress={AddUserDetails} />
 						</View>
 					</View>
 				</View>

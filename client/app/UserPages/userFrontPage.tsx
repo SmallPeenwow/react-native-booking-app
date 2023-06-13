@@ -84,7 +84,7 @@ const FrontPage = () => {
 
 	// Runs multiply times // it either runs unnecessary or just every time I refresh code
 	useEffect(() => {
-		console.log('run');
+		console.log('run = userFrontPage');
 
 		const weeksFetched = handleFetch();
 
@@ -226,6 +226,7 @@ const FrontPage = () => {
 				</View>
 
 				{/* TODO: make a drag up MAYBE */}
+				{/* TODO: Make use of FlatList */}
 				{/* TODO: MAYBE add awaits for map process for loading */}
 				<View className='h-[75%] w-full flex-row p-2'>
 					<ScrollView

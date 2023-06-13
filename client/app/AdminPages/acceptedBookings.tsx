@@ -1,8 +1,7 @@
-import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
 import { useCallback, useState } from 'react';
-import LoadingDisplay from '../../components/LoadingDisplay';
 import AcceptedBookingsCard from '../../components/AdminPage/AcceptedBookings/AcceptedBookingCard';
 import { AcceptedBookingsTypes } from '../../shared/types/acceptedBookings.type';
 
@@ -11,7 +10,7 @@ const AcceptedBookings = () => {
 		useState<AcceptedBookingsTypes[]>();
 
 	// FUTURE UPDATE: Make drop down to select max day to view
-
+	// TODO: Must have text saying no booking it this amount of days
 	// Must do socket.io and useEffect for update
 
 	useFocusEffect(
@@ -45,13 +44,21 @@ const AcceptedBookings = () => {
 					justifyContent: 'flex-start',
 					gap: 30,
 					alignItems: 'center',
+					height: '100%',
 					marginTop: 15,
 					paddingBottom: 40,
 				}}
 			>
 				{acceptedBookings === undefined ? (
-					<View className='h-screen items-center justify-center w-full'>
-						<LoadingDisplay header='Loading...' />
+					<View className='h-full items-center justify-center w-full'>
+						<ActivityIndicator
+							size='large'
+							style={{
+								padding: 10,
+								transform: [{ scaleX: 2 }, { scaleY: 2 }],
+							}}
+							color='#0085FF'
+						/>
 					</View>
 				) : (
 					acceptedBookings.map((acceptedBooking, index) => (

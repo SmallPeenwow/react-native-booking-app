@@ -1,6 +1,8 @@
 import { View, Text, TextInput, Keyboard } from 'react-native';
 import React, { useState } from 'react';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, {
+	DateTimePickerEvent,
+} from '@react-native-community/datetimepicker';
 import textStyles from '../styles/textStyles';
 
 type DateOfBirthProps = {
@@ -16,14 +18,18 @@ const DateOfBirth = ({
 	dateSelected,
 	useStateChange,
 }: DateOfBirthProps) => {
-	const [show, setShow] = useState(false);
+	const [show, setShow] = useState<boolean>(false);
 
 	const displayDatePicker = () => {
 		setShow(!show);
 	};
 
-	const onDateChanged = (event: any, selectedDate: Date | undefined) => {
+	const onDateChanged = (
+		event: DateTimePickerEvent,
+		selectedDate: Date | undefined
+	) => {
 		displayDatePicker();
+		console.log(event.type);
 
 		if (selectedDate !== undefined && event.type !== 'dismissed') {
 			useStateChange(

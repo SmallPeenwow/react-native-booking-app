@@ -14,12 +14,12 @@ import { useSaveDetails } from '../../hooks/EditProfile/useSaveDetails';
 import { COLORS as colorSet } from '../../constants/theme';
 
 const Index = () => {
-	const [userEmailEdit, setUserEmailEdit] = useState('');
-	const [userCellNumberEdit, setUserCellNumberEdit] = useState('');
-	const [isError, setIsError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [isSuccess, setIsSuccess] = useState(false);
+	const [userEmailEdit, setUserEmailEdit] = useState<string>('');
+	const [userCellNumberEdit, setUserCellNumberEdit] = useState<string>('');
+	const [isError, setIsError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
 	const { push } = useSendToPage();
 

@@ -14,12 +14,12 @@ import signInStyles from '../../styles/SignInPage/styleSheet';
 const index = () => {
 	const { push } = useSendToPage();
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [isError, setIsError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>('');
 
-	const [userEmail, setUserEmail] = useState('');
-	const [userPassword, setUserPassword] = useState('');
+	const [userEmail, setUserEmail] = useState<string>('');
+	const [userPassword, setUserPassword] = useState<string>('');
 
 	const GetUserAccess = async () => {
 		const { getUserAccess } = useGetUserAccess({

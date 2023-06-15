@@ -6,6 +6,8 @@ import { useProcessFetch } from '../../hooks/AdminPages/FrontPage/useProcessFetc
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { Appointments } from '../../shared/types/appointments.type';
+import adminStyles from '../../styles/AdminPage/styleSheet';
+import { COLORS as colorSet } from '../../constants/theme';
 
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
@@ -30,8 +32,8 @@ const FrontPage = () => {
 				options={{
 					headerTitle: 'Home',
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 
@@ -45,27 +47,13 @@ const FrontPage = () => {
 
 			{isLoading && <LoadingDisplay header='Loading...' />}
 
-			<ScrollView
-				contentContainerStyle={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'flex-start',
-					gap: 30,
-					alignItems: 'center',
-					height: '100%',
-					marginTop: 15,
-					paddingBottom: 40,
-				}}
-			>
+			<ScrollView contentContainerStyle={adminStyles.scrollView}>
 				{appointmentArray === undefined ? (
 					<View className='h-full items-center justify-center w-full'>
 						<ActivityIndicator
 							size='large'
-							style={{
-								padding: 10,
-								transform: [{ scaleX: 2 }, { scaleY: 2 }],
-							}}
-							color='#0085FF'
+							style={adminStyles.activityIndicator}
+							color={colorSet.primary}
 						/>
 					</View>
 				) : (

@@ -9,6 +9,7 @@ import { useSendToPage } from '../../hooks/useSendToPage';
 import PasswordInput from '../../components/PasswordInput';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { useGetUserAccess } from '../../hooks/SignInPage/useGetUserAccess';
+import signInStyles from '../../styles/SignInPage/styleSheet';
 
 const index = () => {
 	const { push } = useSendToPage();
@@ -38,14 +39,7 @@ const index = () => {
 			<Header />
 
 			<View className='flex-1 items-center justify-center'>
-				<ScrollView
-					contentContainerStyle={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						flex: 1,
-					}}
-				>
+				<ScrollView contentContainerStyle={signInStyles.scrollView}>
 					{isError && (
 						<View className='absolute items-center z-20 bottom-[80%] w-3/4'>
 							<ErrorMessage

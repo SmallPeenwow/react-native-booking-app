@@ -4,6 +4,8 @@ import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBooking
 import { useCallback, useState } from 'react';
 import AcceptedBookingsCard from '../../components/AdminPage/AcceptedBookings/AcceptedBookingCard';
 import { AcceptedBookingsTypes } from '../../shared/types/acceptedBookings.type';
+import { COLORS as colorSet } from '../../constants/theme';
+import adminStyles from '../../styles/AdminPage/styleSheet';
 
 const AcceptedBookings = () => {
 	const [acceptedBookings, setAcceptedBookings] =
@@ -32,32 +34,18 @@ const AcceptedBookings = () => {
 				options={{
 					headerTitle: 'Accepted Bookings',
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 
-			<ScrollView
-				contentContainerStyle={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'flex-start',
-					gap: 30,
-					alignItems: 'center',
-					height: '100%',
-					marginTop: 15,
-					paddingBottom: 40,
-				}}
-			>
+			<ScrollView contentContainerStyle={adminStyles.scrollView}>
 				{acceptedBookings === undefined ? (
 					<View className='h-full items-center justify-center w-full'>
 						<ActivityIndicator
 							size='large'
-							style={{
-								padding: 10,
-								transform: [{ scaleX: 2 }, { scaleY: 2 }],
-							}}
-							color='#0085FF'
+							style={adminStyles.activityIndicator}
+							color={colorSet.primary}
 						/>
 					</View>
 				) : (

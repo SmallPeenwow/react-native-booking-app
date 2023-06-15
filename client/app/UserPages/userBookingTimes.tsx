@@ -7,6 +7,8 @@ import { useState } from 'react';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { UserBookingTimeInterface } from '../../shared/interfaces/userBookingTimes.interface';
 import UserBookingTimeCard from '../../components/UserPages/BookingTimes/UserBookingTimeCard';
+import { COLORS as colorSet } from '../../constants/theme';
+import styles from '../../styles/styleSheet';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -47,8 +49,8 @@ const UserBookingTimes = () => {
 					headerTitle: 'Booking',
 					headerRight: () => <UserProfile />,
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 
@@ -65,7 +67,7 @@ const UserBookingTimes = () => {
 							data={data}
 							save='value'
 							search={false}
-							dropdownStyles={{ height: 165, backgroundColor: 'white' }}
+							dropdownStyles={{ height: 165, backgroundColor: colorSet.white }}
 						/>
 					</View>
 				</View>
@@ -73,17 +75,7 @@ const UserBookingTimes = () => {
 
 			{isLoading && <LoadingDisplay header='Loading...' />}
 
-			<ScrollView
-				contentContainerStyle={{
-					display: 'flex',
-					flexDirection: 'column',
-					justifyContent: 'flex-start',
-					gap: 30,
-					alignItems: 'center',
-					marginTop: 15,
-					paddingBottom: 40,
-				}}
-			>
+			<ScrollView contentContainerStyle={styles.scrollView}>
 				{bookings.map((booking, index) => (
 					<UserBookingTimeCard key={index} bookingTimeCard={booking} />
 				))}

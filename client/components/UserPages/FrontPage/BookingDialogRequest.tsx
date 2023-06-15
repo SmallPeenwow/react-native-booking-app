@@ -14,6 +14,7 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { SendUsingBookingRequest } from '../../../services/UserPages/FrontPage/sendUsingBookingRequest';
 import { Entypo } from '@expo/vector-icons';
 import moment from 'moment';
+import { COLORS as colorSet } from '../../../constants/theme';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
@@ -137,8 +138,8 @@ const BookingDialogRequest = ({
 								placeholder='office'
 								save='value'
 								search={false}
-								boxStyles={{ backgroundColor: 'white' }}
-								dropdownStyles={{ backgroundColor: 'white' }}
+								boxStyles={{ backgroundColor: colorSet.white }}
+								dropdownStyles={{ backgroundColor: colorSet.white }}
 							/>
 						</View>
 					</View>

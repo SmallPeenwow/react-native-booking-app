@@ -9,6 +9,7 @@ import { UserBookingTimeInterface } from '../../shared/interfaces/userBookingTim
 import UserBookingTimeCard from '../../components/UserPages/BookingTimes/UserBookingTimeCard';
 import { COLORS as colorSet } from '../../constants/theme';
 import styles from '../../styles/styleSheet';
+import { selectBookingData } from '../../shared/selectBookingData';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -26,13 +27,6 @@ const UserBookingTimes = () => {
 				: 'All'
 		);
 	};
-
-	const data = [
-		{ key: '1', value: 'All' },
-		{ key: '2', value: 'Pending' },
-		{ key: '3', value: 'Accepted' },
-		{ key: '4', value: 'Declined' },
-	];
 
 	// FUTURE FIX ADD useFocusEffect
 	useFetchUserBookingTime({
@@ -64,7 +58,7 @@ const UserBookingTimes = () => {
 					<View className='transform w-full h-full translate-x-1/2 translate-y-1/2 absolute top-1'>
 						<SelectList
 							setSelected={ChangeSelected}
-							data={data}
+							data={selectBookingData}
 							save='value'
 							search={false}
 							dropdownStyles={{ height: 165, backgroundColor: colorSet.white }}

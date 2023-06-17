@@ -11,7 +11,6 @@ import { monthArrayNames } from '../../shared/monthArrayNames';
 import { timeArrayNames } from '../../shared/timeArrayNames';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDialogRequest';
-import { useFetchId } from '../../hooks/UserPages/FrontPage/useFetchId';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 
@@ -39,8 +38,6 @@ const FrontPage = () => {
 		new Date().getFullYear() + 1,
 		new Date().getFullYear() + 2,
 	];
-
-	const { userId } = useFetchId();
 
 	// FUTURE UPDATE: make it so no week is selected but just display whole month
 	// ALSO: must make it be an array for it to hold a value to compare with filter
@@ -134,7 +131,6 @@ const FrontPage = () => {
 				<BookingDialogRequest
 					selectedBooking={selectedBooking}
 					dateDialogDisplay={dateDialogDisplay}
-					userId={userId}
 					setShow={setShow}
 					setIsLoading={setIsLoading}
 					setErrorMessage={setErrorMessage}

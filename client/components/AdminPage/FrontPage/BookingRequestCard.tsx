@@ -11,10 +11,8 @@ type BookingRequestCardProps = {
 	appointmentArray: Appointments[];
 	setAppointmentArray: (action: Appointments[]) => void;
 	setResponseMessage: (action: string) => void;
-	setErrorMessage: (action: string) => void;
 	setIsSuccess: (action: boolean) => void;
 	setIsLoading: (action: boolean) => void;
-	setIsError: (action: boolean) => void;
 };
 
 const BookingRequestCard = ({
@@ -22,10 +20,8 @@ const BookingRequestCard = ({
 	appointmentArray,
 	setAppointmentArray,
 	setResponseMessage,
-	setErrorMessage,
 	setIsSuccess,
 	setIsLoading,
-	setIsError,
 }: BookingRequestCardProps) => {
 	const { spacedNumber } = useCellNumberSpacing({
 		number: appointment.user.cell_number,
@@ -59,9 +55,7 @@ const BookingRequestCard = ({
 							response: response,
 							setIsLoading: setIsLoading,
 							setIsSuccess: setIsSuccess,
-							setIsError: setIsError,
 							setResponseMessage: setResponseMessage,
-							setErrorMessage: setErrorMessage,
 							RemoveDiv: RemoveDiv,
 						});
 

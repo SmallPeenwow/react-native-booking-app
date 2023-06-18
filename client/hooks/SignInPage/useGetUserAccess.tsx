@@ -23,52 +23,46 @@ export const useGetUserAccess = ({
 	push,
 }: useGetUserAccessProps) => {
 	const getUserAccess = async () => {
-		try {
-			setIsLoading(true);
+		setIsLoading(true);
 
-			if (!(await useEmailValidation({ email: email }))) {
-				setIsLoading(false);
-				setIsError(true);
-				setErrorMessage('Email is not valid format');
-				return;
-			}
-
-			if (await useIsPasswordEmpty({ password: password })) {
-				setIsLoading(false);
-				setIsError(true);
-				setErrorMessage('Password must not be empty or contain spaces');
-				return;
-			}
-
-			const value: UserDetails = await Login({
-				email: email.toLowerCase(),
-				password: password,
-			});
-
-			if (value === null) {
-				setIsLoading(false);
-				setIsError(true);
-				setErrorMessage(
-					'Check that your details are correct or make an Account.'
-				);
-				return;
-			}
-
-			if (value.access_level.toLowerCase() === 'admin') {
-				await useSaveInStorage(value.id);
-				setIsLoading(false);
-				push('/AdminPages');
-				return;
-			} else if (value.access_level.toLowerCase() === 'client') {
-				await useSaveInStorage(value.id);
-				setIsLoading(false);
-				push('/UserPages');
-				return;
-			}
-		} catch (error) {
+		if (!(await useEmailValidation({ email: email }))) {
 			setIsLoading(false);
 			setIsError(true);
-			setErrorMessage('Login Process Failed.');
+			setErrorMessage('Email is not valid format');
+			return;
+		}
+
+		if (await useIsPasswordEmpty({ password: password })) {
+			setIsLoading(false);
+			setIsError(true);
+			setErrorMessage('Password must not be empty or contain spaces');
+			return;
+		}
+
+		const value: UserDetails = await Login({
+			email: email.toLowerCase(),
+			password: password,
+		});
+
+		if (value === null) {
+			setIsLoading(false);
+			setIsError(true);
+			setErrorMessage(
+				'Check that your details are correct or make an Account.'
+			);
+			return;
+		}
+
+		if (value.access_level.toLowerCase() === 'admin') {
+			await useSaveInStorage(value.id);
+			setIsLoading(false);
+			push('/AdminPages');
+			return;
+		} else if (value.access_level.toLowerCase() === 'client') {
+			await useSaveInStorage(value.id);
+			setIsLoading(false);
+			push('/UserPages');
+			return;
 		}
 		return;
 	};

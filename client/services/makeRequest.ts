@@ -17,6 +17,6 @@ export async function makeRequest(url: string, options: object) {
 			return res.data;
 		})
 		.catch((error) => {
-			Promise.reject(error?.response?.data?.message ?? 'Error');
+			Promise.reject(error?.response?.data ?? 'Error');
 		});
 }

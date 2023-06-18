@@ -64,37 +64,35 @@ const BookingDialogRequest = ({
 	};
 
 	const SendBookingRequest = async () => {
-		try {
-			setIsLoading(true);
-			if (userId == null) {
-				setErrorMessage('Id does not exist. Process system failed.');
-				setIsError(true);
-				return;
-			}
-
-			let response = await SendUsingBookingRequest({
-				userId: parseInt(userId),
-				address: address,
-				locationType: visitType,
-				date: moment.utc(selectedBooking).local().toDate(),
-			});
-
-			if (response === DATE_ALREADY_BOOKED) {
-				setErrorMessage(
-					'Date is already booked. Please try a different date and time.'
-				);
-				setIsError(true);
-				OnPressClose();
-				return;
-			} else if (response === DATE_BOOKED_SUCCESSFUL) {
-				setIsSuccess(true);
-				OnPressClose();
-				return;
-			}
-		} catch (error) {
-			setErrorMessage('Failed to process booking request. Please try again.');
+		setIsLoading(true);
+		if (userId == null) {
+			setErrorMessage('Id does not exist. Process system failed.');
 			setIsError(true);
+			return;
 		}
+
+		let response = await SendUsingBookingRequest({
+			userId: parseInt(userId),
+			address: address,
+			locationType: visitType,
+			date: moment.utc(selectedBooking).local().toDate(),
+		});
+
+		if (response === DATE_ALREADY_BOOKED) {
+			setErrorMessage(
+				'Date is already booked. Please try a different date and time.'
+			);
+			setIsError(true);
+			OnPressClose();
+			return;
+		} else if (response === DATE_BOOKED_SUCCESSFUL) {
+			setIsSuccess(true);
+			OnPressClose();
+			return;
+		}
+
+		setErrorMessage('Failed to process booking request. Please try again.');
+		setIsError(true);
 		return;
 	};
 

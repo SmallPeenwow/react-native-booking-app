@@ -26,54 +26,48 @@ export const useSaveDetails = ({
 	setIsLoading,
 }: useSaveDetailsProps) => {
 	const SaveDetails = async () => {
-		try {
-			setIsLoading(true);
+		setIsLoading(true);
 
-			const { oldEmail, oldCellNumber } = await useFetch();
+		const { oldEmail, oldCellNumber } = await useFetch();
 
-			const { errorTrue, responseMessage } = await useValidationUpdateCheck({
-				email: userEmailEdit.toLocaleLowerCase(),
-				cellNumber: userCellNumberEdit,
-				oldEmail: oldEmail,
-				oldCellNumber: oldCellNumber,
-			});
+		const { errorTrue, responseMessage } = await useValidationUpdateCheck({
+			email: userEmailEdit.toLocaleLowerCase(),
+			cellNumber: userCellNumberEdit,
+			oldEmail: oldEmail,
+			oldCellNumber: oldCellNumber,
+		});
 
-			if (!errorTrue) {
-				const userInfo: string | null = await useAsyncStorageRetrieve(
-					'Justin-Bowden-booking-application-id'
-				);
+		if (!errorTrue) {
+			const userInfo: string | null = await useAsyncStorageRetrieve(
+				'Justin-Bowden-booking-application-id'
+			);
 
-				if (userInfo === null) {
-					setIsError(true);
-					setErrorMessage('Local Storage Error');
-					return;
-				}
-
-				let userId: UserStorage = JSON.parse(userInfo);
-
-				await updateUserDetails({
-					id: parseInt(userId.id),
-					email: userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
-					cellNumber:
-						userCellNumberEdit === ''
-							? oldCellNumber.toString()
-							: userCellNumberEdit,
-				});
-
-				setUserEmailEdit('');
-				setUserCellNumberEdit('');
-				setIsSuccess(true);
-				setIsLoading(false);
+			if (userInfo === null) {
+				setIsError(true);
+				setErrorMessage('Local Storage Error');
+				return;
 			}
 
+			let userId: UserStorage = JSON.parse(userInfo);
+
+			await updateUserDetails({
+				id: parseInt(userId.id),
+				email: userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
+				cellNumber:
+					userCellNumberEdit === ''
+						? oldCellNumber.toString()
+						: userCellNumberEdit,
+			});
+
+			setUserEmailEdit('');
+			setUserCellNumberEdit('');
+			setIsSuccess(true);
 			setIsLoading(false);
-			setIsError(errorTrue);
-			setErrorMessage(responseMessage);
-		} catch (error) {
-			setIsLoading(false);
-			setErrorMessage('Failed to process. Please check Network.');
-			setIsError(true);
 		}
+
+		setIsLoading(false);
+		setIsError(errorTrue);
+		setErrorMessage(responseMessage);
 	};
 
 	return { SaveDetails };

@@ -30,43 +30,37 @@ export const useAddUserDetails = ({
 	push,
 }: useAddUserDetailsProps) => {
 	const addUserDetails = async () => {
-		try {
-			setIsLoading(true);
-			const { errorResult, responseMessage } = await useValidateUserDetails({
-				cellNumber: cellNumber,
-				email: email,
+		setIsLoading(true);
+		const { errorResult, responseMessage } = await useValidateUserDetails({
+			cellNumber: cellNumber,
+			email: email,
+			password: password,
+			username: name,
+			dateOfBirth: dateOfBirth,
+		});
+
+		// TODO: create type for this
+		if (!errorResult) {
+			const value: AddUserDetails = await CreateAccount({
+				name: name,
+				surname: surname,
+				email: email.toLowerCase(),
 				password: password,
-				username: name,
+				cellNumber: cellNumber.replace(/\s/g, ''),
 				dateOfBirth: dateOfBirth,
 			});
 
-			if (!errorResult) {
-				const value: AddUserDetails = await CreateAccount({
-					name: name,
-					surname: surname,
-					email: email.toLowerCase(),
-					password: password,
-					cellNumber: cellNumber.replace(/\s/g, ''),
-					dateOfBirth: dateOfBirth,
-				});
-
-				if (value.access_level.toLowerCase() === 'client') {
-					await useSaveInStorage(value.id);
-					setIsLoading(false);
-					push('/UserPages');
-					return;
-				}
+			if (value.access_level.toLowerCase() === 'client') {
+				await useSaveInStorage(value.id);
+				setIsLoading(false);
+				push('/UserPages');
+				return;
 			}
-
-			setIsLoading(false);
-			setIsError(errorResult);
-			setErrorMessage(responseMessage);
-			return;
-		} catch (error) {
-			setIsLoading(false);
-			setIsError(true);
-			setErrorMessage('Sign Up Process Failed.');
 		}
+
+		setIsLoading(false);
+		setIsError(errorResult);
+		setErrorMessage(responseMessage);
 		return;
 	};
 	return { addUserDetails };

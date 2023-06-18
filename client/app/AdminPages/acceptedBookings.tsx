@@ -13,7 +13,7 @@ const AcceptedBookings = () => {
 
 	// FUTURE UPDATE: Make drop down to select max day to view
 	// TODO: Must have text saying no booking it this amount of days
-	// Must do socket.io and useEffect for update
+	// Must do socket.io or MAYBE a useEffect too for update
 
 	useFocusEffect(
 		useCallback(() => {
@@ -24,7 +24,6 @@ const AcceptedBookings = () => {
 			};
 
 			fetchAccepted();
-			return () => {};
 		}, [])
 	);
 

@@ -5,7 +5,6 @@ type useFetchAcceptedBookings = {
 	setAcceptedBookings: (action: AcceptedBookingsTypes[]) => void;
 };
 
-// TODO: find another way besides useMemo to get the fetch to run once
 export const useFetchAcceptedBookings = async ({
 	setAcceptedBookings,
 }: useFetchAcceptedBookings) => {

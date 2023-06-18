@@ -15,11 +15,11 @@ import { SendUsingBookingRequest } from '../../../services/UserPages/FrontPage/s
 import { Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import { COLORS as colorSet } from '../../../constants/theme';
+import { useFetchId } from '../../../hooks/UserPages/FrontPage/useFetchId';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
 	dateDialogDisplay: string;
-	userId: Promise<string | undefined>;
 	setShow: (action: boolean) => void;
 	setIsLoading: (action: boolean) => void;
 	setIsError: (action: boolean) => void;
@@ -28,12 +28,11 @@ type BookingDialogRequestProps = {
 };
 
 // TODO: will need a response back message
-// MAYBE: Swap put pressable for touchableopacity for buttons
+// SLOW
 
 const BookingDialogRequest = ({
 	selectedBooking,
 	dateDialogDisplay,
-	userId,
 	setShow,
 	setIsLoading,
 	setIsError,
@@ -42,13 +41,10 @@ const BookingDialogRequest = ({
 }: BookingDialogRequestProps) => {
 	const [address, setAddress] = useState<string | null>(null);
 	const [visitType, setVisitType] = useState<string>('office');
-	const [id, setId] = useState<string>();
 	const DATE_ALREADY_BOOKED = 'Already Booked';
 	const DATE_BOOKED_SUCCESSFUL = 'Successful';
 
-	userId.then((data: string | undefined) => {
-		setId(data);
-	});
+	const { userId } = useFetchId();
 
 	const SelectListData = [
 		{ key: '1', value: 'office' },
@@ -69,14 +65,14 @@ const BookingDialogRequest = ({
 
 	const SendBookingRequest = async () => {
 		setIsLoading(true);
-		if (id === undefined) {
+		if (userId == null) {
 			setErrorMessage('Id does not exist. Process system failed.');
 			setIsError(true);
 			return;
 		}
 
 		let response = await SendUsingBookingRequest({
-			userId: parseInt(id),
+			userId: parseInt(userId),
 			address: address,
 			locationType: visitType,
 			date: moment.utc(selectedBooking).local().toDate(),
@@ -168,18 +164,18 @@ const BookingDialogRequest = ({
 					</Text>
 				</View>
 				<View className='flex-row w-full pt-8 gap-3 justify-end'>
-					<Pressable
+					<TouchableOpacity
 						className='h-12 bg-red-600 w-20 items-center justify-center rounded'
 						onPress={OnPressClose}
 					>
 						<Text className='text-lg text-white font-semibold'>Cancel</Text>
-					</Pressable>
-					<Pressable
+					</TouchableOpacity>
+					<TouchableOpacity
 						onPress={OnPressOK}
 						className='h-12 bg-green-600 w-20 items-center justify-center rounded'
 					>
 						<Text className='text-lg text-white font-semibold'>OK</Text>
-					</Pressable>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</Pressable>

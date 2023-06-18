@@ -31,7 +31,6 @@ const UserBookingTimes = () => {
 	// FUTURE FIX ADD useFocusEffect
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
-		selectedDropdownValue: selected,
 		setIsLoading: setIsLoading,
 		setBookings: setBookings,
 	});

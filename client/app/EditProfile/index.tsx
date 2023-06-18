@@ -11,6 +11,7 @@ import EditSections from '../../components/EditProfile/EditSections';
 import { useCancelAction } from '../../hooks/EditProfile/useCancelAction';
 import { useSaveAction } from '../../hooks/EditProfile/useSaveAction';
 import { useSaveDetails } from '../../hooks/EditProfile/useSaveDetails';
+import { COLORS as colorSet } from '../../constants/theme';
 
 const Index = () => {
 	const [userEmailEdit, setUserEmailEdit] = useState('');
@@ -57,9 +58,9 @@ const Index = () => {
 				options={{
 					headerTitle: 'Edit Profile',
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerTintColor: 'white',
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerTintColor: colorSet.white,
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 			{isError && (

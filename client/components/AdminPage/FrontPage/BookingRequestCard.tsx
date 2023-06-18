@@ -71,20 +71,20 @@ const BookingRequestCard = ({
 			className='w-11/12 h-40 bg-main-color rounded-lg p-2 flex-row'
 			style={containerStyles.container}
 		>
-			<View className='basis-[55%]'>
+			<View className='w-[50%]'>
 				<View>
-					<Text className='text-base mb-1 text-white'>
+					<Text className='text-base break-words mb-1 text-white'>
 						{appointment.user.name} {appointment.user.surname}
 					</Text>
 					<Text className='text-base text-white'>{spacedNumber}</Text>
 				</View>
 
 				<View className='pb-2 mt-5'>
-					<Text className='text-base mb-1 text-white'>{time}</Text>
-					<Text className='text-base text-white'>{day}</Text>
+					<Text className='text-sm mb-1 text-white'>{time}</Text>
+					<Text className='text-sm text-white break-words'>{day}</Text>
 				</View>
 			</View>
-			<View className='basis-[45%] items-start relative'>
+			<View className='w-[50%] items-start relative'>
 				<View className='flex-row gap-2'>
 					<Text className='font-bold text-white'>Visit:</Text>
 					<Text className='text-white'>{appointment.location_type}</Text>

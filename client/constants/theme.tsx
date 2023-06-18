@@ -8,6 +8,13 @@ const SHADOWS = {
 	},
 };
 
+const COLORS = {
+	primary: '#0085FF',
+
+	white: '#FFFFFF',
+	black: '#000000',
+};
+
 const TEXTSHADOW = {
 	textShadow: {
 		textShadowOffset: { width: 0, height: 4 },
@@ -16,4 +23,4 @@ const TEXTSHADOW = {
 	},
 };
 
-export { SHADOWS, TEXTSHADOW };
+export { SHADOWS, TEXTSHADOW, COLORS };

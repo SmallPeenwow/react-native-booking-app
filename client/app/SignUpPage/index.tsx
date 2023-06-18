@@ -76,13 +76,13 @@ const SignUp = () => {
 						/>
 						<Text className='text-red-600 ml-4 text-2xl'>*</Text>
 					</View>
-					<View className='border-2 border-black rounded my-3'></View>
+					<View className='border border-black rounded my-3'></View>
 					<Input
 						title='Surname'
 						placeholder='Enter your Surname...'
 						useStateChange={setSurname}
 					/>
-					<View className='border-2 border-black rounded my-3'></View>
+					<View className='border border-black rounded my-3'></View>
 					<View className='flex-row items-center'>
 						<Input
 							title='Email'
@@ -91,7 +91,7 @@ const SignUp = () => {
 						/>
 						<Text className='text-red-600 ml-4 text-2xl'>*</Text>
 					</View>
-					<View className='border-2 border-black rounded my-3'></View>
+					<View className='border border-black rounded my-3'></View>
 					<View className='bg-gray-300 p-1 pl-3 rounded'>
 						<Text className='text-xs '>
 							Password must be equal or greater than 7 letters.{' \n'}
@@ -106,20 +106,20 @@ const SignUp = () => {
 						/>
 						<Text className='text-red-600 ml-4 text-2xl'>*</Text>
 					</View>
-					<View className='border-2 border-black rounded my-3'></View>
+					<View className='border border-black rounded my-3'></View>
 					<DateOfBirth
 						title='Date of Birth'
 						placeholder='Enter your Date of Birth...'
 						dateSelected={dateOfBirth}
 						useStateChange={setDateOfBirth}
 					/>
-					<View className='border-2 border-black rounded my-3'></View>
+					<View className='border border-black rounded my-3'></View>
 					<Input
 						title='Cell Number'
 						placeholder='Enter your Cell Number...'
 						useStateChange={setCellNumber}
 					/>
-					<View className='border-2 border-black rounded mt-3'></View>
+					<View className='border border-black rounded mt-3'></View>
 					<View className='justify-end items-end mb-10'>
 						<View className='w-36'>
 							<Button title='Sign Up' onPress={AddUserDetails} />

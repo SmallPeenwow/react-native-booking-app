@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { fetchBookingTimes } from '../../../services/UserPages/BookingTimes/fetchBookingTimes';
+import { FetchBookingTimes } from '../../../services/UserPages/BookingTimes/fetchBookingTimes';
 import { useAsyncStorageRetrieve } from '../../LocalStorage/useAsyncStorageRetrieve';
 import { UserStorage } from '../../../shared/interfaces/userStorage.interface';
 import { UserBookingTimeInterface } from '../../../shared/interfaces/userBookingTimes.interface';
@@ -30,10 +30,10 @@ export const useFetchUserBookingTime = ({
 		if (jsonString !== null) {
 			let userId: UserStorage = JSON.parse(jsonString);
 
-			bookingArray = await fetchBookingTimes(
-				parseInt(userId.id),
-				appointmentStatus
-			).then((data) => {
+			bookingArray = await FetchBookingTimes({
+				userId: parseInt(userId.id),
+				appointmentStatus: appointmentStatus,
+			}).then((data) => {
 				return data;
 			});
 

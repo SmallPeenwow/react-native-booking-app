@@ -15,7 +15,7 @@ type useSaveDetailsProps = {
 	setIsSuccess: (action: boolean) => void;
 };
 
-const useSaveDetails = ({
+export const useSaveDetails = ({
 	userEmailEdit,
 	userCellNumberEdit,
 	setErrorMessage,
@@ -50,13 +50,14 @@ const useSaveDetails = ({
 
 			let userId: UserStorage = JSON.parse(userInfo);
 
-			await updateUserDetails(
-				parseInt(userId.id),
-				userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
-				userCellNumberEdit === ''
-					? oldCellNumber.toString()
-					: userCellNumberEdit
-			);
+			await updateUserDetails({
+				id: parseInt(userId.id),
+				email: userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
+				cellNumber:
+					userCellNumberEdit === ''
+						? oldCellNumber.toString()
+						: userCellNumberEdit,
+			});
 
 			setUserEmailEdit('');
 			setUserCellNumberEdit('');
@@ -71,5 +72,3 @@ const useSaveDetails = ({
 
 	return { SaveDetails };
 };
-
-export default useSaveDetails;

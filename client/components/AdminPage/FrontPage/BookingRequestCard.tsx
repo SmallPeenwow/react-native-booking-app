@@ -3,7 +3,7 @@ import containerStyles from '../../../styles/containerStyles';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
-import { ResponseToBooking } from '../../../hooks/AdminPages/FrontPage/ResponseToBooking';
+import { useResponseToBooking } from '../../../hooks/AdminPages/FrontPage/useResponseToBooking';
 import { Appointments } from '../../../shared/types/appointments.type';
 
 type BookingRequestCardProps = {
@@ -51,7 +51,7 @@ const BookingRequestCard = ({
 					text: 'Yes',
 					onPress: async () => {
 						setIsLoading(true);
-						let responseMessage = await ResponseToBooking({
+						let responseMessage = await useResponseToBooking({
 							appointmentId: id,
 							response: response,
 						});

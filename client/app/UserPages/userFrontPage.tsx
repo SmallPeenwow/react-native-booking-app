@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useEffect, useState } from 'react';
 import { useFetchWeeks } from '../../hooks/UserPages/FrontPage/useFetchWeeks';
@@ -67,7 +67,7 @@ const FrontPage = () => {
 	};
 
 	// MAYBE put on _layout.tsx to see what happens
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '/',

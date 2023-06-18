@@ -2,7 +2,7 @@ import { ScrollView, View } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ProcessFetch } from '../../hooks/AdminPages/FrontPage/ProcessFetch';
+import { useProcessFetch } from '../../hooks/AdminPages/FrontPage/useProcessFetch';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { Appointments } from '../../shared/types/appointments.type';
@@ -16,7 +16,7 @@ const FrontPage = () => {
 	useFocusEffect(
 		useCallback(() => {
 			const fetch = async () => {
-				await ProcessFetch({ setState: setAppointmentArray });
+				await useProcessFetch({ setState: setAppointmentArray });
 			};
 
 			fetch();

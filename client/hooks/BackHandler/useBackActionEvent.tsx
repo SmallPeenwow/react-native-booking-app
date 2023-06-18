@@ -1,19 +1,19 @@
 import { BackHandler, Alert } from 'react-native';
-import { SendToPage } from '../SendToPage';
+import { useSendToPage } from '../useSendToPage';
 import { useEffect } from 'react';
 
-type BackActionEventProps = {
+type useBackActionEventProps = {
 	title: string;
 	message: string;
 	page: string;
 };
 
-export const BackActionEvent = ({
+export const useBackActionEvent = ({
 	title,
 	message,
 	page,
-}: BackActionEventProps) => {
-	const { push } = SendToPage();
+}: useBackActionEventProps) => {
+	const { push } = useSendToPage();
 
 	useEffect(() => {
 		const backAction = () => {

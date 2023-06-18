@@ -5,18 +5,18 @@ import { useState } from 'react';
 import DateOfBirth from '../../components/DateOfBirth';
 import Button from '../../components/Button';
 import ErrorMessage from '../../components/ErrorMessage';
-import { ValidateUserDetails } from '../../hooks/SignUpPage/ValidateUserDetails';
+import { useValidateUserDetails } from '../../hooks/SignUpPage/useValidateUserDetails';
 import { CreateAccount } from '../../services/createAccount';
-import { SendToPage } from '../../hooks/SendToPage';
+import { useSendToPage } from '../../hooks/useSendToPage';
 import PasswordInput from '../../components/PasswordInput';
-import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useSaveInStorage } from '../../hooks/LocalStorage/useAsyncStorageSetItemId';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
 
 const SignUp = () => {
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '..',
@@ -42,7 +42,7 @@ const SignUp = () => {
 		dateOfBirth: Date
 	) => {
 		setIsLoading(true);
-		const { errorResult, responseMessage } = await ValidateUserDetails({
+		const { errorResult, responseMessage } = await useValidateUserDetails({
 			cellNumber: cellNumber,
 			email: email,
 			password: password,
@@ -62,7 +62,7 @@ const SignUp = () => {
 			);
 
 			if (value.access_level.toLowerCase() === 'client') {
-				await SaveInStorage(value.id);
+				await useSaveInStorage(value.id);
 				setIsLoading(false);
 				push('/UserPages');
 				return;

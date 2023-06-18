@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-type NameValidationProp = {
+type useNameValidationProp = {
 	name: string;
 };
 
-export const NameValidation = async ({ name }: NameValidationProp) => {
+export const useNameValidation = async ({ name }: useNameValidationProp) => {
 	const schema = z.coerce
 		.string()
 		.min(2)

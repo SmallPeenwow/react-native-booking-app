@@ -1,8 +1,8 @@
 import { updateUserDetails } from '../../services/EditProfile/updateUserDetails';
 import { UserStorage } from '../../shared/interfaces/userStorage.interface';
 import { useAsyncStorageRetrieve } from '../LocalStorage/useAsyncStorageRetrieve';
-import { Fetch } from './Fetch';
-import { ValidationUpdateCheck } from './ValidationUpdateCheck';
+import { useFetch } from './useFetch';
+import { useValidationUpdateCheck } from './useValidationUpdateCheck';
 
 type useSaveDetailsProps = {
 	userEmailEdit: string;
@@ -28,9 +28,9 @@ const useSaveDetails = ({
 	const SaveDetails = async () => {
 		setIsLoading(true);
 
-		const { oldEmail, oldCellNumber } = await Fetch();
+		const { oldEmail, oldCellNumber } = await useFetch();
 
-		const { errorTrue, responseMessage } = await ValidationUpdateCheck({
+		const { errorTrue, responseMessage } = await useValidationUpdateCheck({
 			email: userEmailEdit.toLocaleLowerCase(),
 			cellNumber: userCellNumberEdit,
 			oldEmail: oldEmail,

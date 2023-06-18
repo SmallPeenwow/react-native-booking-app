@@ -34,7 +34,7 @@ const FrontPage = () => {
 	const [isError, setIsError] = useState<boolean>(false);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const yearArray = [
+	const yearArray: number[] = [
 		new Date().getFullYear(),
 		new Date().getFullYear() + 1,
 		new Date().getFullYear() + 2,

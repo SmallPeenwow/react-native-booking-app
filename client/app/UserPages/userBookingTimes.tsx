@@ -14,7 +14,10 @@ import { selectBookingData } from '../../shared/selectBookingData';
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean>(false);
 	const [bookings, setBookings] = useState<UserBookingTimeInterface[]>([]);
+	const [bookingResponseType, setBookingResponseType] = useState<string>('');
+	// TODO: must handle error when there is no pending
 
 	const ChangeSelected = (value: string) => {
 		setSelected(
@@ -32,6 +35,8 @@ const UserBookingTimes = () => {
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,
+		setIsError: setIsError,
+		setBookingResponseType: setBookingResponseType,
 		setBookings: setBookings,
 	});
 
@@ -69,9 +74,15 @@ const UserBookingTimes = () => {
 			{isLoading && <LoadingDisplay header='Loading...' />}
 
 			<ScrollView contentContainerStyle={styles.scrollView}>
-				{bookings.map((booking, index) => (
-					<UserBookingTimeCard key={index} bookingTimeCard={booking} />
-				))}
+				{isError ? (
+					<View className='w-full p-4 text-center justify-center'>
+						<Text className='text-2xl'>{bookingResponseType}</Text>
+					</View>
+				) : (
+					bookings.map((booking, index) => (
+						<UserBookingTimeCard key={index} bookingTimeCard={booking} />
+					))
+				)}
 			</ScrollView>
 		</View>
 	);

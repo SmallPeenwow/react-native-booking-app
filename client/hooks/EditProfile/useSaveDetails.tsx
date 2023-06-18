@@ -26,48 +26,54 @@ export const useSaveDetails = ({
 	setIsLoading,
 }: useSaveDetailsProps) => {
 	const SaveDetails = async () => {
-		setIsLoading(true);
+		try {
+			setIsLoading(true);
 
-		const { oldEmail, oldCellNumber } = await useFetch();
+			const { oldEmail, oldCellNumber } = await useFetch();
 
-		const { errorTrue, responseMessage } = await useValidationUpdateCheck({
-			email: userEmailEdit.toLocaleLowerCase(),
-			cellNumber: userCellNumberEdit,
-			oldEmail: oldEmail,
-			oldCellNumber: oldCellNumber,
-		});
-
-		if (!errorTrue) {
-			const userInfo: string | null = await useAsyncStorageRetrieve(
-				'Justin-Bowden-booking-application-id'
-			);
-
-			if (userInfo === null) {
-				setIsError(true);
-				setErrorMessage('Local Storage Error');
-				return;
-			}
-
-			let userId: UserStorage = JSON.parse(userInfo);
-
-			await updateUserDetails({
-				id: parseInt(userId.id),
-				email: userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
-				cellNumber:
-					userCellNumberEdit === ''
-						? oldCellNumber.toString()
-						: userCellNumberEdit,
+			const { errorTrue, responseMessage } = await useValidationUpdateCheck({
+				email: userEmailEdit.toLocaleLowerCase(),
+				cellNumber: userCellNumberEdit,
+				oldEmail: oldEmail,
+				oldCellNumber: oldCellNumber,
 			});
 
-			setUserEmailEdit('');
-			setUserCellNumberEdit('');
-			setIsSuccess(true);
-			setIsLoading(false);
-		}
+			if (!errorTrue) {
+				const userInfo: string | null = await useAsyncStorageRetrieve(
+					'Justin-Bowden-booking-application-id'
+				);
 
-		setIsLoading(false);
-		setIsError(errorTrue);
-		setErrorMessage(responseMessage);
+				if (userInfo === null) {
+					setIsError(true);
+					setErrorMessage('Local Storage Error');
+					return;
+				}
+
+				let userId: UserStorage = JSON.parse(userInfo);
+
+				await updateUserDetails({
+					id: parseInt(userId.id),
+					email: userEmailEdit === '' ? oldEmail : userEmailEdit.toLowerCase(),
+					cellNumber:
+						userCellNumberEdit === ''
+							? oldCellNumber.toString()
+							: userCellNumberEdit,
+				});
+
+				setUserEmailEdit('');
+				setUserCellNumberEdit('');
+				setIsSuccess(true);
+				setIsLoading(false);
+			}
+
+			setIsLoading(false);
+			setIsError(errorTrue);
+			setErrorMessage(responseMessage);
+		} catch (error) {
+			setIsLoading(false);
+			setErrorMessage('Failed to process. Please check Network.');
+			setIsError(true);
+		}
 	};
 
 	return { SaveDetails };

@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { ActivityIndicator, ScrollView, View } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -52,13 +52,21 @@ const FrontPage = () => {
 					justifyContent: 'flex-start',
 					gap: 30,
 					alignItems: 'center',
+					height: '100%',
 					marginTop: 15,
 					paddingBottom: 40,
 				}}
 			>
 				{appointmentArray === undefined ? (
-					<View className='h-screen items-center justify-center w-full'>
-						<LoadingDisplay header='Loading...' />
+					<View className='h-full items-center justify-center w-full'>
+						<ActivityIndicator
+							size='large'
+							style={{
+								padding: 10,
+								transform: [{ scaleX: 2 }, { scaleY: 2 }],
+							}}
+							color='#0085FF'
+						/>
 					</View>
 				) : (
 					appointmentArray.map((appointment, index) => (

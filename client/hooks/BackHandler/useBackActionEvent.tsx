@@ -15,13 +15,17 @@ export const useBackActionEvent = ({
 }: useBackActionEventProps) => {
 	const { push } = useSendToPage();
 
+	const pageCheck = () => {
+		page === 'exit' ? BackHandler.exitApp() : push(page);
+	};
+
 	useEffect(() => {
 		const backAction = () => {
 			Alert.alert(title, message, [
 				{ text: 'Cancel', onPress: () => null, style: 'cancel' },
 				{
 					text: 'YES',
-					onPress: () => (page === 'exit' ? BackHandler.exitApp() : push(page)),
+					onPress: pageCheck,
 				},
 			]);
 

@@ -3,8 +3,8 @@ import containerStyles from '../../../styles/containerStyles';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
-import { useResponseToBooking } from '../../../hooks/AdminPages/FrontPage/useResponseToBooking';
 import { Appointments } from '../../../shared/types/appointments.type';
+import { useBookingResponse } from '../../../hooks/AdminPages/FrontPage/useBookingResponse';
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
@@ -37,7 +37,7 @@ const BookingRequestCard = ({
 		);
 	};
 
-	const ResponseFunction = (id: number, response: string) => {
+	const ResponseFunction = (response: string) => {
 		Alert.alert(
 			'Booking Request',
 			`Do you want to ${response.toUpperCase()} this booking?`,
@@ -49,17 +49,17 @@ const BookingRequestCard = ({
 				},
 				{
 					text: 'Yes',
-					onPress: async () => {
-						setIsLoading(true);
-						let responseMessage = await useResponseToBooking({
-							appointmentId: id,
+					onPress: () => {
+						const { BookingResponse } = useBookingResponse({
+							appointmentId: appointment.appointment_id,
 							response: response,
+							setIsLoading: setIsLoading,
+							setIsSuccess: setIsSuccess,
+							setResponseMessage: setResponseMessage,
+							RemoveDiv: RemoveDiv,
 						});
 
-						RemoveDiv();
-						setResponseMessage(responseMessage);
-						setIsLoading(false);
-						setIsSuccess(true);
+						BookingResponse();
 					},
 				},
 			]
@@ -111,18 +111,14 @@ const BookingRequestCard = ({
 					<TouchableOpacity
 						style={buttonStyles.button}
 						className='p-1 px-2 rounded bg-red-500 mr-2'
-						onPress={() =>
-							ResponseFunction(appointment.appointment_id, 'decline')
-						}
+						onPress={() => ResponseFunction('decline')}
 					>
 						<Text className='text-white font-semibold text-base'>Decline</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={buttonStyles.button}
 						className='p-1 px-2 rounded bg-green-600'
-						onPress={() =>
-							ResponseFunction(appointment.appointment_id, 'accept')
-						}
+						onPress={() => ResponseFunction('accept')}
 					>
 						<Text className='text-white font-semibold text-base'>Accept</Text>
 					</TouchableOpacity>

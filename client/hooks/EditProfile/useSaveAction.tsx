@@ -25,9 +25,7 @@ export const useSaveAction = ({
 		{ text: 'No', onPress: () => {}, style: 'cancel' },
 		{
 			text: 'Yes',
-			onPress: () => {
-				SaveDetails();
-			},
+			onPress: SaveDetails,
 		},
 	]);
 };

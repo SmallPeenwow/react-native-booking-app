@@ -16,16 +16,16 @@ const SignUp = () => {
 	// FUTURE FIX: Maybe have cell number required or do no validation check
 	// FUTURE FIX: Maybe display what special characters can be used
 
-	const [name, setName] = useState('');
-	const [surname, setSurname] = useState('');
-	const [email, setEmail] = useState('');
-	const [dateOfBirth, setDateOfBirth] = useState(new Date());
-	const [password, setPassword] = useState('');
-	const [cellNumber, setCellNumber] = useState('');
+	const [name, setName] = useState<string>('');
+	const [surname, setSurname] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [dateOfBirth, setDateOfBirth] = useState<Date>(new Date());
+	const [password, setPassword] = useState<string>('');
+	const [cellNumber, setCellNumber] = useState<string>('');
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [isError, setIsError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>('');
 
 	const AddUserDetails = async () => {
 		const { addUserDetails } = useAddUserDetails({

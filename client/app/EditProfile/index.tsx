@@ -4,23 +4,24 @@ import { useState } from 'react';
 import Button from '../../components/Button';
 import CancelButton from '../../components/CancelButton';
 import ErrorMessage from '../../components/ErrorMessage';
-import { SendToPage } from '../../hooks/SendToPage';
+import { useSendToPage } from '../../hooks/useSendToPage';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import EditSections from '../../components/EditProfile/EditSections';
 import { useCancelAction } from '../../hooks/EditProfile/useCancelAction';
-import useSaveAction from '../../hooks/EditProfile/useSaveAction';
-import useSaveDetails from '../../hooks/EditProfile/useSaveDetails';
+import { useSaveAction } from '../../hooks/EditProfile/useSaveAction';
+import { useSaveDetails } from '../../hooks/EditProfile/useSaveDetails';
+import { COLORS as colorSet } from '../../constants/theme';
 
 const Index = () => {
-	const [userEmailEdit, setUserEmailEdit] = useState('');
-	const [userCellNumberEdit, setUserCellNumberEdit] = useState('');
-	const [isError, setIsError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
-	const [isSuccess, setIsSuccess] = useState(false);
+	const [userEmailEdit, setUserEmailEdit] = useState<string>('');
+	const [userCellNumberEdit, setUserCellNumberEdit] = useState<string>('');
+	const [isError, setIsError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>('');
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
 	const CancelAction = () => {
 		useCancelAction({
@@ -57,9 +58,9 @@ const Index = () => {
 				options={{
 					headerTitle: 'Edit Profile',
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerTintColor: 'white',
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerTintColor: colorSet.white,
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 			{isError && (

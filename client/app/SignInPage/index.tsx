@@ -4,79 +4,34 @@ import Button from '../../components/Button';
 import Input from '../../components/Input';
 import { useState } from 'react';
 import Header from '../../components/Header';
-import { Login } from '../../services/login';
 import ErrorMessage from '../../components/ErrorMessage';
-import { SendToPage } from '../../hooks/SendToPage';
-import { EmailValidation } from '../../hooks/EmailValidation';
-import { SaveInStorage } from '../../hooks/LocalStorage/AsyncStorageSetItemId';
-import { IsPasswordEmpty } from '../../hooks/SignInPage/IsPasswordEmpty';
+import { useSendToPage } from '../../hooks/useSendToPage';
 import PasswordInput from '../../components/PasswordInput';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
 import LoadingDisplay from '../../components/LoadingDisplay';
-
-type UserDetails = {
-	access_level: string;
-	address: string;
-	id: number;
-};
+import { useGetUserAccess } from '../../hooks/SignInPage/useGetUserAccess';
+import signInStyles from '../../styles/SignInPage/styleSheet';
 
 const index = () => {
-	const { push } = SendToPage();
+	const { push } = useSendToPage();
 
-	BackActionEvent({
-		title: 'Hold on!',
-		message: 'Are you sure you want to go back?',
-		page: '..',
-	});
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean>(false);
+	const [errorMessage, setErrorMessage] = useState<string>('');
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [isError, setIsError] = useState(false);
-	const [errorMessage, setErrorMessage] = useState('');
+	const [userEmail, setUserEmail] = useState<string>('');
+	const [userPassword, setUserPassword] = useState<string>('');
 
-	const [userEmail, setUserEmail] = useState('');
-	const [userPassword, setUserPassword] = useState('');
+	const GetUserAccess = async () => {
+		const { getUserAccess } = useGetUserAccess({
+			email: userEmail,
+			password: userPassword,
+			setIsLoading: setIsLoading,
+			setIsError: setIsError,
+			setErrorMessage: setErrorMessage,
+			push: push,
+		});
 
-	const getUserAccess = async (email: string, password: string) => {
-		setIsLoading(true);
-
-		if (!(await EmailValidation({ email: email }))) {
-			setIsLoading(false);
-			setIsError(true);
-			setErrorMessage('Email is not valid format');
-			return;
-		}
-
-		if (await IsPasswordEmpty({ password: password })) {
-			setIsLoading(false);
-			setIsError(true);
-			setErrorMessage('Password must not be empty or contain spaces');
-			return;
-		}
-
-		const value: UserDetails = await Login(email.toLowerCase(), password);
-
-		if (value === null) {
-			setIsLoading(false);
-			setIsError(true);
-			setErrorMessage(
-				'Check that your details are correct or make an Account.'
-			);
-			return;
-		}
-
-		// Maybe make hook
-		if (value.access_level.toLowerCase() === 'admin') {
-			await SaveInStorage(value.id);
-			setIsLoading(false);
-			push('/AdminPages');
-			return;
-		} else if (value.access_level.toLowerCase() === 'client') {
-			await SaveInStorage(value.id);
-			setIsLoading(false);
-			push('/UserPages');
-			return;
-		}
-		return;
+		await getUserAccess();
 	};
 
 	return (
@@ -84,14 +39,7 @@ const index = () => {
 			<Header />
 
 			<View className='flex-1 items-center justify-center'>
-				<ScrollView
-					contentContainerStyle={{
-						display: 'flex',
-						justifyContent: 'center',
-						alignItems: 'center',
-						flex: 1,
-					}}
-				>
+				<ScrollView contentContainerStyle={signInStyles.scrollView}>
 					{isError && (
 						<View className='absolute items-center z-20 bottom-[80%] w-3/4'>
 							<ErrorMessage
@@ -117,10 +65,7 @@ const index = () => {
 						/>
 						<View className='justify-end items-end mr-4'>
 							<View className='w-32'>
-								<Button
-									title='Sign In'
-									onPress={() => getUserAccess(userEmail, userPassword)}
-								/>
+								<Button title='Sign In' onPress={GetUserAccess} />
 							</View>
 						</View>
 					</View>

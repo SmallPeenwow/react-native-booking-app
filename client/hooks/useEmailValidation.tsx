@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-type EmailValidationProp = {
+type useEmailValidationProp = {
 	email: string;
 };
 
-export const EmailValidation = async ({ email }: EmailValidationProp) => {
+export const useEmailValidation = async ({ email }: useEmailValidationProp) => {
 	const schema = z.coerce.string().email();
 
 	try {

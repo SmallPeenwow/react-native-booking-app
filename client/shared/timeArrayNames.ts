@@ -1,4 +1,4 @@
-export const timeArrayNames = [
+export const timeArrayNames: string[] = [
 	'08:00 AM',
 	'09:00 AM',
 	'10:00 AM',

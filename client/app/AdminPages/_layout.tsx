@@ -1,9 +1,11 @@
 import { Tabs } from 'expo-router';
 import { FontAwesome, Foundation } from '@expo/vector-icons';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
+import styles from '../../styles/styleSheet';
+import { COLORS as colorSet } from '../../constants/theme';
 
 const _layout = () => {
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '/',
@@ -12,12 +14,7 @@ const _layout = () => {
 	return (
 		<Tabs
 			screenOptions={{
-				tabBarStyle: {
-					backgroundColor: '#ebebeb',
-					height: 50,
-					paddingTop: 5,
-					paddingBottom: 5,
-				},
+				tabBarStyle: styles.tabBar,
 				headerShown: true,
 			}}
 		>
@@ -29,11 +26,11 @@ const _layout = () => {
 						<FontAwesome
 							name='home'
 							size={24}
-							color={focused ? '#0085FF' : 'black'}
+							color={focused ? colorSet.primary : colorSet.black}
 						/>
 					),
-					tabBarActiveTintColor: '#0085FF',
-					tabBarInactiveTintColor: 'black',
+					tabBarActiveTintColor: colorSet.primary,
+					tabBarInactiveTintColor: colorSet.black,
 				}}
 			/>
 			<Tabs.Screen
@@ -44,11 +41,11 @@ const _layout = () => {
 						<Foundation
 							name='book-bookmark'
 							size={24}
-							color={focused ? '#0085FF' : 'black'}
+							color={focused ? colorSet.primary : colorSet.black}
 						/>
 					),
-					tabBarActiveTintColor: '#0085FF',
-					tabBarInactiveTintColor: 'black',
+					tabBarActiveTintColor: colorSet.primary,
+					tabBarInactiveTintColor: colorSet.black,
 				}}
 			/>
 		</Tabs>

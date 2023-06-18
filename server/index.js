@@ -157,10 +157,7 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 
 app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	const today = new Date();
-	// today.setHours(0, 0, 0, 0); Maybe try this out
-	today.setMinutes(0);
-	today.setSeconds(0);
-	today.setMilliseconds(0);
+	today.setHours(0, 0, 0, 0);
 
 	if (req.body.appointmentStatus === 'All') {
 		return await prisma.appointment.findMany({

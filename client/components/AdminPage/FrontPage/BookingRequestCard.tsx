@@ -3,16 +3,18 @@ import containerStyles from '../../../styles/containerStyles';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
-import { ResponseToBooking } from '../../../hooks/AdminPages/FrontPage/ResponseToBooking';
 import { Appointments } from '../../../shared/types/appointments.type';
+import { useBookingResponse } from '../../../hooks/AdminPages/FrontPage/useBookingResponse';
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
 	appointmentArray: Appointments[];
 	setAppointmentArray: (action: Appointments[]) => void;
 	setResponseMessage: (action: string) => void;
+	setErrorMessage: (action: string) => void;
 	setIsSuccess: (action: boolean) => void;
 	setIsLoading: (action: boolean) => void;
+	setIsError: (action: boolean) => void;
 };
 
 const BookingRequestCard = ({
@@ -20,8 +22,10 @@ const BookingRequestCard = ({
 	appointmentArray,
 	setAppointmentArray,
 	setResponseMessage,
+	setErrorMessage,
 	setIsSuccess,
 	setIsLoading,
+	setIsError,
 }: BookingRequestCardProps) => {
 	const { spacedNumber } = useCellNumberSpacing({
 		number: appointment.user.cell_number,
@@ -37,7 +41,7 @@ const BookingRequestCard = ({
 		);
 	};
 
-	const ResponseFunction = (id: number, response: string) => {
+	const ResponseFunction = (response: string) => {
 		Alert.alert(
 			'Booking Request',
 			`Do you want to ${response.toUpperCase()} this booking?`,
@@ -49,17 +53,19 @@ const BookingRequestCard = ({
 				},
 				{
 					text: 'Yes',
-					onPress: async () => {
-						setIsLoading(true);
-						let responseMessage = await ResponseToBooking({
-							appointmentId: id,
+					onPress: () => {
+						const { BookingResponse } = useBookingResponse({
+							appointmentId: appointment.appointment_id,
 							response: response,
+							setIsLoading: setIsLoading,
+							setIsSuccess: setIsSuccess,
+							setIsError: setIsError,
+							setResponseMessage: setResponseMessage,
+							setErrorMessage: setErrorMessage,
+							RemoveDiv: RemoveDiv,
 						});
 
-						RemoveDiv();
-						setResponseMessage(responseMessage);
-						setIsLoading(false);
-						setIsSuccess(true);
+						BookingResponse();
 					},
 				},
 			]
@@ -71,20 +77,20 @@ const BookingRequestCard = ({
 			className='w-11/12 h-40 bg-main-color rounded-lg p-2 flex-row'
 			style={containerStyles.container}
 		>
-			<View className='basis-[55%]'>
+			<View className='w-[50%]'>
 				<View>
-					<Text className='text-base mb-1 text-white'>
+					<Text className='text-base break-words mb-1 text-white'>
 						{appointment.user.name} {appointment.user.surname}
 					</Text>
 					<Text className='text-base text-white'>{spacedNumber}</Text>
 				</View>
 
 				<View className='pb-2 mt-5'>
-					<Text className='text-base mb-1 text-white'>{time}</Text>
-					<Text className='text-base text-white'>{day}</Text>
+					<Text className='text-sm mb-1 text-white'>{time}</Text>
+					<Text className='text-sm text-white break-words'>{day}</Text>
 				</View>
 			</View>
-			<View className='basis-[45%] items-start relative'>
+			<View className='w-[50%] items-start relative'>
 				<View className='flex-row gap-2'>
 					<Text className='font-bold text-white'>Visit:</Text>
 					<Text className='text-white'>{appointment.location_type}</Text>
@@ -111,18 +117,14 @@ const BookingRequestCard = ({
 					<TouchableOpacity
 						style={buttonStyles.button}
 						className='p-1 px-2 rounded bg-red-500 mr-2'
-						onPress={() =>
-							ResponseFunction(appointment.appointment_id, 'decline')
-						}
+						onPress={() => ResponseFunction('decline')}
 					>
 						<Text className='text-white font-semibold text-base'>Decline</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={buttonStyles.button}
 						className='p-1 px-2 rounded bg-green-600'
-						onPress={() =>
-							ResponseFunction(appointment.appointment_id, 'accept')
-						}
+						onPress={() => ResponseFunction('accept')}
 					>
 						<Text className='text-white font-semibold text-base'>Accept</Text>
 					</TouchableOpacity>

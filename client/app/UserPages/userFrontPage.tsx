@@ -1,7 +1,7 @@
 import { ScrollView, Text, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { BackActionEvent } from '../../hooks/BackHandler/BackActionEvent';
+import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useEffect, useState } from 'react';
 import { useFetchWeeks } from '../../hooks/UserPages/FrontPage/useFetchWeeks';
@@ -11,7 +11,6 @@ import { monthArrayNames } from '../../shared/monthArrayNames';
 import { timeArrayNames } from '../../shared/timeArrayNames';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDialogRequest';
-import { useFetchId } from '../../hooks/UserPages/FrontPage/useFetchId';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 
@@ -34,13 +33,11 @@ const FrontPage = () => {
 	const [isError, setIsError] = useState<boolean>(false);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const yearArray = [
+	const yearArray: number[] = [
 		new Date().getFullYear(),
 		new Date().getFullYear() + 1,
 		new Date().getFullYear() + 2,
 	];
-
-	const { userId } = useFetchId();
 
 	// FUTURE UPDATE: make it so no week is selected but just display whole month
 	// ALSO: must make it be an array for it to hold a value to compare with filter
@@ -67,7 +64,7 @@ const FrontPage = () => {
 	};
 
 	// MAYBE put on _layout.tsx to see what happens
-	BackActionEvent({
+	useBackActionEvent({
 		title: 'Hold on!',
 		message: 'Are you sure you want to go back?',
 		page: '/',
@@ -84,7 +81,7 @@ const FrontPage = () => {
 
 	// Runs multiply times // it either runs unnecessary or just every time I refresh code
 	useEffect(() => {
-		console.log('run');
+		console.log('run = userFrontPage');
 
 		const weeksFetched = handleFetch();
 
@@ -134,7 +131,6 @@ const FrontPage = () => {
 				<BookingDialogRequest
 					selectedBooking={selectedBooking}
 					dateDialogDisplay={dateDialogDisplay}
-					userId={userId}
 					setShow={setShow}
 					setIsLoading={setIsLoading}
 					setErrorMessage={setErrorMessage}
@@ -226,6 +222,7 @@ const FrontPage = () => {
 				</View>
 
 				{/* TODO: make a drag up MAYBE */}
+				{/* TODO: Make use of FlatList */}
 				{/* TODO: MAYBE add awaits for map process for loading */}
 				<View className='h-[75%] w-full flex-row p-2'>
 					<ScrollView

@@ -1,19 +1,23 @@
 import { BackHandler, Alert } from 'react-native';
-import { SendToPage } from '../SendToPage';
+import { useSendToPage } from '../useSendToPage';
 import { useEffect } from 'react';
 
-type BackActionEventProps = {
+type useBackActionEventProps = {
 	title: string;
 	message: string;
 	page: string;
 };
 
-export const BackActionEvent = ({
+export const useBackActionEvent = ({
 	title,
 	message,
 	page,
-}: BackActionEventProps) => {
-	const { push } = SendToPage();
+}: useBackActionEventProps) => {
+	const { push } = useSendToPage();
+
+	const pageCheck = () => {
+		page === 'exit' ? BackHandler.exitApp() : push(page);
+	};
 
 	useEffect(() => {
 		const backAction = () => {
@@ -21,7 +25,7 @@ export const BackActionEvent = ({
 				{ text: 'Cancel', onPress: () => null, style: 'cancel' },
 				{
 					text: 'YES',
-					onPress: () => (page === 'exit' ? BackHandler.exitApp() : push(page)),
+					onPress: pageCheck,
 				},
 			]);
 

@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
-import { fetchBookingTimes } from '../../../services/UserPages/BookingTimes/fetchBookingTimes';
+import { useEffect } from 'react';
+import { FetchBookingTimes } from '../../../services/UserPages/BookingTimes/fetchBookingTimes';
 import { useAsyncStorageRetrieve } from '../../LocalStorage/useAsyncStorageRetrieve';
 import { UserStorage } from '../../../shared/interfaces/userStorage.interface';
 import { UserBookingTimeInterface } from '../../../shared/interfaces/userBookingTimes.interface';
@@ -7,48 +7,62 @@ import { useSortFetchedData } from './useSortFetchedData';
 
 type useFetchUserBookingTimeProps = {
 	appointmentStatus: string;
-	selectedDropdownValue: string;
 	setIsLoading: (action: boolean) => void;
+	setIsError: (action: boolean) => void;
+	setBookingResponseType: (action: string) => void;
 	setBookings: (action: UserBookingTimeInterface[]) => void;
 };
 
 export const useFetchUserBookingTime = ({
 	appointmentStatus,
-	selectedDropdownValue,
 	setIsLoading,
+	setIsError,
+	setBookingResponseType,
 	setBookings,
 }: useFetchUserBookingTimeProps) => {
-	// ISSUE MAYBE: runs twice
+	// TODO: Add socket.io Call
 	let bookingArray: UserBookingTimeInterface[] = [];
 
-	useMemo(async () => {
-		setIsLoading(true);
-		const jsonString: string | null = await useAsyncStorageRetrieve(
-			'Justin-Bowden-booking-application-id'
-		);
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				setIsLoading(true);
+				const jsonString: string | null = await useAsyncStorageRetrieve(
+					'Justin-Bowden-booking-application-id'
+				);
 
-		if (jsonString !== null) {
-			let userId: UserStorage = JSON.parse(jsonString);
+				if (jsonString !== null) {
+					let userId: UserStorage = JSON.parse(jsonString);
 
-			bookingArray = await fetchBookingTimes(
-				parseInt(userId.id),
-				appointmentStatus
-			).then((data) => {
-				return data;
-			});
+					bookingArray = await FetchBookingTimes({
+						userId: parseInt(userId.id),
+						appointmentStatus: appointmentStatus,
+					}).then((data) => {
+						return data;
+					});
 
-			if (selectedDropdownValue === 'All') {
-				const { sortedDate } = await useSortFetchedData({
-					fetchedData: bookingArray,
-				});
+					if (appointmentStatus === 'All') {
+						const { sortedDate } = await useSortFetchedData({
+							fetchedData: bookingArray,
+						});
 
-				setBookings(sortedDate);
+						setBookings(sortedDate);
+						setIsLoading(false);
+						return;
+					}
+
+					setBookings(bookingArray);
+					setIsLoading(false);
+				}
+			} catch (error) {
 				setIsLoading(false);
-				return;
+				setBookingResponseType(
+					'Failed to fetch booking information. Please check Network'
+				);
+				setIsError(true);
 			}
+		};
 
-			setBookings(bookingArray);
-			setIsLoading(false);
-		}
-	}, [selectedDropdownValue]);
+		fetchData();
+	}, [appointmentStatus]);
 };

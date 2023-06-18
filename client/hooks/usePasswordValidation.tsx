@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-type PasswordValidationProps = {
+type usePasswordValidationProps = {
 	password: string;
 };
 
-export const PasswordValidation = async ({
+export const usePasswordValidation = async ({
 	password,
-}: PasswordValidationProps) => {
+}: usePasswordValidationProps) => {
 	const schema = z
 		.string()
 		.regex(/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?!.*\s).{7,}$/);

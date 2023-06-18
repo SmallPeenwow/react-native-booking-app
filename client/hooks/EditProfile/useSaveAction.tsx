@@ -8,7 +8,7 @@ type useSaveActionProps = {
 	SaveDetails: () => Promise<void>;
 };
 
-const useSaveAction = ({
+export const useSaveAction = ({
 	userEmailEdit,
 	userCellNumberEdit,
 	setIsError,
@@ -25,11 +25,7 @@ const useSaveAction = ({
 		{ text: 'No', onPress: () => {}, style: 'cancel' },
 		{
 			text: 'Yes',
-			onPress: () => {
-				SaveDetails();
-			},
+			onPress: SaveDetails,
 		},
 	]);
 };
-
-export default useSaveAction;

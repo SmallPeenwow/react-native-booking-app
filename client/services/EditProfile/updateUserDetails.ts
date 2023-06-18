@@ -1,10 +1,16 @@
 import { makeRequest } from '../makeRequest';
 
-export async function updateUserDetails(
-	id: number,
-	email: string,
-	cellNumber: string
-) {
+type UpdateUserDetailsProps = {
+	id: number;
+	email: string;
+	cellNumber: string;
+};
+
+export async function updateUserDetails({
+	id,
+	email,
+	cellNumber,
+}: UpdateUserDetailsProps) {
 	return await makeRequest(`/EditProfile/updateUserDetails/${id}`, {
 		method: 'POST',
 		data: { email, cellNumber },

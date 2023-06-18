@@ -1,6 +1,10 @@
 import { makeRequest } from '../makeRequest';
 
-export async function FetchUserDetails(id: number) {
+type FetchUserDetailsProps = {
+	id: number;
+};
+
+export async function FetchUserDetails({ id }: FetchUserDetailsProps) {
 	return await makeRequest('/EditProfile/fetchUserDetails', {
 		method: 'POST',
 		data: { id },

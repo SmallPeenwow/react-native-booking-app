@@ -12,12 +12,6 @@ export const useCancelAction = ({
 	setUserCellNumberEdit,
 	push,
 }: useCancelActionProps) => {
-	const EmptyDetails = () => {
-		setUserEmailEdit('');
-		setUserCellNumberEdit('');
-		push('..');
-	};
-
 	Alert.alert('Cancel', 'Are you sure you want to cancel?', [
 		{
 			text: 'Cancel',
@@ -26,7 +20,11 @@ export const useCancelAction = ({
 		},
 		{
 			text: 'Yes',
-			onPress: EmptyDetails,
+			onPress: () => {
+				setUserEmailEdit('');
+				setUserCellNumberEdit('');
+				push('..');
+			},
 		},
 	]);
 };

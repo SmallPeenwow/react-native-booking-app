@@ -1,12 +1,13 @@
 import { z } from 'zod';
 
-type useCellNumberValidationProp = {
+type CellNumberValidationProp = {
 	cellNumber: string;
 };
 
-export const useCellNumberValidation = async ({
+export const CellNumberValidation = async ({
 	cellNumber,
-}: useCellNumberValidationProp) => {
+}: CellNumberValidationProp) => {
+	//TODO: test again
 	const schema = z.coerce.number();
 	let value: any = cellNumber.replace(/ /g, '');
 

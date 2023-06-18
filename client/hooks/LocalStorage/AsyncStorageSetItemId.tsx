@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const useSaveInStorage = async (id: number) => {
+export const SaveInStorage = async (id: number) => {
 	let userObject = {
 		id: id,
 	};

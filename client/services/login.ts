@@ -1,11 +1,6 @@
 import { makeRequest } from './makeRequest';
 
-type LoginProps = {
-	email: string;
-	password: string;
-};
-
-export async function Login({ email, password }: LoginProps) {
+export async function Login(email: string, password: string) {
 	return await makeRequest(`/SignInPage/login`, {
 		method: 'POST',
 		data: { email, password },

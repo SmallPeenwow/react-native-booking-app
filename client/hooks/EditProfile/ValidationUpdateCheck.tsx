@@ -1,19 +1,19 @@
-import { useCellNumberValidation } from '../useCellNumberValidation';
-import { useEmailValidation } from '../useEmailValidation';
+import { CellNumberValidation } from '../CellNumberValidation';
+import { EmailValidation } from '../EmailValidation';
 
-type useValidationUpdateCheckProps = {
+type ValidationUpdateCheckProps = {
 	email: string;
 	cellNumber: string;
 	oldEmail: string;
 	oldCellNumber: number;
 };
 
-export const useValidationUpdateCheck = async ({
+export const ValidationUpdateCheck = async ({
 	email,
 	cellNumber,
 	oldEmail,
 	oldCellNumber,
-}: useValidationUpdateCheckProps) => {
+}: ValidationUpdateCheckProps) => {
 	let errorTrue = false;
 	let responseMessage = 'no error';
 
@@ -27,16 +27,13 @@ export const useValidationUpdateCheck = async ({
 			errorTrue: true,
 			responseMessage: 'Cell Number is same as old cell number',
 		};
-	} else if (
-		!(await useEmailValidation({ email: email })) &&
-		email.length !== 0
-	) {
+	} else if (!(await EmailValidation({ email: email })) && email.length !== 0) {
 		return {
 			errorTrue: true,
 			responseMessage: 'Email invalid \nEg: example@gmail.com',
 		};
 	} else if (
-		!(await useCellNumberValidation({ cellNumber: cellNumber })) &&
+		!(await CellNumberValidation({ cellNumber: cellNumber })) &&
 		cellNumber.length !== 0
 	) {
 		return {

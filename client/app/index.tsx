@@ -1,14 +1,14 @@
 import { View, Text } from 'react-native';
 import Button from '../components/Button';
-import { useBackActionEvent } from '../hooks/BackHandler/useBackActionEvent';
+import { BackActionEvent } from '../hooks/BackHandler/BackActionEvent';
 
 import textShadowStyle from '../styles/textShadowStyle';
-import { useSendToPage } from '../hooks/useSendToPage';
+import { SendToPage } from '../hooks/SendToPage';
 
 const index = () => {
-	const { push } = useSendToPage();
+	const { push } = SendToPage();
 
-	useBackActionEvent({
+	BackActionEvent({
 		title: 'Exit',
 		message: 'Do you want to exit the application?',
 		page: 'exit',

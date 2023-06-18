@@ -1,6 +1,4 @@
 import { ActivityIndicator, View, Text } from 'react-native';
-import { COLORS as colorSet } from '../constants/theme';
-import styles from '../styles/styleSheet';
 
 type LoadingDisplayProps = {
 	header: string;
@@ -14,8 +12,11 @@ const LoadingDisplay = ({ header }: LoadingDisplayProps) => {
 					<Text className='text-lg text-white font-semibold'>{header}</Text>
 					<ActivityIndicator
 						size='large'
-						style={styles.activityIndicator}
-						color={colorSet.primary}
+						style={{
+							padding: 10,
+							transform: [{ scaleX: 2 }, { scaleY: 2 }],
+						}}
+						color='#0085FF'
 					/>
 				</View>
 			</View>

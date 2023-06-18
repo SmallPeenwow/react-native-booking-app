@@ -1,9 +1,9 @@
-import { useCellNumberValidation } from '../useCellNumberValidation';
-import { useEmailValidation } from '../useEmailValidation';
-import { useNameValidation } from '../useNameValidation';
-import { usePasswordValidation } from '../usePasswordValidation';
+import { CellNumberValidation } from '../CellNumberValidation';
+import { EmailValidation } from '../EmailValidation';
+import { NameValidation } from '../NameValidation';
+import { PasswordValidation } from '../PasswordValidation';
 
-type useValidateUserDetailsProps = {
+type validateUserDetailsProps = {
 	cellNumber: string;
 	email: string;
 	username: string;
@@ -11,27 +11,27 @@ type useValidateUserDetailsProps = {
 	dateOfBirth: Date;
 };
 
-export const useValidateUserDetails = async ({
+export const ValidateUserDetails = async ({
 	cellNumber,
 	email,
 	username,
 	password,
 	dateOfBirth,
-}: useValidateUserDetailsProps) => {
+}: validateUserDetailsProps) => {
 	let errorResult = false;
 	let responseMessage = 'no error';
 
-	if (!(await useNameValidation({ name: username }))) {
+	if (!(await NameValidation({ name: username }))) {
 		return {
 			errorResult: true,
 			responseMessage: 'Name invalid \nEg: Joe',
 		};
-	} else if (!(await useEmailValidation({ email: email }))) {
+	} else if (!(await EmailValidation({ email: email }))) {
 		return {
 			errorResult: true,
 			responseMessage: 'Email invalid \nEg: example@gmail.com',
 		};
-	} else if (!(await usePasswordValidation({ password: password }))) {
+	} else if (!(await PasswordValidation({ password: password }))) {
 		return {
 			errorResult: true,
 			responseMessage: 'Password requirements not met',
@@ -43,7 +43,7 @@ export const useValidateUserDetails = async ({
 			errorResult: true,
 			responseMessage: 'Fill in Date of Birth',
 		};
-	} else if (!(await useCellNumberValidation({ cellNumber: cellNumber }))) {
+	} else if (!(await CellNumberValidation({ cellNumber: cellNumber }))) {
 		return {
 			errorResult: true,
 			responseMessage: 'Cell number invalid \nEg: 079 934 1345',

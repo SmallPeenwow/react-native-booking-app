@@ -1,13 +1,16 @@
 import { Tabs } from 'expo-router';
 import { Foundation, FontAwesome } from '@expo/vector-icons';
-import styles from '../../styles/styleSheet';
-import { COLORS as colorSet } from '../../constants/theme';
 
 const _layout = () => {
 	return (
 		<Tabs
 			screenOptions={{
-				tabBarStyle: styles.tabBar,
+				tabBarStyle: {
+					backgroundColor: '#ebebeb',
+					height: 50,
+					paddingTop: 5,
+					paddingBottom: 5,
+				},
 				headerShown: true,
 			}}
 		>
@@ -19,11 +22,11 @@ const _layout = () => {
 						<FontAwesome
 							name='home'
 							size={24}
-							color={focused ? colorSet.primary : colorSet.black}
+							color={focused ? '#0085FF' : 'black'}
 						/>
 					),
-					tabBarActiveTintColor: colorSet.primary,
-					tabBarInactiveTintColor: colorSet.black,
+					tabBarActiveTintColor: '#0085FF',
+					tabBarInactiveTintColor: 'black',
 				}}
 			/>
 			<Tabs.Screen
@@ -34,11 +37,11 @@ const _layout = () => {
 						<Foundation
 							name='book-bookmark'
 							size={24}
-							color={focused ? colorSet.primary : colorSet.black}
+							color={focused ? '#0085FF' : 'black'}
 						/>
 					),
-					tabBarActiveTintColor: colorSet.primary,
-					tabBarInactiveTintColor: colorSet.black,
+					tabBarActiveTintColor: '#0085FF',
+					tabBarInactiveTintColor: 'black',
 				}}
 			/>
 		</Tabs>

@@ -1,10 +1,9 @@
 import { View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { useSendToPage } from '../hooks/useSendToPage';
-import { COLORS as colorSet } from '../constants/theme';
+import { SendToPage } from '../hooks/SendToPage';
 
 const UserProfile = () => {
-	const { push } = useSendToPage();
+	const { push } = SendToPage();
 
 	const SentToEditProfile = () => {
 		push('EditProfile/');
@@ -16,7 +15,7 @@ const UserProfile = () => {
 				onPress={SentToEditProfile}
 				name='setting'
 				size={30}
-				color={colorSet.white}
+				color='white'
 			/>
 		</View>
 	);

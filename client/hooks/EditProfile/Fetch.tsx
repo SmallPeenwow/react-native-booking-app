@@ -2,7 +2,7 @@ import { FetchUserDetails } from '../../services/EditProfile/fetchUserDetails';
 import { UserStorage } from '../../shared/interfaces/userStorage.interface';
 import { useAsyncStorageRetrieve } from '../LocalStorage/useAsyncStorageRetrieve';
 
-export const useFetch = async () => {
+export const Fetch = async () => {
 	const jsonString: string | null = await useAsyncStorageRetrieve(
 		'Justin-Bowden-booking-application-id'
 	);
@@ -13,7 +13,7 @@ export const useFetch = async () => {
 	if (jsonString !== null) {
 		let userId: UserStorage = JSON.parse(jsonString);
 
-		const userDetails = await FetchUserDetails({ id: parseInt(userId.id) });
+		const userDetails = await FetchUserDetails(parseInt(userId.id));
 
 		oldEmail = userDetails.email;
 		oldCellNumber = userDetails.cell_number;

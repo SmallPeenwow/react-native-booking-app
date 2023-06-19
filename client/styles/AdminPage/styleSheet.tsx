@@ -11,10 +11,6 @@ const adminStyles = StyleSheet.create({
 		marginTop: 15,
 		paddingBottom: 40,
 	},
-	activityIndicator: {
-		padding: 10,
-		transform: [{ scaleX: 2 }, { scaleY: 2 }],
-	},
 });
 
 export default adminStyles;

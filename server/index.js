@@ -155,6 +155,7 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 	});
 });
 
+// TODO: send back in order for date close to now date
 app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
@@ -185,6 +186,11 @@ app.post('/UserPages/userBookingTimes/', async (req, res) => {
 				equals: req.body.appointmentStatus,
 			},
 		},
+		orderBy: [
+			{
+				date: 'asc',
+			},
+		],
 		select: {
 			date: true,
 			location_type: true,
@@ -217,6 +223,25 @@ app.post('/UserPages/userFrontPage/', async (req, res) => {
 	});
 
 	return 'Successful';
+});
+
+app.get('/UserPages/userFrontPage/fetchBookings', async (req, res) => {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+	return await prisma.appointment.findMany({
+		where: {
+			date: {
+				gte: today,
+			},
+			appointment_status: {
+				not: 'decline',
+			},
+		},
+		select: {
+			date: true,
+		},
+	});
 });
 
 app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {

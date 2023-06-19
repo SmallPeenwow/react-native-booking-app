@@ -21,8 +21,8 @@ const SuccessfulMessage = ({
 	}, [isSuccess]);
 
 	return (
-		<View className='absolute items-center h-full z-50 top-1/4 w-full'>
-			<View className='p-5 bg-main-color/80 w-3/4 rounded items-center'>
+		<View className='absolute items-center z-50 top-1/4 w-full'>
+			<View className='p-5 bg-main-color w-3/4 rounded items-center'>
 				<Text className='text-white text-lg font-semibold'>{title}</Text>
 			</View>
 		</View>

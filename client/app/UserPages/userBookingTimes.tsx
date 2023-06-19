@@ -2,7 +2,6 @@ import { Stack } from 'expo-router';
 import { ScrollView, View, Text } from 'react-native';
 import UserProfile from '../../components/UserProfile';
 import { useFetchUserBookingTime } from '../../hooks/UserPages/BookingTimes/useFetchUserBookingTimes';
-import { SelectList } from 'react-native-dropdown-select-list';
 import { useState } from 'react';
 import LoadingDisplay from '../../components/LoadingDisplay';
 import { UserBookingTimeInterface } from '../../shared/interfaces/userBookingTimes.interface';
@@ -10,6 +9,7 @@ import UserBookingTimeCard from '../../components/UserPages/BookingTimes/UserBoo
 import { COLORS as colorSet } from '../../constants/theme';
 import styles from '../../styles/styleSheet';
 import { selectBookingData } from '../../shared/selectBookingData';
+import DropDownContainer from '../../components/UserPages/BookingTimes/DropDownContainer';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -17,7 +17,7 @@ const UserBookingTimes = () => {
 	const [isError, setIsError] = useState<boolean>(false);
 	const [bookings, setBookings] = useState<UserBookingTimeInterface[]>([]);
 	const [bookingResponseType, setBookingResponseType] = useState<string>('');
-	// TODO: must handle error when there is no pending
+	// TODO: must handle error when there is no pending or any of the other ones
 
 	const ChangeSelected = (value: string) => {
 		setSelected(
@@ -31,7 +31,7 @@ const UserBookingTimes = () => {
 		);
 	};
 
-	// FUTURE FIX ADD useFocusEffect
+	// FUTURE FIX ADD useFocusEffect AND for socket.io
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,
@@ -52,23 +52,11 @@ const UserBookingTimes = () => {
 				}}
 			/>
 
-			<View className='py-3 px-5 h-20 w-full items-center border-b-2 border-black flex-row relative z-50'>
-				<View className='w-[40%] h-full items-center justify-start flex-row'>
-					<Text className='font-semibold text-base capitalize'>
-						Select type:
-					</Text>
-				</View>
-				<View className='w-[60%] h-full relative'>
-					<View className='transform w-full h-full translate-x-1/2 translate-y-1/2 absolute top-1'>
-						<SelectList
-							setSelected={ChangeSelected}
-							data={selectBookingData}
-							save='value'
-							search={false}
-							dropdownStyles={{ height: 165, backgroundColor: colorSet.white }}
-						/>
-					</View>
-				</View>
+			<View className='border-b border-black z-50'>
+				<DropDownContainer
+					SelectedState={ChangeSelected}
+					dataArray={selectBookingData}
+				/>
 			</View>
 
 			{isLoading && <LoadingDisplay header='Loading...' />}

@@ -10,16 +10,24 @@ export const useFetchWeeks = ({
 	year,
 }: useFetchWeeks) => {
 	let monthNumber = monthArrayNames.indexOf(month);
-	let weeksInMonth: string[][] = [];
+	let weeksInMonth: string[] = [];
 
-	// Something wrong with time and day on this
+	// Check if it is the current month and year
+	const isCurrentMonthAndYear =
+		new Date().getMonth() === monthNumber &&
+		new Date().getFullYear() === parseInt(year);
+
+	//Make A thing to only get from current day onwards
 	let dates = new Date(parseInt(year), monthNumber, 1);
 
-	let currentWeek: string[] = [];
-
 	while (dates.getMonth() === monthNumber) {
+		if (isCurrentMonthAndYear && dates.getDate() < new Date().getDate()) {
+			dates.setDate(dates.getDate() + 1);
+			continue;
+		}
+
 		if (![0, 6].includes(dates.getDay())) {
-			currentWeek.push(
+			weeksInMonth.push(
 				dates.getDate() +
 					' ' +
 					dates
@@ -32,14 +40,6 @@ export const useFetchWeeks = ({
 
 		// Moves to next day
 		dates.setDate(dates.getDate() + 1);
-
-		// Checks to see if end of the week Saturday
-		if (dates.getDay() === 6) {
-			if (currentWeek.length > 0) {
-				weeksInMonth.push(currentWeek);
-			}
-			currentWeek = [];
-		}
 	}
 
 	return { weeksInMonth };

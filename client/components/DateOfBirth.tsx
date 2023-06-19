@@ -29,7 +29,6 @@ const DateOfBirth = ({
 		selectedDate: Date | undefined
 	) => {
 		displayDatePicker();
-		console.log(event.type);
 
 		if (selectedDate !== undefined && event.type !== 'dismissed') {
 			useStateChange(
@@ -47,7 +46,7 @@ const DateOfBirth = ({
 			<Text className={textStyles.default}>{title}</Text>
 			<View className='flex-row'>
 				<TextInput
-					className='py-3 px-4 text-lg rounded-md bg-slate-100 border-2 border-gray-500 w-60'
+					className='py-3 px-4 text-lg rounded-md bg-slate-100 border-2 border-gray-500 w-64'
 					placeholder={placeholder}
 					onPressOut={displayDatePicker}
 					value={

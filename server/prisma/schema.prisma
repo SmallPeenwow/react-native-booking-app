@@ -23,10 +23,10 @@ model user {
   id           Int           @id @default(autoincrement())
   name         String        @db.VarChar
   surname      String?       @db.VarChar
-  age          DateTime?     @db.Date
+  age          DateTime      @db.Date
   email        String        @unique @db.VarChar
   password     String        @db.VarChar
-  cell_number  String?       @db.VarChar
+  cell_number  String        @db.VarChar
   access_level String        @default("client") @db.VarChar
   appointment  appointment[]
 }

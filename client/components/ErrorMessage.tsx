@@ -12,7 +12,6 @@ const ErrorMessage = ({
 	isError,
 	activeStateChange,
 }: ErrorMessageProps) => {
-	// MAYBE: Find different way for this error message to run
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			activeStateChange(false);

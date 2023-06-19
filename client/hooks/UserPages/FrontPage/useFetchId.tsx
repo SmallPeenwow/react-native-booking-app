@@ -6,6 +6,7 @@ export const useFetchId = () => {
 	const [userId, setUserId] = useState<string | null>(null);
 
 	// SLOW
+	// WHY here me? must FIX
 	useEffect(() => {
 		const fetchData = async () => {
 			const jsonString: string | null = await useAsyncStorageRetrieve(

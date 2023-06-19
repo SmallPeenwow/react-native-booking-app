@@ -1,8 +1,6 @@
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { useBackActionEvent } from '../../hooks/BackHandler/useBackActionEvent';
-import { SelectList } from 'react-native-dropdown-select-list';
 import { useEffect, useState } from 'react';
 import { useFetchWeeks } from '../../hooks/UserPages/FrontPage/useFetchWeeks';
 import DisplayTime from '../../components/UserPages/FrontPage/DisplayTime';
@@ -13,17 +11,24 @@ import LoadingDisplay from '../../components/LoadingDisplay';
 import BookingDialogRequest from '../../components/UserPages/FrontPage/BookingDialogRequest';
 import ErrorMessage from '../../components/ErrorMessage';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
+import fontPageStyles from '../../styles/User/FrontPage/styleSheet';
+import DropDownSelect from '../../components/UserPages/FrontPage/DropDownSelect';
+import PlainActivityIndicator from '../../components/PlainActivityIndicator';
+import { COLORS as colorSet } from '../../constants/theme';
+import { useFetchCurrentYearMonths } from '../../hooks/UserPages/FrontPage/useFetchCurrentYearMonths';
+import { useFetchBookedDates } from '../../hooks/UserPages/FrontPage/useFetchBookedDates';
+import { yearArray } from '../../shared/yearArray';
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
 		new Date().toLocaleString('en-us', { month: 'long' })
 	);
-	const [weeks, setWeeks] = useState<string[][]>([]);
+	const [weeks, setWeeks] = useState<string[]>([]);
 	const [year, setYear] = useState<string>(
 		new Date().toLocaleString('en-us', { year: 'numeric' })
 	);
-	const [currentWeekDays, setCurrentWeekDays] = useState<string[]>([]);
-	const [amountOfWeeks, setAmountOfWeeks] = useState<string[]>([]);
+	const [currentYearMonth, setCurrentYearMonth] = useState<string[]>([]);
+	const [currentBookedDates, setCurrentBookedDates] = useState<string[]>([]);
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
@@ -33,27 +38,13 @@ const FrontPage = () => {
 	const [isError, setIsError] = useState<boolean>(false);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-	const yearArray: number[] = [
-		new Date().getFullYear(),
-		new Date().getFullYear() + 1,
-		new Date().getFullYear() + 2,
-	];
-
-	// FUTURE UPDATE: make it so no week is selected but just display whole month
-	// ALSO: must make it be an array for it to hold a value to compare with filter
-	// FIX: do loading for the map part
-
-	const SetWeekAmount = (weekArray: string[][]) => {
-		const weekAmount: string[] = [];
-
-		weekArray.map((value, index) => {
-			let weekNumber: number = index + 1;
-			weekAmount.push('Week ' + weekNumber);
-		});
-
-		setAmountOfWeeks(weekAmount);
-		setCurrentWeekDays(weekArray[0]);
-	};
+	// SLOW
+	// FIX: must somehow use this in other useEffect or do something different
+	useEffect(() => {
+		return () => {
+			useFetchCurrentYearMonths({ setCurrentYearMonths: setCurrentYearMonth });
+		};
+	}, [year]);
 
 	const SelectYear = (value: string) => {
 		setYear(value);
@@ -62,13 +53,6 @@ const FrontPage = () => {
 	const SelectMonth = (value: string) => {
 		setMonth(value);
 	};
-
-	// MAYBE put on _layout.tsx to see what happens
-	useBackActionEvent({
-		title: 'Hold on!',
-		message: 'Are you sure you want to go back?',
-		page: '/',
-	});
 
 	const handleFetch = () => {
 		const { weeksInMonth } = useFetchWeeks({
@@ -79,36 +63,38 @@ const FrontPage = () => {
 		return weeksInMonth;
 	};
 
+	// TODO: maybe create an array that contains values that will be sent to the tables
+
+	// TODO: On Accept booking things must change
 	// Runs multiply times // it either runs unnecessary or just every time I refresh code
+	// FIX. It really slow. should do check to see if previous month is same or not before running
 	useEffect(() => {
 		console.log('run = userFrontPage');
-
 		const weeksFetched = handleFetch();
 
+		const fetchBookingDates = async () => {
+			await useFetchBookedDates({
+				currentBookedDates: setCurrentBookedDates,
+			});
+		};
+
+		fetchBookingDates();
+
 		setWeeks(weeksFetched);
-		SetWeekAmount(weeksFetched);
-	}, [month]);
-
-	const SelectWeek = (value: string) => {
-		let weekNumber: number = parseInt(value.split(' ')[1]);
-
-		setCurrentWeekDays(weeks[weekNumber - 1]);
-	};
+	}, [month, year]);
 
 	return (
-		// Make relative and do absolute for booking dialog request
 		<View className='h-full bg-white relative'>
 			<Stack.Screen
 				options={{
 					headerTitle: 'Home',
 					headerRight: () => <UserProfile />,
 					headerTitleAlign: 'center',
-					headerTitleStyle: { color: 'white' },
-					headerStyle: { backgroundColor: '#0085FF' },
+					headerTitleStyle: { color: colorSet.white },
+					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
 
-			{/* // TODO: will need a state to see when loading or processing */}
 			{isLoading && <LoadingDisplay header='Processing...' />}
 			{isError && (
 				<View className='absolute items-center z-50 top-1/3 w-full'>
@@ -119,7 +105,7 @@ const FrontPage = () => {
 					/>
 				</View>
 			)}
-			{/* // TODO: do state for success message MAYBE */}
+
 			{isSuccess && (
 				<SuccessfulMessage
 					title='Booking Was Successful'
@@ -127,6 +113,7 @@ const FrontPage = () => {
 					setIsSuccess={setIsSuccess}
 				/>
 			)}
+
 			{show && (
 				<BookingDialogRequest
 					selectedBooking={selectedBooking}
@@ -140,97 +127,38 @@ const FrontPage = () => {
 			)}
 
 			<View className='h-full w-full flex-col items-center'>
-				<View className='h-[25%] border-b-2 border-black w-full'>
-					<ScrollView
-						contentContainerStyle={{
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-							marginTop: 15,
-							padding: 8,
-							height: 640,
+				<View className='h-[25%] border-b border-black w-full px-2 pb-2 z-10'>
+					<DropDownSelect
+						title='Select Year:'
+						setSelect={SelectYear}
+						data={yearArray}
+						placeholder={year}
+						zIndex='z-50'
+						dropdownStyle={{ backgroundColor: colorSet.white, zIndex: 100 }}
+					/>
+					<DropDownSelect
+						title='Select Month:'
+						setSelect={SelectMonth}
+						data={
+							parseInt(year) === new Date().getFullYear()
+								? currentYearMonth
+								: monthArrayNames
+						}
+						placeholder={month}
+						zIndex='z-40'
+						dropdownStyle={{
+							backgroundColor: colorSet.white,
+							position: 'relative',
+							top: 0,
+							zIndex: 90,
+							maxHeight: 440,
 						}}
-					>
-						<View className='flex-row w-full h-20 items-center justify-around z-50'>
-							<View className='w-[40%] items-start'>
-								<Text className='text-lg font-semibold'>Select Year:</Text>
-							</View>
-							<View className='w-[60%] h-full items-start relative'>
-								<View className='top-5 absolute'>
-									<SelectList
-										setSelected={SelectYear}
-										data={yearArray}
-										save='value'
-										placeholder={year}
-										search={false}
-										boxStyles={{ width: 200, backgroundColor: 'white' }}
-										dropdownStyles={{ backgroundColor: 'white' }}
-									/>
-								</View>
-							</View>
-						</View>
-
-						<View className='flex-row w-full h-20 items-center z-40'>
-							<View className='w-[40%] items-start'>
-								<Text className='text-lg font-semibold'>Select Month:</Text>
-							</View>
-							<View className='w-[60%] h-full items-start relative'>
-								<View className='top-5 absolute z-50'>
-									<SelectList
-										setSelected={SelectMonth}
-										data={monthArrayNames}
-										save='value'
-										placeholder={month}
-										search={false}
-										boxStyles={{ width: 200, backgroundColor: 'white' }}
-										dropdownStyles={{
-											backgroundColor: 'white',
-											position: 'relative',
-											top: 0,
-											zIndex: 100,
-											minHeight: 440,
-										}}
-									/>
-								</View>
-							</View>
-						</View>
-
-						{/* Will just putting warning for now on week select */}
-						<View className='flex-row w-full h-20 items-center justify-around'>
-							<View className='w-[40%] items-start'>
-								<Text className='text-lg font-semibold'>Select Week:</Text>
-							</View>
-							<View className='w-[60%] h-full items-start relative'>
-								<View className='top-5 absolute z-50'>
-									<SelectList
-										setSelected={SelectWeek}
-										data={amountOfWeeks}
-										save='value'
-										search={false}
-										boxStyles={{ width: 200, backgroundColor: 'white' }}
-										dropdownStyles={{
-											backgroundColor: 'white',
-											position: 'relative',
-											top: 0,
-											zIndex: 100,
-										}}
-									/>
-								</View>
-							</View>
-						</View>
-					</ScrollView>
+					/>
 				</View>
 
-				{/* TODO: make a drag up MAYBE */}
-				{/* TODO: Make use of FlatList */}
-				{/* TODO: MAYBE add awaits for map process for loading */}
-				<View className='h-[75%] w-full flex-row p-2'>
-					<ScrollView
-						contentContainerStyle={{
-							paddingBottom: 20,
-							flexDirection: 'row',
-						}}
-					>
+				{/* TODO: Should do more with the map as it slows everything down*/}
+				<View className='h-[75%] w-full flex-row px-2 py-1 z-0'>
+					<ScrollView contentContainerStyle={fontPageStyles.scrollViewRow}>
 						<View className='w-[80px] h-full'>
 							<View className='bg-blue-400 w-full p-2 h-10 border-[1px] border-black border-t-0 border-l-0'></View>
 							{timeArrayNames.map((value, index) => (
@@ -241,22 +169,22 @@ const FrontPage = () => {
 						<View className='flex-row h-full'>
 							<ScrollView
 								horizontal={true}
-								contentContainerStyle={{
-									paddingRight: 100,
-								}}
+								contentContainerStyle={fontPageStyles.scrollViewColumn}
 							>
-								{currentWeekDays.map((day, index) => (
-									<DaySlotTableDisplay
-										key={index}
-										year={year}
-										month={month}
-										day={day}
-										times={timeArrayNames}
-										setShow={setShow}
-										setSelectedBooking={setSelectedBooking}
-										setDateDialogDisplay={setDateDialogDisplay}
-									/>
-								))}
+								{<PlainActivityIndicator /> &&
+									weeks.map((day, index) => (
+										<DaySlotTableDisplay
+											key={index}
+											year={year}
+											month={month}
+											day={day}
+											times={timeArrayNames}
+											datesBooked={currentBookedDates}
+											setShow={setShow}
+											setSelectedBooking={setSelectedBooking}
+											setDateDialogDisplay={setDateDialogDisplay}
+										/>
+									))}
 							</ScrollView>
 						</View>
 					</ScrollView>

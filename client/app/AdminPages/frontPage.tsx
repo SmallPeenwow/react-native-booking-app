@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -9,6 +9,7 @@ import { Appointments } from '../../shared/types/appointments.type';
 import adminStyles from '../../styles/AdminPage/styleSheet';
 import { COLORS as colorSet } from '../../constants/theme';
 import ErrorMessage from '../../components/ErrorMessage';
+import PlainActivityIndicator from '../../components/PlainActivityIndicator';
 
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
@@ -61,13 +62,7 @@ const FrontPage = () => {
 
 			<ScrollView contentContainerStyle={adminStyles.scrollView}>
 				{appointmentArray === undefined ? (
-					<View className='h-full items-center justify-center w-full'>
-						<ActivityIndicator
-							size='large'
-							style={adminStyles.activityIndicator}
-							color={colorSet.primary}
-						/>
-					</View>
+					<PlainActivityIndicator />
 				) : (
 					appointmentArray.map((appointment, index) => (
 						<BookingRequestCard

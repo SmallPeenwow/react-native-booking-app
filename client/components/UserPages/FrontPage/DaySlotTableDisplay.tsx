@@ -6,6 +6,7 @@ type DaySlotTableDisplayProps = {
 	month: string;
 	day: string;
 	times: string[];
+	datesBooked: string[];
 	setShow: (action: boolean) => void;
 	setSelectedBooking: (action: string) => void;
 	setDateDialogDisplay: (action: string) => void;
@@ -16,6 +17,7 @@ const DaySlotTableDisplay = ({
 	month,
 	day,
 	times,
+	datesBooked,
 	setShow,
 	setSelectedBooking,
 	setDateDialogDisplay,
@@ -29,10 +31,10 @@ const DaySlotTableDisplay = ({
 				{times.map((value, index) => (
 					<SlotDisplay
 						key={index}
-						title='Available'
 						year={year}
 						month={month}
 						day={day}
+						datesBooked={datesBooked}
 						time={value}
 						setShow={setShow}
 						setSelectedBooking={setSelectedBooking}

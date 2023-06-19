@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
 import { useCallback, useState } from 'react';
@@ -6,6 +6,7 @@ import AcceptedBookingsCard from '../../components/AdminPage/AcceptedBookings/Ac
 import { AcceptedBookingsTypes } from '../../shared/types/acceptedBookings.type';
 import { COLORS as colorSet } from '../../constants/theme';
 import adminStyles from '../../styles/AdminPage/styleSheet';
+import PlainActivityIndicator from '../../components/PlainActivityIndicator';
 
 const AcceptedBookings = () => {
 	const [acceptedBookings, setAcceptedBookings] =
@@ -40,13 +41,7 @@ const AcceptedBookings = () => {
 
 			<ScrollView contentContainerStyle={adminStyles.scrollView}>
 				{acceptedBookings === undefined ? (
-					<View className='h-full items-center justify-center w-full'>
-						<ActivityIndicator
-							size='large'
-							style={adminStyles.activityIndicator}
-							color={colorSet.primary}
-						/>
-					</View>
+					<PlainActivityIndicator />
 				) : (
 					acceptedBookings.map((acceptedBooking, index) => (
 						<AcceptedBookingsCard

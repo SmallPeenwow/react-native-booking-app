@@ -1,7 +1,7 @@
 import { ScrollView, View } from 'react-native';
 import { Stack } from 'expo-router';
 import UserProfile from '../../components/UserProfile';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useFetchWeeks } from '../../hooks/UserPages/FrontPage/useFetchWeeks';
 import DisplayTime from '../../components/UserPages/FrontPage/DisplayTime';
 import DaySlotTableDisplay from '../../components/UserPages/FrontPage/DaySlotTableDisplay';
@@ -13,11 +13,18 @@ import ErrorMessage from '../../components/ErrorMessage';
 import SuccessfulMessage from '../../components/SuccessfulMessage';
 import fontPageStyles from '../../styles/User/FrontPage/styleSheet';
 import DropDownSelect from '../../components/UserPages/FrontPage/DropDownSelect';
-import PlainActivityIndicator from '../../components/PlainActivityIndicator';
 import { COLORS as colorSet } from '../../constants/theme';
 import { useFetchCurrentYearMonths } from '../../hooks/UserPages/FrontPage/useFetchCurrentYearMonths';
 import { useFetchBookedDates } from '../../hooks/UserPages/FrontPage/useFetchBookedDates';
 import { yearArray } from '../../shared/yearArray';
+import { usePressEvent } from '../../hooks/UserPages/FrontPage/usePressEvent';
+// import { socket } from '../index';
+
+// socket.on('connect', () => {
+// 	console.log(socket.id, ' Client');
+// });
+
+// REMINDER: for socket.io send send value to push into array
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
@@ -29,7 +36,7 @@ const FrontPage = () => {
 	);
 	const [currentYearMonth, setCurrentYearMonth] = useState<string[]>([]);
 	const [currentBookedDates, setCurrentBookedDates] = useState<string[]>([]);
-
+	const [loadingHeader, setLoadingHeader] = useState<string>('Loading...');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [show, setShow] = useState<boolean>(false);
 	const [selectedBooking, setSelectedBooking] = useState<string>('');
@@ -39,19 +46,29 @@ const FrontPage = () => {
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
 	// SLOW
-	// FIX: must somehow use this in other useEffect or do something different
-	useEffect(() => {
-		return () => {
-			useFetchCurrentYearMonths({ setCurrentYearMonths: setCurrentYearMonth });
-		};
-	}, [year]);
+	const OnPressClose = useCallback(() => {
+		setShow(false);
+	}, [setShow]);
+
+	// SLOW
+	const { PressEvent } = usePressEvent({
+		setDateDialogDisplay: setDateDialogDisplay,
+		setSelectedBooking: setSelectedBooking,
+		setShow: setShow,
+	});
 
 	const SelectYear = (value: string) => {
-		setYear(value);
+		if (year !== value) {
+			setYear(value);
+		}
 	};
 
-	const SelectMonth = (value: string) => {
-		setMonth(value);
+	const SelectMonth = async (value: string) => {
+		if (month !== value) {
+			setIsLoading(true);
+
+			setMonth(value);
+		}
 	};
 
 	const handleFetch = () => {
@@ -63,19 +80,19 @@ const FrontPage = () => {
 		return weeksInMonth;
 	};
 
-	// TODO: maybe create an array that contains values that will be sent to the tables
-
-	// TODO: On Accept booking things must change
-	// Runs multiply times // it either runs unnecessary or just every time I refresh code
-	// FIX. It really slow. should do check to see if previous month is same or not before running
 	useEffect(() => {
 		console.log('run = userFrontPage');
 		const weeksFetched = handleFetch();
 
+		useFetchCurrentYearMonths({ setCurrentYearMonths: setCurrentYearMonth });
+
 		const fetchBookingDates = async () => {
+			setLoadingHeader('Loading...');
+			setIsLoading(true);
 			await useFetchBookedDates({
 				currentBookedDates: setCurrentBookedDates,
 			});
+			setIsLoading(false);
 		};
 
 		fetchBookingDates();
@@ -95,7 +112,7 @@ const FrontPage = () => {
 				}}
 			/>
 
-			{isLoading && <LoadingDisplay header='Processing...' />}
+			{isLoading && <LoadingDisplay header={loadingHeader} />}
 			{isError && (
 				<View className='absolute items-center z-50 top-1/3 w-full'>
 					<ErrorMessage
@@ -118,11 +135,14 @@ const FrontPage = () => {
 				<BookingDialogRequest
 					selectedBooking={selectedBooking}
 					dateDialogDisplay={dateDialogDisplay}
-					setShow={setShow}
+					currentBookedDates={currentBookedDates}
 					setIsLoading={setIsLoading}
 					setErrorMessage={setErrorMessage}
 					setIsError={setIsError}
 					setIsSuccess={setIsSuccess}
+					setLoadingHeader={setLoadingHeader}
+					setCurrentBookedDates={setCurrentBookedDates}
+					OnPressClose={OnPressClose}
 				/>
 			)}
 
@@ -156,23 +176,23 @@ const FrontPage = () => {
 					/>
 				</View>
 
-				{/* TODO: Should do more with the map as it slows everything down*/}
-				<View className='h-[75%] w-full flex-row px-2 py-1 z-0'>
-					<ScrollView contentContainerStyle={fontPageStyles.scrollViewRow}>
-						<View className='w-[80px] h-full'>
-							<View className='bg-blue-400 w-full p-2 h-10 border-[1px] border-black border-t-0 border-l-0'></View>
-							{timeArrayNames.map((value, index) => (
-								<DisplayTime time={value} key={index} />
-							))}
-						</View>
+				{/* AMAZED: doing the loadingHeader not equal makes the process faster */}
+				{!isLoading && loadingHeader !== 'Processing...' && (
+					<View className='h-[75%] w-full flex-row px-2 py-1 z-0'>
+						<ScrollView contentContainerStyle={fontPageStyles.scrollViewRow}>
+							<View className='w-[80px] h-full'>
+								<View className='bg-blue-400 w-full p-2 h-10 border-[1px] border-black border-t-0 border-l-0'></View>
+								{timeArrayNames.map((value, index) => (
+									<DisplayTime time={value} key={index} />
+								))}
+							</View>
 
-						<View className='flex-row h-full'>
-							<ScrollView
-								horizontal={true}
-								contentContainerStyle={fontPageStyles.scrollViewColumn}
-							>
-								{<PlainActivityIndicator /> &&
-									weeks.map((day, index) => (
+							<View className='flex-row h-full'>
+								<ScrollView
+									horizontal={true}
+									contentContainerStyle={fontPageStyles.scrollViewColumn}
+								>
+									{weeks.map((day, index) => (
 										<DaySlotTableDisplay
 											key={index}
 											year={year}
@@ -180,15 +200,14 @@ const FrontPage = () => {
 											day={day}
 											times={timeArrayNames}
 											datesBooked={currentBookedDates}
-											setShow={setShow}
-											setSelectedBooking={setSelectedBooking}
-											setDateDialogDisplay={setDateDialogDisplay}
+											PressEvent={PressEvent}
 										/>
 									))}
-							</ScrollView>
-						</View>
-					</ScrollView>
-				</View>
+								</ScrollView>
+							</View>
+						</ScrollView>
+					</View>
+				)}
 			</View>
 		</View>
 	);

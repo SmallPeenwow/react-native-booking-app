@@ -14,27 +14,33 @@ import BookingDialogTouchableButton from './BookingDialogTouchableButton';
 import { useSendBookingRequest } from '../../../hooks/UserPages/FrontPage/useSendBookingRequest';
 import DialogAddressNote from './Dialog/DialogAddressNote';
 import DialogVisitType from './Dialog/DialogVisitType';
+// import { socket } from '../../../app/index';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
 	dateDialogDisplay: string;
-	setShow: (action: boolean) => void;
+	currentBookedDates: string[];
 	setIsLoading: (action: boolean) => void;
 	setIsError: (action: boolean) => void;
 	setIsSuccess: (action: boolean) => void;
 	setErrorMessage: (action: string) => void;
+	setLoadingHeader: (action: string) => void;
+	setCurrentBookedDates: (action: string[]) => void;
+	OnPressClose: () => void;
 };
 
 // SLOW
-
 const BookingDialogRequest = ({
 	selectedBooking,
 	dateDialogDisplay,
-	setShow,
+	currentBookedDates,
 	setIsLoading,
 	setIsError,
 	setIsSuccess,
 	setErrorMessage,
+	setLoadingHeader,
+	setCurrentBookedDates,
+	OnPressClose,
 }: BookingDialogRequestProps) => {
 	const [address, setAddress] = useState<string | null>(null);
 	const [visitType, setVisitType] = useState<string>('office');
@@ -49,10 +55,6 @@ const BookingDialogRequest = ({
 		setAddress(e.nativeEvent.text);
 	};
 
-	const OnPressClose = () => {
-		setShow(false);
-	};
-
 	const OnPressOK = () => {
 		Alert.alert(dateDialogDisplay, 'Do you want to book this day and time?', [
 			{
@@ -63,6 +65,8 @@ const BookingDialogRequest = ({
 			{
 				text: 'Yes',
 				onPress: async () => {
+					setLoadingHeader('Processing...');
+					setIsLoading(true);
 					if (userId == null) {
 						setErrorMessage('Id does not exist. Process system failed.');
 						setIsError(true);
@@ -74,16 +78,19 @@ const BookingDialogRequest = ({
 						visitType: visitType,
 						address: address,
 						selectedBooking: selectedBooking,
-						setIsLoading: setIsLoading,
+						currentBookedDates: currentBookedDates,
 						setIsError: setIsError,
 						setIsSuccess: setIsSuccess,
 						setErrorMessage: setErrorMessage,
-						OnPressClose: OnPressClose,
+						setCurrentBookedDates: setCurrentBookedDates,
 					});
 
 					await SendBookingRequest();
-
+					// Must move inside SendBookingRequest
+					// socket.emit('booking-request');
 					setIsLoading(false);
+					OnPressClose();
+					setLoadingHeader('Loading...');
 				},
 			},
 		]);

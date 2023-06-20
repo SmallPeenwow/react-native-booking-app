@@ -1,28 +1,26 @@
 import { Text, TouchableOpacity } from 'react-native';
 import { useCreateDateTimeToSend } from '../../../hooks/UserPages/FrontPage/useCreateDateTimeToSend';
 import { useCompareDateBookingStatus } from '../../../hooks/UserPages/FrontPage/useCompareDateBookingStatus';
+import { PressEventTypes } from '../../../shared/types/pressEvent.type';
 
 type SlotDisplayProps = {
 	day: string;
 	month: string;
 	year: string;
 	time: string;
+
 	datesBooked: string[];
-	setShow: (action: boolean) => void;
-	setSelectedBooking: (action: string) => void;
-	setDateDialogDisplay: (action: string) => void;
+	PressEvent: ({ day, month, year, time, dateTime }: PressEventTypes) => void;
 };
 
-// TODO: maybe put is loading here
 const SlotDisplay = ({
 	day,
 	month,
 	year,
 	time,
 	datesBooked,
-	setShow,
-	setSelectedBooking,
-	setDateDialogDisplay,
+
+	PressEvent,
 }: SlotDisplayProps) => {
 	const { dateTime } = useCreateDateTimeToSend({
 		day: day,
@@ -36,15 +34,19 @@ const SlotDisplay = ({
 		dateTime: dateTime,
 	});
 
-	const PressEvent = () => {
-		setSelectedBooking(dateTime);
-		setDateDialogDisplay(`${day} ${month} ${year} ${time}`);
-		setShow(true);
+	const PressEventTouchableOpacity = () => {
+		PressEvent({
+			day: day,
+			month: month,
+			year: year,
+			time: time,
+			dateTime: dateTime,
+		});
 	};
 
 	return (
 		<TouchableOpacity
-			onPress={PressEvent}
+			onPress={PressEventTouchableOpacity}
 			className={`${
 				status === 'Available' ? 'bg-white' : 'bg-red-500'
 			} w-28 p-2 h-10 border-[1px] border-black border-t-0 border-l-0 items-center`}

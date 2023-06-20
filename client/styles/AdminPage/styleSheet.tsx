@@ -7,7 +7,6 @@ const adminStyles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		gap: 30,
 		alignItems: 'center',
-		height: '100%',
 		marginTop: 15,
 		paddingBottom: 40,
 	},

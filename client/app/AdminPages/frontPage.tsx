@@ -10,6 +10,15 @@ import adminStyles from '../../styles/AdminPage/styleSheet';
 import { COLORS as colorSet } from '../../constants/theme';
 import ErrorMessage from '../../components/ErrorMessage';
 import PlainActivityIndicator from '../../components/PlainActivityIndicator';
+// import { socket } from '../index';
+
+// // Fix Will do it for both when shouldn't
+// socket.on('connect', () => {
+// 	console.log(socket.id, ' Admin');
+// });
+
+// io.emit('admin-notice');
+// 			io.emit('booking-page');
 
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();

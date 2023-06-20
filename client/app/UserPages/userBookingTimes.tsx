@@ -10,6 +10,7 @@ import { COLORS as colorSet } from '../../constants/theme';
 import styles from '../../styles/styleSheet';
 import { selectBookingData } from '../../shared/selectBookingData';
 import DropDownContainer from '../../components/UserPages/BookingTimes/DropDownContainer';
+// import { socketClient } from './_layout';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -31,7 +32,7 @@ const UserBookingTimes = () => {
 		);
 	};
 
-	// FUTURE FIX ADD useFocusEffect AND for socket.io
+	// FUTURE FIX ADD for socket.io
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,

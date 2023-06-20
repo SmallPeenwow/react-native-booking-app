@@ -4,13 +4,22 @@ import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
+import { Server as SocketIOServer } from 'socket.io';
+import fastifySocketIO from 'fastify-socket.io';
+// import {Server} from 'socket.io'
 
 dotenv.config();
 
 const app = fastify();
+const io = new SocketIOServer(app.server);
 const prisma = new PrismaClient();
 
 app.register(sensible);
+
+// app.register(socketIO);
+// app.io.on('connection', (socket) => {
+// 	console.log('User Connected');
+// });
 
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
@@ -19,6 +28,21 @@ app.register(cors, {
 	origin: process.env.CLIENT_URL_TEST,
 	origin: 'http://localhost:19000',
 	credentials: true,
+});
+
+app.register(fastifySocketIO).after(() => {
+	app.io.on('connection', (socket) => {
+		console.log('User Connected');
+
+		socket.on('booking-request', () => {
+			io.emit('admin-notice');
+			io.emit('booking-page');
+		});
+
+		socket.on('disconnect', () => {
+			console.log('User Disconnected');
+		});
+	});
 });
 
 // FUTURE UPDATE: create remove for when admin logs in so database removes unwanted rows
@@ -94,6 +118,11 @@ app.get('/AdminPages/frontPage', async (req, res) => {
 				gte: today,
 			},
 		},
+		orderBy: [
+			{
+				date: 'asc',
+			},
+		],
 		select: {
 			appointment_id: true,
 			date: true,

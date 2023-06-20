@@ -6,11 +6,11 @@ type useSendBookingRequestProps = {
 	address: string | null;
 	visitType: string;
 	selectedBooking: string;
-	setIsLoading: (action: boolean) => void;
+	currentBookedDates: string[];
 	setIsError: (action: boolean) => void;
 	setIsSuccess: (action: boolean) => void;
 	setErrorMessage: (action: string) => void;
-	OnPressClose: () => void;
+	setCurrentBookedDates: (action: string[]) => void;
 };
 
 export const useSendBookingRequest = async ({
@@ -18,19 +18,17 @@ export const useSendBookingRequest = async ({
 	address,
 	visitType,
 	selectedBooking,
-	setIsLoading,
+	currentBookedDates,
 	setIsError,
 	setIsSuccess,
 	setErrorMessage,
-	OnPressClose,
+	setCurrentBookedDates,
 }: useSendBookingRequestProps) => {
 	const DATE_ALREADY_BOOKED = 'Already Booked';
 	const DATE_BOOKED_SUCCESSFUL = 'Successful';
 
 	const SendBookingRequest = async () => {
 		try {
-			setIsLoading(true);
-
 			let response = await SendUsingBookingRequest({
 				userId: parseInt(userId),
 				address: address,
@@ -43,11 +41,15 @@ export const useSendBookingRequest = async ({
 					'Date is already booked. Please try a different date and time.'
 				);
 				setIsError(true);
-				OnPressClose();
+
 				return;
 			} else if (response === DATE_BOOKED_SUCCESSFUL) {
 				setIsSuccess(true);
-				OnPressClose();
+
+				setCurrentBookedDates([
+					...currentBookedDates,
+					moment.utc(selectedBooking).local().toDate().toISOString(),
+				]);
 				return;
 			}
 		} catch (error) {

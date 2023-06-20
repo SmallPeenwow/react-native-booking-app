@@ -1,21 +1,28 @@
 import { BackHandler, Alert } from 'react-native';
 import { useSendToPage } from '../useSendToPage';
 import { useEffect } from 'react';
+// import { socket } from '../../app/index';
 
 type useBackActionEventProps = {
 	title: string;
 	message: string;
 	page: string;
+	socketEvent?: string | undefined;
 };
 
 export const useBackActionEvent = ({
 	title,
 	message,
 	page,
+	socketEvent,
 }: useBackActionEventProps) => {
 	const { push } = useSendToPage();
 
 	const pageCheck = () => {
+		// Doesn't seem to work
+		// if (socketEvent === 'disconnect') {
+		// 	socket.on('disconnect', () => {});
+		// }
 		page === 'exit' ? BackHandler.exitApp() : push(page);
 	};
 

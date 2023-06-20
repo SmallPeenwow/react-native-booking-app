@@ -1,26 +1,25 @@
 import { View, Text } from 'react-native';
 import SlotDisplay from './SlotDisplay';
+import { PressEventTypes } from '../../../shared/types/pressEvent.type';
 
 type DaySlotTableDisplayProps = {
 	year: string;
 	month: string;
 	day: string;
+
 	times: string[];
 	datesBooked: string[];
-	setShow: (action: boolean) => void;
-	setSelectedBooking: (action: string) => void;
-	setDateDialogDisplay: (action: string) => void;
+	PressEvent: ({ day, month, year, time, dateTime }: PressEventTypes) => void;
 };
 
 const DaySlotTableDisplay = ({
 	year,
 	month,
 	day,
+
 	times,
 	datesBooked,
-	setShow,
-	setSelectedBooking,
-	setDateDialogDisplay,
+	PressEvent,
 }: DaySlotTableDisplayProps) => {
 	return (
 		<View className='flex-col'>
@@ -36,9 +35,7 @@ const DaySlotTableDisplay = ({
 						day={day}
 						datesBooked={datesBooked}
 						time={value}
-						setShow={setShow}
-						setSelectedBooking={setSelectedBooking}
-						setDateDialogDisplay={setDateDialogDisplay}
+						PressEvent={PressEvent}
 					/>
 				))}
 			</View>

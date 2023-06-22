@@ -35,7 +35,7 @@ const AcceptedBookingsCard = ({
 			}`}
 			style={containerStyles.container}
 		>
-			<View className='basis-[45%] items-start gap-2'>
+			<View className='w-[45%] items-start gap-2'>
 				<View className='flex-row'>
 					<Text className='font-bold pr-2'>Name:</Text>
 					<View className='flex-row gap-1'>
@@ -68,15 +68,15 @@ const AcceptedBookingsCard = ({
 					''
 				)}
 			</View>
-			<View className='basis-[55%] relative items-start gap-2'>
+			<View className='w-[55%] relative items-start gap-2'>
 				<View className='flex-row'>
 					<Text className='font-bold pr-2'>Visit:</Text>
 					<Text>{acceptedBooking.location_type}</Text>
 				</View>
-				<View className='flex-row'>
+				<View className='flex-row w-full'>
 					<Text className='font-bold pr-2'>Date:</Text>
-					<View>
-						<Text>{day}</Text>
+					<View className='w-full'>
+						<Text className='break-words w-40'>{day}</Text>
 						<Text>{time}</Text>
 					</View>
 				</View>

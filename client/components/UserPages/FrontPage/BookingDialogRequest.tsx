@@ -14,7 +14,6 @@ import BookingDialogTouchableButton from './BookingDialogTouchableButton';
 import { useSendBookingRequest } from '../../../hooks/UserPages/FrontPage/useSendBookingRequest';
 import DialogAddressNote from './Dialog/DialogAddressNote';
 import DialogVisitType from './Dialog/DialogVisitType';
-// import { socket } from '../../../app/index';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
@@ -86,8 +85,7 @@ const BookingDialogRequest = ({
 					});
 
 					await SendBookingRequest();
-					// Must move inside SendBookingRequest
-					// socket.emit('booking-request');
+
 					setIsLoading(false);
 					OnPressClose();
 					setLoadingHeader('Loading...');

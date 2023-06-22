@@ -1,3 +1,4 @@
+import { SocketBookingActionResponseType } from '../../../shared/types/socketBookingActionResponse.type';
 import { useResponseToBooking } from './useResponseToBooking';
 
 type useBookingResponseProps = {
@@ -9,6 +10,9 @@ type useBookingResponseProps = {
 	setResponseMessage: (action: string) => void;
 	setErrorMessage: (action: string) => void;
 	RemoveDiv: () => void;
+	SocketBookingActionResponse: ({
+		responseMessage,
+	}: SocketBookingActionResponseType) => void;
 };
 
 export const useBookingResponse = ({
@@ -20,6 +24,7 @@ export const useBookingResponse = ({
 	setResponseMessage,
 	setErrorMessage,
 	RemoveDiv,
+	SocketBookingActionResponse,
 }: useBookingResponseProps) => {
 	const BookingResponse = async () => {
 		try {
@@ -30,6 +35,7 @@ export const useBookingResponse = ({
 				response: response,
 			});
 
+			SocketBookingActionResponse({ responseMessage: response });
 			RemoveDiv();
 			setResponseMessage(responseMessage);
 			setIsLoading(false);

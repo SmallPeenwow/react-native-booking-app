@@ -16,8 +16,11 @@ const AcceptedBookings = () => {
 	// TODO: Must have text saying no booking it this amount of days
 	// Must do socket.io or MAYBE a useEffect too for update
 
+	// TODO: do socket here for api call but only after emit timer
+
 	useFocusEffect(
 		useCallback(() => {
+			// Make better so not always doing api call
 			const fetchAccepted = async () => {
 				await useFetchAcceptedBookings({
 					setAcceptedBookings: setAcceptedBookings,
@@ -39,18 +42,18 @@ const AcceptedBookings = () => {
 				}}
 			/>
 
-			<ScrollView contentContainerStyle={adminStyles.scrollView}>
-				{acceptedBookings === undefined ? (
-					<PlainActivityIndicator />
-				) : (
-					acceptedBookings.map((acceptedBooking, index) => (
+			{acceptedBookings === undefined ? (
+				<PlainActivityIndicator />
+			) : (
+				<ScrollView contentContainerStyle={adminStyles.scrollView}>
+					{acceptedBookings.map((acceptedBooking, index) => (
 						<AcceptedBookingsCard
 							key={index}
 							acceptedBooking={acceptedBooking}
 						/>
-					))
-				)}
-			</ScrollView>
+					))}
+				</ScrollView>
+			)}
 		</View>
 	);
 };

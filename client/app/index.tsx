@@ -5,16 +5,18 @@ import textShadowStyle from '../styles/textShadowStyle';
 import { useSendToPage } from '../hooks/useSendToPage';
 import { io } from 'socket.io-client';
 
-// export const socket = io('http://192.168.1.51:3001');
+//TODO: Change to server
+export const socket = io('http://192.168.1.51:3001');
 
 const index = () => {
 	const { push } = useSendToPage();
 
-	// Socket disconnect here
 	useBackActionEvent({
 		title: 'Exit',
 		message: 'Do you want to exit the application?',
 		page: 'exit',
+		socketEvent: 'disconnect',
+		socketImport: socket,
 	});
 
 	const SendToSignIn = () => {

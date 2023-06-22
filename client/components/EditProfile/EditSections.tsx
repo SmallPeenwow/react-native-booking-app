@@ -1,6 +1,5 @@
 import { View, Text } from 'react-native';
 import EditProfileInput from './EditProfileInput';
-import editSectionStyle from '../../styles/editSectionStyles';
 
 type EditSectionsProps = {
 	title: string;
@@ -18,15 +17,15 @@ const EditSections = ({
 	stateChange,
 }: EditSectionsProps) => {
 	return (
-		<View className={editSectionStyle.container}>
-			<Text className={editSectionStyle.textContainer}>
+		<View className='items-start border-b-main-color border-b-2'>
+			<Text className='bg-blue-100 py-4 px-2 w-full text-base font-semibold'>
 				{title}
-				<Text className={editSectionStyle.textInfoContainer}>
-					<Text className={editSectionStyle.textNB}>NB</Text>
+				<Text className='text-sm w-10 font-normal'>
+					<Text className='text-red-600'>NB</Text>
 					{infoText}
 				</Text>
 			</Text>
-			<View className={editSectionStyle.textInputContainer}>
+			<View className='items-center w-full justify-center'>
 				<EditProfileInput
 					placeholder={placeholderText}
 					inputValue={inputValue}

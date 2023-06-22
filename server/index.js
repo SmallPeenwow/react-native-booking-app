@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { Server as SocketIOServer } from 'socket.io';
 import fastifySocketIO from 'fastify-socket.io';
-// import {Server} from 'socket.io'
 
 dotenv.config();
 
@@ -15,11 +14,6 @@ const io = new SocketIOServer(app.server);
 const prisma = new PrismaClient();
 
 app.register(sensible);
-
-// app.register(socketIO);
-// app.io.on('connection', (socket) => {
-// 	console.log('User Connected');
-// });
 
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
@@ -34,9 +28,14 @@ app.register(fastifySocketIO).after(() => {
 	app.io.on('connection', (socket) => {
 		console.log('User Connected');
 
-		socket.on('booking-request', () => {
-			io.emit('admin-notice');
-			io.emit('booking-page');
+		// socket.on('booking-request', () => {
+		// 	io.emit('admin-notice');
+		// 	io.emit('booking-page');
+		// });
+
+		socket.on('booking-action', (statusResponse, date) => {
+			console.log(statusResponse, date);
+			socket.emit('user-booking-response-status', { statusResponse, date });
 		});
 
 		socket.on('disconnect', () => {

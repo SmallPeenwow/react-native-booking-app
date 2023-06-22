@@ -10,7 +10,8 @@ import { COLORS as colorSet } from '../../constants/theme';
 import styles from '../../styles/styleSheet';
 import { selectBookingData } from '../../shared/selectBookingData';
 import DropDownContainer from '../../components/UserPages/BookingTimes/DropDownContainer';
-// import { socketClient } from './_layout';
+import { socket } from '../index';
+import { UserBookingResponseStatus } from '../../shared/types/userBookingResponseStatus.type';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -19,6 +20,59 @@ const UserBookingTimes = () => {
 	const [bookings, setBookings] = useState<UserBookingTimeInterface[]>([]);
 	const [bookingResponseType, setBookingResponseType] = useState<string>('');
 	// TODO: must handle error when there is no pending or any of the other ones
+
+	// TODO: do socket function here to loop over bookings and change string values with match of date and status
+	socket.on(
+		'user-booking-response-status',
+		({ statusResponse, date }: UserBookingResponseStatus) => {
+			console.log(statusResponse, date, ' user booking times');
+			// const copiedData: UserBookingTimeInterface[] = [...bookings];
+
+			// const modifiedData: UserBookingTimeInterface | undefined = bookings.find(
+			// 	(item: UserBookingTimeInterface) => item.date.toString() === date
+			// );
+
+			// console.log(modifiedData, ' modified');
+			// if (modifiedData !== undefined) {
+			// 	const updatedBooking: UserBookingTimeInterface = {
+			// 		appointment_status: statusResponse,
+			// 		date: parseInt(date),
+			// 		location_type: modifiedData.location_type,
+			// 	};
+
+			// 	const updatedDate: UserBookingTimeInterface[] = bookings.map((item) => {
+			// 		return item.date === updatedBooking.date ? updatedBooking : item;
+			// 	});
+
+			let foundDate: boolean = false;
+			const updatedBookings: UserBookingTimeInterface[] = bookings
+				.filter((item) => item.date.toString() !== date)
+				.map((item) => {
+					if (item.date.toString() === date) {
+						foundDate = true;
+						return { ...item, appointment_status: statusResponse };
+					}
+					return item;
+				});
+
+			console.log(bookings, ' old');
+			if (foundDate) {
+				setBookings(updatedBookings);
+				console.log(bookings, ' new');
+			}
+			// }
+
+			// const updatedBookings: UserBookingTimeInterface[] = bookings.map(
+			// 	(booking) => {
+			// 		if (booking.date.toString() === date) {
+			// 			return { ...booking, appointment_status: statusResponse };
+			// 		}
+
+			// 		return booking;
+			// 	}
+			// );
+		}
+	);
 
 	const ChangeSelected = (value: string) => {
 		setSelected(
@@ -32,7 +86,7 @@ const UserBookingTimes = () => {
 		);
 	};
 
-	// FUTURE FIX ADD for socket.io
+	// FUTURE FIX ADD for socket.io, maybe useFocusEffect
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,

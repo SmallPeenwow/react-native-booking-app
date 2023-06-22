@@ -5,6 +5,8 @@ import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
 import { Appointments } from '../../../shared/types/appointments.type';
 import { useBookingResponse } from '../../../hooks/AdminPages/FrontPage/useBookingResponse';
+import { socket } from '../../../app/index';
+import { useBookingAction } from '../../../hooks/Socket.io/Admin/useBookingAction';
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
@@ -35,6 +37,10 @@ const BookingRequestCard = ({
 		dateTime: appointment.date.toString(),
 	});
 
+	const { SocketBookingActionResponse } = useBookingAction({
+		date: appointment.date.toString(),
+	});
+
 	const RemoveDiv = () => {
 		setAppointmentArray(
 			appointmentArray.filter((value) => value !== appointment)
@@ -63,6 +69,7 @@ const BookingRequestCard = ({
 							setResponseMessage: setResponseMessage,
 							setErrorMessage: setErrorMessage,
 							RemoveDiv: RemoveDiv,
+							SocketBookingActionResponse: SocketBookingActionResponse,
 						});
 
 						BookingResponse();

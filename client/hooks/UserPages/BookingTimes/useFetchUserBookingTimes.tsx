@@ -20,7 +20,6 @@ export const useFetchUserBookingTime = ({
 	setBookingResponseType,
 	setBookings,
 }: useFetchUserBookingTimeProps) => {
-	// TODO: Add socket.io Call
 	let bookingArray: UserBookingTimeInterface[] = [];
 
 	useEffect(() => {

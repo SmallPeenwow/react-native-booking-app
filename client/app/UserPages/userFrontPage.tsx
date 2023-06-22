@@ -18,11 +18,6 @@ import { useFetchCurrentYearMonths } from '../../hooks/UserPages/FrontPage/useFe
 import { useFetchBookedDates } from '../../hooks/UserPages/FrontPage/useFetchBookedDates';
 import { yearArray } from '../../shared/yearArray';
 import { usePressEvent } from '../../hooks/UserPages/FrontPage/usePressEvent';
-// import { socket } from '../index';
-
-// socket.on('connect', () => {
-// 	console.log(socket.id, ' Client');
-// });
 
 // REMINDER: for socket.io send send value to push into array
 
@@ -80,6 +75,7 @@ const FrontPage = () => {
 		return weeksInMonth;
 	};
 
+	// Socket.io on here too
 	useEffect(() => {
 		console.log('run = userFrontPage');
 		const weeksFetched = handleFetch();

@@ -20,6 +20,7 @@ import { yearArray } from '../../shared/yearArray';
 import { usePressEvent } from '../../hooks/UserPages/FrontPage/usePressEvent';
 
 // REMINDER: for socket.io send send value to push into array
+// useFocusEffect
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(

@@ -5,6 +5,7 @@ import {
 	TextInputChangeEventData,
 	Alert,
 	TouchableOpacity,
+	Platform,
 } from 'react-native';
 import containerStyles from '../../../styles/containerStyles';
 import { useState } from 'react';
@@ -14,6 +15,7 @@ import BookingDialogTouchableButton from './BookingDialogTouchableButton';
 import { useSendBookingRequest } from '../../../hooks/UserPages/FrontPage/useSendBookingRequest';
 import DialogAddressNote from './Dialog/DialogAddressNote';
 import DialogVisitType from './Dialog/DialogVisitType';
+import { ConfirmAlert } from '../../ConfirmAlert/ConfirmAlert';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
@@ -54,44 +56,59 @@ const BookingDialogRequest = ({
 		setAddress(e.nativeEvent.text);
 	};
 
+	// TODO: make hook
+	const AlertFunction = async () => {
+		setLoadingHeader('Processing...');
+		setIsLoading(true);
+		if (userId == null) {
+			setErrorMessage('Id does not exist. Process system failed.');
+			setIsError(true);
+			return;
+		}
+
+		const { SendBookingRequest } = await useSendBookingRequest({
+			userId: userId,
+			visitType: visitType,
+			address: address,
+			selectedBooking: selectedBooking,
+			currentBookedDates: currentBookedDates,
+			setIsError: setIsError,
+			setIsSuccess: setIsSuccess,
+			setErrorMessage: setErrorMessage,
+			setCurrentBookedDates: setCurrentBookedDates,
+		});
+
+		await SendBookingRequest();
+
+		setIsLoading(false);
+		OnPressClose();
+		setLoadingHeader('Loading...');
+	};
+
 	const OnPressOK = () => {
-		Alert.alert(dateDialogDisplay, 'Do you want to book this day and time?', [
-			{
-				text: 'No',
-				onPress: () => {},
-				style: 'cancel',
-			},
-			{
-				text: 'Yes',
-				onPress: async () => {
-					setLoadingHeader('Processing...');
-					setIsLoading(true);
-					if (userId == null) {
-						setErrorMessage('Id does not exist. Process system failed.');
-						setIsError(true);
-						return;
-					}
-
-					const { SendBookingRequest } = await useSendBookingRequest({
-						userId: userId,
-						visitType: visitType,
-						address: address,
-						selectedBooking: selectedBooking,
-						currentBookedDates: currentBookedDates,
-						setIsError: setIsError,
-						setIsSuccess: setIsSuccess,
-						setErrorMessage: setErrorMessage,
-						setCurrentBookedDates: setCurrentBookedDates,
-					});
-
-					await SendBookingRequest();
-
-					setIsLoading(false);
-					OnPressClose();
-					setLoadingHeader('Loading...');
+		if (Platform.OS === 'web') {
+			ConfirmAlert({
+				title: dateDialogDisplay,
+				yes: 'Yes',
+				no: 'No',
+				message: 'Do you want to book this day and time?',
+				onAccept: AlertFunction,
+			});
+		} else {
+			Alert.alert(dateDialogDisplay, 'Do you want to book this day and time?', [
+				{
+					text: 'No',
+					onPress: () => {},
+					style: 'cancel',
 				},
-			},
-		]);
+				{
+					text: 'Yes',
+					onPress: async () => {
+						await AlertFunction();
+					},
+				},
+			]);
+		}
 	};
 
 	return (

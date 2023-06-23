@@ -3,10 +3,12 @@ import Button from '../components/Button';
 import { useBackActionEvent } from '../hooks/BackHandler/useBackActionEvent';
 import textShadowStyle from '../styles/textShadowStyle';
 import { useSendToPage } from '../hooks/useSendToPage';
-import { io } from 'socket.io-client';
+import io from 'socket.io-client';
 
 //TODO: Change to server
-export const socket = io('http://192.168.1.51:3001');
+export const socket = io('http://192.168.1.51:3001', {
+	transports: ['websocket'],
+});
 
 const index = () => {
 	const { push } = useSendToPage();

@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Alert, Platform } from 'react-native';
 import containerStyles from '../../../styles/containerStyles';
 import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
 import { Appointments } from '../../../shared/types/appointments.type';
 import { useBookingResponse } from '../../../hooks/AdminPages/FrontPage/useBookingResponse';
-import { socket } from '../../../app/index';
+import { confirmAlert } from 'react-confirm-alert';
 import { useBookingAction } from '../../../hooks/Socket.io/Admin/useBookingAction';
 
 type BookingRequestCardProps = {
@@ -47,36 +47,62 @@ const BookingRequestCard = ({
 		);
 	};
 
-	const ResponseFunction = (response: string) => {
-		Alert.alert(
-			'Booking Request',
-			`Do you want to ${response.toUpperCase()} this booking?`,
-			[
-				{
-					text: 'No',
-					onPress: () => {},
-					style: 'cancel',
-				},
-				{
-					text: 'Yes',
-					onPress: () => {
-						const { BookingResponse } = useBookingResponse({
-							appointmentId: appointment.appointment_id,
-							response: response,
-							setIsLoading: setIsLoading,
-							setIsSuccess: setIsSuccess,
-							setIsError: setIsError,
-							setResponseMessage: setResponseMessage,
-							setErrorMessage: setErrorMessage,
-							RemoveDiv: RemoveDiv,
-							SocketBookingActionResponse: SocketBookingActionResponse,
-						});
+	// MAYBE: make Hooke
+	const YesFunction = (response: string) => {
+		const { BookingResponse } = useBookingResponse({
+			appointmentId: appointment.appointment_id,
+			response: response,
+			setIsLoading: setIsLoading,
+			setIsSuccess: setIsSuccess,
+			setIsError: setIsError,
+			setResponseMessage: setResponseMessage,
+			setErrorMessage: setErrorMessage,
+			RemoveDiv: RemoveDiv,
+			SocketBookingActionResponse: SocketBookingActionResponse,
+		});
 
-						BookingResponse();
+		BookingResponse();
+	};
+
+	const ResponseFunction = (response: string) => {
+		if (Platform.OS === 'web') {
+			// MAYBE DO LIKE THIS: TODO:
+			confirmAlert({
+				title: 'Booking Request',
+				message: `Do you want to ${response.toUpperCase()} this booking?`,
+				buttons: [
+					{
+						label: 'No',
+						onClick: () => {},
 					},
-				},
-			]
-		);
+					{
+						label: 'Yes',
+						onClick: () => YesFunction(response),
+					},
+				],
+				closeOnEscape: true,
+				closeOnClickOutside: true,
+				overlayClassName: '',
+			});
+		} else {
+			Alert.alert(
+				'Booking Request',
+				`Do you want to ${response.toUpperCase()} this booking?`,
+				[
+					{
+						text: 'No',
+						onPress: () => {},
+						style: 'cancel',
+					},
+					{
+						text: 'Yes',
+						onPress: () => {
+							YesFunction(response);
+						},
+					},
+				]
+			);
+		}
 	};
 
 	return (

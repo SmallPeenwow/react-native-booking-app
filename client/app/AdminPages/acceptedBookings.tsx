@@ -16,8 +16,6 @@ const AcceptedBookings = () => {
 	// TODO: Must have text saying no booking it this amount of days
 	// Must do socket.io or MAYBE a useEffect too for update
 
-	// TODO: do socket here for api call but only after emit timer
-
 	useFocusEffect(
 		useCallback(() => {
 			// Make better so not always doing api call

@@ -20,57 +20,46 @@ const UserBookingTimes = () => {
 	const [bookings, setBookings] = useState<UserBookingTimeInterface[]>([]);
 	const [bookingResponseType, setBookingResponseType] = useState<string>('');
 	// TODO: must handle error when there is no pending or any of the other ones
+	// useFocusEffect
 
-	// TODO: do socket function here to loop over bookings and change string values with match of date and status
+	// TODO: CAN"T TEST WITHOUT PROPER CONNECTION
 	socket.on(
 		'user-booking-response-status',
 		({ statusResponse, date }: UserBookingResponseStatus) => {
 			console.log(statusResponse, date, ' user booking times');
-			// const copiedData: UserBookingTimeInterface[] = [...bookings];
+			const copiedData: UserBookingTimeInterface[] = [...bookings];
+			console.log(copiedData, ' copy');
+			console.log(bookings, ' bookings');
+			const modifiedData: UserBookingTimeInterface | undefined =
+				copiedData.find(
+					(item: UserBookingTimeInterface) =>
+						item.date.toString() === date &&
+						item.appointment_status === statusResponse
+				);
 
-			// const modifiedData: UserBookingTimeInterface | undefined = bookings.find(
-			// 	(item: UserBookingTimeInterface) => item.date.toString() === date
-			// );
+			console.log(modifiedData, ' modified');
+			if (modifiedData !== undefined) {
+				console.log(bookings, ' before filter');
+				bookings.filter(
+					(findItem) =>
+						findItem.date.toString() !== date &&
+						findItem.appointment_status === statusResponse
+				);
 
-			// console.log(modifiedData, ' modified');
-			// if (modifiedData !== undefined) {
-			// 	const updatedBooking: UserBookingTimeInterface = {
-			// 		appointment_status: statusResponse,
-			// 		date: parseInt(date),
-			// 		location_type: modifiedData.location_type,
-			// 	};
+				const updatedBooking: UserBookingTimeInterface = {
+					appointment_status: statusResponse,
+					date: parseInt(date),
+					location_type: modifiedData.location_type,
+				};
 
-			// 	const updatedDate: UserBookingTimeInterface[] = bookings.map((item) => {
-			// 		return item.date === updatedBooking.date ? updatedBooking : item;
-			// 	});
-
-			let foundDate: boolean = false;
-			const updatedBookings: UserBookingTimeInterface[] = bookings
-				.filter((item) => item.date.toString() !== date)
-				.map((item) => {
-					if (item.date.toString() === date) {
-						foundDate = true;
-						return { ...item, appointment_status: statusResponse };
-					}
-					return item;
+				const updatedDate: UserBookingTimeInterface[] = bookings.map((item) => {
+					return item.date === updatedBooking.date ? updatedBooking : item;
 				});
 
-			console.log(bookings, ' old');
-			if (foundDate) {
-				setBookings(updatedBookings);
+				console.log(bookings, ' old');
+				setBookings(updatedDate);
 				console.log(bookings, ' new');
 			}
-			// }
-
-			// const updatedBookings: UserBookingTimeInterface[] = bookings.map(
-			// 	(booking) => {
-			// 		if (booking.date.toString() === date) {
-			// 			return { ...booking, appointment_status: statusResponse };
-			// 		}
-
-			// 		return booking;
-			// 	}
-			// );
 		}
 	);
 

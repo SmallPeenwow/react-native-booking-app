@@ -11,9 +11,6 @@ import { COLORS as colorSet } from '../../constants/theme';
 import ErrorMessage from '../../components/ErrorMessage';
 import PlainActivityIndicator from '../../components/PlainActivityIndicator';
 
-// io.emit('admin-notice');
-// 			io.emit('booking-page');
-
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -50,7 +47,7 @@ const FrontPage = () => {
 					setIsSuccess={setIsSuccess}
 				/>
 			)}
-			{/* // MAYBE: remove View */}
+
 			{isError && (
 				<View className='absolute items-center z-50 top-1/4 w-full'>
 					<ErrorMessage
@@ -66,6 +63,7 @@ const FrontPage = () => {
 			{appointmentArray === undefined ? (
 				<PlainActivityIndicator />
 			) : (
+				// TODO: Message for no booking
 				<ScrollView contentContainerStyle={adminStyles.scrollView}>
 					{appointmentArray.map((appointment, index) => (
 						<BookingRequestCard

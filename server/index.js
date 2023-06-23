@@ -4,26 +4,32 @@ import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
-import { Server as SocketIOServer } from 'socket.io';
 import fastifySocketIO from 'fastify-socket.io';
 
 dotenv.config();
 
 const app = fastify();
-const io = new SocketIOServer(app.server);
 const prisma = new PrismaClient();
 
 app.register(sensible);
 
 app.register(cookie, { secret: process.env.COOKIE_SECRET });
 app.register(cors, {
-	origin: process.env.CLIENT_URL_LIVE_UPDATE_IOS,
-	origin: process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
-	origin: process.env.CLIENT_URL_TEST,
-	origin: 'http://localhost:19000',
+	origin: [
+		process.env.CLIENT_URL_LIVE_UPDATE_IOS,
+		process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
+		process.env.CLIENT_URL_TEST,
+		'http://localhost:19000',
+	],
+	// origin: process.env.CLIENT_URL_LIVE_UPDATE_IOS,
+	// origin: process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
+	// origin: process.env.CLIENT_URL_TEST,
+	// origin: 'http://localhost:19000',
 	credentials: true,
+	preflight: true,
 });
 
+// TODO: Comment out socket.io
 app.register(fastifySocketIO).after(() => {
 	app.io.on('connection', (socket) => {
 		console.log('User Connected');
@@ -183,7 +189,6 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 	});
 });
 
-// TODO: send back in order for date close to now date
 app.post('/UserPages/userBookingTimes/', async (req, res) => {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);

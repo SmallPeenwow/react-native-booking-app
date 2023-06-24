@@ -21,10 +21,6 @@ app.register(cors, {
 		process.env.CLIENT_URL_TEST,
 		'http://localhost:19000',
 	],
-	// origin: process.env.CLIENT_URL_LIVE_UPDATE_IOS,
-	// origin: process.env.CLIENT_URL_LIVE_UPDATE_ANDROID,
-	// origin: process.env.CLIENT_URL_TEST,
-	// origin: 'http://localhost:19000',
 	credentials: true,
 	preflight: true,
 });
@@ -40,8 +36,10 @@ app.register(fastifySocketIO).after(() => {
 		// });
 
 		socket.on('booking-action', (statusResponse, date) => {
-			console.log(statusResponse, date);
-			socket.emit('user-booking-response-status', { statusResponse, date });
+			socket.broadcast.emit('user-booking-response-status', {
+				statusResponse,
+				date,
+			});
 		});
 
 		socket.on('disconnect', () => {
@@ -51,6 +49,7 @@ app.register(fastifySocketIO).after(() => {
 });
 
 // FUTURE UPDATE: create remove for when admin logs in so database removes unwanted rows
+// HERE
 app.addHook('onRequest', (req, res, done) => {
 	// TODO: Will need to do some fetch and store with cookies to fetch from database
 	// if (req.cookies.userId !== CURRENT_USER_ID) {
@@ -277,10 +276,4 @@ app.get('/UserPages/userFrontPage/fetchBookings', async (req, res) => {
 	});
 });
 
-app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {
-	// if (error) {
-	// 	app.log.error(error.message);
-	// 	app.log.error(error.name);
-	// 	process.exit(1);
-	// }
-});
+app.listen({ port: process.env.PORT, host: process.env.HOST }, (error) => {});

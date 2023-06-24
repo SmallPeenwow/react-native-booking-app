@@ -3,7 +3,7 @@ type DateTimeMakingProps = {
 };
 
 export const useDateTimeMaking = ({ dateTime }: DateTimeMakingProps) => {
-	let dateTimeSeparated = dateTime.split('T');
+	let dateTimeSeparated: string[] = dateTime.split('T');
 
 	let day: string =
 		new Date(dateTimeSeparated[0]).getDate() +

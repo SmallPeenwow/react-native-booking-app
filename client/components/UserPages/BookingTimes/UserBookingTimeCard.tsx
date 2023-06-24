@@ -10,7 +10,7 @@ type UserBookingTimeCardProps = {
 
 const UserBookingTimeCard = ({ bookingTimeCard }: UserBookingTimeCardProps) => {
 	const { time, day } = useDateTimeMaking({
-		dateTime: bookingTimeCard.date.toString(),
+		dateTime: bookingTimeCard.date,
 	});
 
 	const { statusName } = useBookingStatusName({

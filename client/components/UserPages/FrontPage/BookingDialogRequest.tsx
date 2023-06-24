@@ -12,10 +12,10 @@ import { useState } from 'react';
 import { Entypo } from '@expo/vector-icons';
 import { useFetchId } from '../../../hooks/UserPages/FrontPage/useFetchId';
 import BookingDialogTouchableButton from './BookingDialogTouchableButton';
-import { useSendBookingRequest } from '../../../hooks/UserPages/FrontPage/useSendBookingRequest';
 import DialogAddressNote from './Dialog/DialogAddressNote';
 import DialogVisitType from './Dialog/DialogVisitType';
-import { ConfirmAlert } from '../../ConfirmAlert/ConfirmAlert';
+import { useAlertOkYes } from '../../../hooks/UserPages/FrontPage/useAlertOkYes';
+import { confirmAlert } from 'react-confirm-alert';
 
 type BookingDialogRequestProps = {
 	selectedBooking: string;
@@ -56,43 +56,39 @@ const BookingDialogRequest = ({
 		setAddress(e.nativeEvent.text);
 	};
 
-	// TODO: make hook
-	const AlertFunction = async () => {
-		setLoadingHeader('Processing...');
-		setIsLoading(true);
-		if (userId == null) {
-			setErrorMessage('Id does not exist. Process system failed.');
-			setIsError(true);
-			return;
-		}
-
-		const { SendBookingRequest } = await useSendBookingRequest({
-			userId: userId,
-			visitType: visitType,
-			address: address,
-			selectedBooking: selectedBooking,
-			currentBookedDates: currentBookedDates,
-			setIsError: setIsError,
-			setIsSuccess: setIsSuccess,
-			setErrorMessage: setErrorMessage,
-			setCurrentBookedDates: setCurrentBookedDates,
-		});
-
-		await SendBookingRequest();
-
-		setIsLoading(false);
-		OnPressClose();
-		setLoadingHeader('Loading...');
-	};
-
+	// HERE-HOOK?
 	const OnPressOK = () => {
 		if (Platform.OS === 'web') {
-			ConfirmAlert({
+			confirmAlert({
 				title: dateDialogDisplay,
-				yes: 'Yes',
-				no: 'No',
 				message: 'Do you want to book this day and time?',
-				onAccept: AlertFunction,
+				buttons: [
+					{
+						label: 'No',
+						onClick: () => {},
+					},
+					{
+						label: 'Yes',
+						onClick: async () =>
+							await useAlertOkYes({
+								userId: userId,
+								visitType: visitType,
+								address: address,
+								selectedBooking: selectedBooking,
+								currentBookedDates: currentBookedDates,
+								setIsError: setIsError,
+								setIsSuccess: setIsSuccess,
+								setErrorMessage: setErrorMessage,
+								setCurrentBookedDates: setCurrentBookedDates,
+								setIsLoading: setIsLoading,
+								setLoadingHeader: setLoadingHeader,
+								OnPressClose: OnPressClose,
+							}),
+					},
+				],
+				closeOnEscape: true,
+				closeOnClickOutside: true,
+				overlayClassName: '',
 			});
 		} else {
 			Alert.alert(dateDialogDisplay, 'Do you want to book this day and time?', [
@@ -104,7 +100,20 @@ const BookingDialogRequest = ({
 				{
 					text: 'Yes',
 					onPress: async () => {
-						await AlertFunction();
+						await useAlertOkYes({
+							userId: userId,
+							visitType: visitType,
+							address: address,
+							selectedBooking: selectedBooking,
+							currentBookedDates: currentBookedDates,
+							setIsError: setIsError,
+							setIsSuccess: setIsSuccess,
+							setErrorMessage: setErrorMessage,
+							setCurrentBookedDates: setCurrentBookedDates,
+							setIsLoading: setIsLoading,
+							setLoadingHeader: setLoadingHeader,
+							OnPressClose: OnPressClose,
+						});
 					},
 				},
 			]);

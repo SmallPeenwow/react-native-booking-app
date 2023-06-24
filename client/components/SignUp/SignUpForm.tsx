@@ -22,6 +22,7 @@ const SignUpForm = ({
 }: SignUpFormProps) => {
 	const { push } = useSendToPage();
 
+	// HERE
 	// FUTURE FIX: Maybe display what special characters can be used
 
 	const [name, setName] = useState<string>('');

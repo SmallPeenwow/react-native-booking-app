@@ -4,9 +4,9 @@ import { useCellNumberSpacing } from '../../../hooks/useCellNumberSpacing';
 import { useDateTimeMaking } from '../../../hooks/useDateTimeMaking';
 import buttonStyles from '../../../styles/buttonStyles';
 import { Appointments } from '../../../shared/types/appointments.type';
-import { useBookingResponse } from '../../../hooks/AdminPages/FrontPage/useBookingResponse';
 import { confirmAlert } from 'react-confirm-alert';
 import { useBookingAction } from '../../../hooks/Socket.io/Admin/useBookingAction';
+import { useResponseFunction } from '../../../hooks/AdminPages/AcceptedBookings/useResponseFunction';
 
 type BookingRequestCardProps = {
 	appointment: Appointments;
@@ -47,26 +47,9 @@ const BookingRequestCard = ({
 		);
 	};
 
-	// MAYBE: make Hooke
-	const YesFunction = (response: string) => {
-		const { BookingResponse } = useBookingResponse({
-			appointmentId: appointment.appointment_id,
-			response: response,
-			setIsLoading: setIsLoading,
-			setIsSuccess: setIsSuccess,
-			setIsError: setIsError,
-			setResponseMessage: setResponseMessage,
-			setErrorMessage: setErrorMessage,
-			RemoveDiv: RemoveDiv,
-			SocketBookingActionResponse: SocketBookingActionResponse,
-		});
-
-		BookingResponse();
-	};
-
+	// HERE-HOOK?
 	const ResponseFunction = (response: string) => {
 		if (Platform.OS === 'web') {
-			// MAYBE DO LIKE THIS: TODO:
 			confirmAlert({
 				title: 'Booking Request',
 				message: `Do you want to ${response.toUpperCase()} this booking?`,
@@ -77,7 +60,18 @@ const BookingRequestCard = ({
 					},
 					{
 						label: 'Yes',
-						onClick: () => YesFunction(response),
+						onClick: () =>
+							useResponseFunction({
+								appointmentId: appointment.appointment_id,
+								response: response,
+								setIsLoading: setIsLoading,
+								setIsSuccess: setIsSuccess,
+								setIsError: setIsError,
+								setResponseMessage: setResponseMessage,
+								setErrorMessage: setErrorMessage,
+								RemoveDiv: RemoveDiv,
+								SocketBookingActionResponse: SocketBookingActionResponse,
+							}),
 					},
 				],
 				closeOnEscape: true,
@@ -97,7 +91,17 @@ const BookingRequestCard = ({
 					{
 						text: 'Yes',
 						onPress: () => {
-							YesFunction(response);
+							useResponseFunction({
+								appointmentId: appointment.appointment_id,
+								response: response,
+								setIsLoading: setIsLoading,
+								setIsSuccess: setIsSuccess,
+								setIsError: setIsError,
+								setResponseMessage: setResponseMessage,
+								setErrorMessage: setErrorMessage,
+								RemoveDiv: RemoveDiv,
+								SocketBookingActionResponse: SocketBookingActionResponse,
+							});
 						},
 					},
 				]

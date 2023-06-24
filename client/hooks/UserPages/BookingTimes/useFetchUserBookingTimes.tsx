@@ -25,7 +25,6 @@ export const useFetchUserBookingTime = ({
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
-				console.log('UserBookingTimes useFunction');
 				setIsLoading(true);
 				const jsonString: string | null = await useAsyncStorageRetrieve(
 					'Justin-Bowden-booking-application-id'

@@ -22,43 +22,26 @@ const UserBookingTimes = () => {
 	// TODO: must handle error when there is no pending or any of the other ones
 	// useFocusEffect
 
-	// TODO: CAN"T TEST WITHOUT PROPER CONNECTION
+	// TODO: Must make page reload with useEffect
+	// HERE
 	socket.on(
 		'user-booking-response-status',
 		({ statusResponse, date }: UserBookingResponseStatus) => {
-			console.log(statusResponse, date, ' user booking times');
-			const copiedData: UserBookingTimeInterface[] = [...bookings];
-			console.log(copiedData, ' copy');
-			console.log(bookings, ' bookings');
-			const modifiedData: UserBookingTimeInterface | undefined =
-				copiedData.find(
-					(item: UserBookingTimeInterface) =>
-						item.date.toString() === date &&
-						item.appointment_status === statusResponse
-				);
+			const modifiedData: UserBookingTimeInterface | undefined = bookings.find(
+				(item: UserBookingTimeInterface) =>
+					item.date.toString() === date && item.appointment_status === 'pending'
+			);
 
-			console.log(modifiedData, ' modified');
 			if (modifiedData !== undefined) {
-				console.log(bookings, ' before filter');
-				bookings.filter(
-					(findItem) =>
-						findItem.date.toString() !== date &&
-						findItem.appointment_status === statusResponse
-				);
-
 				const updatedBooking: UserBookingTimeInterface = {
 					appointment_status: statusResponse,
-					date: parseInt(date),
+					date: date,
 					location_type: modifiedData.location_type,
 				};
+				const index = bookings.indexOf(modifiedData);
+				bookings[index] = updatedBooking;
 
-				const updatedDate: UserBookingTimeInterface[] = bookings.map((item) => {
-					return item.date === updatedBooking.date ? updatedBooking : item;
-				});
-
-				console.log(bookings, ' old');
-				setBookings(updatedDate);
-				console.log(bookings, ' new');
+				setBookings(bookings);
 			}
 		}
 	);
@@ -76,6 +59,7 @@ const UserBookingTimes = () => {
 	};
 
 	// FUTURE FIX ADD for socket.io, maybe useFocusEffect
+	// HERE
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,

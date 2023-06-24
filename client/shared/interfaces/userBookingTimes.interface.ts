@@ -1,5 +1,5 @@
 export interface UserBookingTimeInterface {
 	appointment_status: string;
-	date: number;
+	date: string;
 	location_type: string;
 }

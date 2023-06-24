@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useFetchAcceptedBookings } from '../../hooks/AdminPages/AcceptedBookings/useFetchAcceptedBookings';
 import { useCallback, useState } from 'react';
@@ -39,6 +39,8 @@ const AcceptedBookings = () => {
 					headerStyle: { backgroundColor: colorSet.primary },
 				}}
 			/>
+
+			{acceptedBookings?.length === 0 && <Text>Yes</Text>}
 
 			{acceptedBookings === undefined ? (
 				<PlainActivityIndicator />

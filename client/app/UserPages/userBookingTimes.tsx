@@ -12,6 +12,8 @@ import { selectBookingData } from '../../shared/selectBookingData';
 import DropDownContainer from '../../components/UserPages/BookingTimes/DropDownContainer';
 import { socket } from '../index';
 import { UserBookingResponseStatus } from '../../shared/types/userBookingResponseStatus.type';
+import { useBookingResponseChange } from '../../hooks/Socket.io/User/BookingTimes/useBookingResponseChange';
+import BookingMessageDisplay from '../../components/UserPages/BookingTimes/BookingMessageDisplay';
 
 const UserBookingTimes = () => {
 	const [selected, setSelected] = useState<string>('All');
@@ -19,30 +21,16 @@ const UserBookingTimes = () => {
 	const [isError, setIsError] = useState<boolean>(false);
 	const [bookings, setBookings] = useState<UserBookingTimeInterface[]>([]);
 	const [bookingResponseType, setBookingResponseType] = useState<string>('');
-	// TODO: must handle error when there is no pending or any of the other ones
-	// useFocusEffect
 
-	// TODO: Must make page reload with useEffect
-	// HERE
 	socket.on(
 		'user-booking-response-status',
 		({ statusResponse, date }: UserBookingResponseStatus) => {
-			const modifiedData: UserBookingTimeInterface | undefined = bookings.find(
-				(item: UserBookingTimeInterface) =>
-					item.date.toString() === date && item.appointment_status === 'pending'
-			);
-
-			if (modifiedData !== undefined) {
-				const updatedBooking: UserBookingTimeInterface = {
-					appointment_status: statusResponse,
-					date: date,
-					location_type: modifiedData.location_type,
-				};
-				const index = bookings.indexOf(modifiedData);
-				bookings[index] = updatedBooking;
-
-				setBookings(bookings);
-			}
+			useBookingResponseChange({
+				statusResponse: statusResponse,
+				date: date,
+				bookings: bookings,
+				setBookings: setBookings,
+			});
 		}
 	);
 
@@ -58,8 +46,6 @@ const UserBookingTimes = () => {
 		);
 	};
 
-	// FUTURE FIX ADD for socket.io, maybe useFocusEffect
-	// HERE
 	useFetchUserBookingTime({
 		appointmentStatus: selected,
 		setIsLoading: setIsLoading,
@@ -88,6 +74,10 @@ const UserBookingTimes = () => {
 			</View>
 
 			{isLoading && <LoadingDisplay header='Loading...' />}
+
+			{bookings.length === 0 && selected !== 'All' && (
+				<BookingMessageDisplay selected={selected} />
+			)}
 
 			<ScrollView contentContainerStyle={styles.scrollView}>
 				{isError ? (

@@ -1,4 +1,4 @@
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import BookingRequestCard from '../../components/AdminPage/FrontPage/BookingRequestCard';
 import { Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
@@ -10,7 +10,7 @@ import adminStyles from '../../styles/AdminPage/styleSheet';
 import { COLORS as colorSet } from '../../constants/theme';
 import ErrorMessage from '../../components/ErrorMessage';
 import PlainActivityIndicator from '../../components/PlainActivityIndicator';
-// Socket.io HERE
+
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -63,21 +63,28 @@ const FrontPage = () => {
 			{appointmentArray === undefined ? (
 				<PlainActivityIndicator />
 			) : (
-				// TODO: Message for no booking
 				<ScrollView contentContainerStyle={adminStyles.scrollView}>
-					{appointmentArray.map((appointment, index) => (
-						<BookingRequestCard
-							key={index}
-							appointment={appointment}
-							appointmentArray={appointmentArray}
-							setAppointmentArray={setAppointmentArray}
-							setErrorMessage={setErrorMessage}
-							setResponseMessage={setResponseMessage}
-							setIsSuccess={setIsSuccess}
-							setIsLoading={setIsLoading}
-							setIsError={setIsError}
-						/>
-					))}
+					{appointmentArray.length === 0 ? (
+						<View className='py-2 px-4 w-full items-center justify-center'>
+							<Text className='capitalize text-xl'>
+								There are no appointments.
+							</Text>
+						</View>
+					) : (
+						appointmentArray.map((appointment, index) => (
+							<BookingRequestCard
+								key={index}
+								appointment={appointment}
+								appointmentArray={appointmentArray}
+								setAppointmentArray={setAppointmentArray}
+								setErrorMessage={setErrorMessage}
+								setResponseMessage={setResponseMessage}
+								setIsSuccess={setIsSuccess}
+								setIsLoading={setIsLoading}
+								setIsError={setIsError}
+							/>
+						))
+					)}
 				</ScrollView>
 			)}
 		</View>

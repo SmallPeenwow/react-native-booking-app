@@ -10,7 +10,7 @@ import adminStyles from '../../styles/AdminPage/styleSheet';
 import { COLORS as colorSet } from '../../constants/theme';
 import ErrorMessage from '../../components/ErrorMessage';
 import PlainActivityIndicator from '../../components/PlainActivityIndicator';
-// Socket.io here
+// Socket.io HERE
 const FrontPage = () => {
 	const [appointmentArray, setAppointmentArray] = useState<Appointments[]>();
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);

@@ -3,6 +3,7 @@ import sensible from '@fastify/sensible';
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
 import dotenv from 'dotenv';
+import moment from 'moment';
 import { PrismaClient } from '@prisma/client';
 import fastifySocketIO from 'fastify-socket.io';
 
@@ -25,18 +26,16 @@ app.register(cors, {
 	preflight: true,
 });
 
-// TODO: Comment out socket.io
 app.register(fastifySocketIO).after(() => {
 	app.io.on('connection', (socket) => {
 		console.log('User Connected');
 
-		// socket.on('booking-request', () => {
-		// 	io.emit('admin-notice');
-		// 	io.emit('booking-page');
-		// });
-
 		socket.on('booking-action', (statusResponse, date) => {
 			socket.broadcast.emit('user-booking-response-status', {
+				statusResponse,
+				date,
+			});
+			socket.broadcast.emit('user-frontPage-available-response', {
 				statusResponse,
 				date,
 			});
@@ -49,16 +48,6 @@ app.register(fastifySocketIO).after(() => {
 });
 
 // FUTURE UPDATE: create remove for when admin logs in so database removes unwanted rows
-// HERE
-app.addHook('onRequest', (req, res, done) => {
-	// TODO: Will need to do some fetch and store with cookies to fetch from database
-	// if (req.cookies.userId !== CURRENT_USER_ID) {
-	// 	req.cookies.userId = CURRENT_USER_ID;
-	// 	res.clearCookie('userId');
-	// 	res.setCookie('userId', CURRENT_USER_ID);
-	// }
-	done();
-});
 
 app.post('/SignInPage/login', async (req, res) => {
 	return await prisma.user.findFirst({
@@ -164,13 +153,16 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 	const maxDays = new Date(today);
 	maxDays.setDate(today.getDate() + 7);
 
-	return await prisma.appointment.findMany({
+	const appointmentArray = await prisma.appointment.findMany({
 		where: {
 			appointment_status: 'accept',
 			date: {
 				lte: maxDays,
 				gte: today,
 			},
+		},
+		orderBy: {
+			date: 'asc',
 		},
 		select: {
 			date: true,
@@ -186,6 +178,35 @@ app.get('/AdminPages/acceptedBookings/', async (req, res) => {
 			},
 		},
 	});
+
+	let indexFound = -1;
+	let appointmentItem = '';
+
+	const findPending = async () => {
+		const dateCompare = moment(new Date()).add(2, 'hours');
+
+		for (let i = 0; i < appointmentArray.length; i++) {
+			if (
+				appointmentArray[i].date.getHours() === dateCompare.hour() &&
+				appointmentArray[i].date.getDate() === dateCompare.date() &&
+				appointmentArray[i].date.getMonth() === dateCompare.month() &&
+				appointmentArray[i].date.getFullYear() == dateCompare.year()
+			) {
+				indexFound = i;
+				appointmentItem = appointmentArray[i];
+				return;
+			}
+		}
+	};
+
+	await findPending();
+
+	if (indexFound !== -1) {
+		appointmentArray.splice(indexFound, 1);
+		appointmentArray.unshift(appointmentItem);
+	}
+
+	return appointmentArray;
 });
 
 app.post('/UserPages/userBookingTimes/', async (req, res) => {

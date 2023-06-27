@@ -18,9 +18,9 @@ import { useFetchCurrentYearMonths } from '../../hooks/UserPages/FrontPage/useFe
 import { useFetchBookedDates } from '../../hooks/UserPages/FrontPage/useFetchBookedDates';
 import { yearArray } from '../../shared/yearArray';
 import { usePressEvent } from '../../hooks/UserPages/FrontPage/usePressEvent';
-
-// REMINDER: for socket.io send send value to push into array
-// useFocusEffect
+import { socket } from '../index';
+import { UserBookingResponseStatus } from '../../shared/types/userBookingResponseStatus.type';
+import { useChangeBookingStatus } from '../../hooks/Socket.io/User/FrontPage/useChangeBookingStatus';
 
 const FrontPage = () => {
 	const [month, setMonth] = useState<string>(
@@ -40,6 +40,18 @@ const FrontPage = () => {
 	const [errorMessage, setErrorMessage] = useState<string>('');
 	const [isError, setIsError] = useState<boolean>(false);
 	const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+	socket.on(
+		'user-frontPage-available-response',
+		({ statusResponse, date }: UserBookingResponseStatus) => {
+			useChangeBookingStatus({
+				date: date,
+				statusResponse: statusResponse,
+				currentBookedDates: currentBookedDates,
+				setCurrentBookedDates: setCurrentBookedDates,
+			});
+		}
+	);
 
 	// SLOW
 	const OnPressClose = useCallback(() => {
@@ -76,9 +88,7 @@ const FrontPage = () => {
 		return weeksInMonth;
 	};
 
-	// Socket.io on here too
 	useEffect(() => {
-		console.log('run = userFrontPage');
 		const weeksFetched = handleFetch();
 
 		useFetchCurrentYearMonths({ setCurrentYearMonths: setCurrentYearMonth });

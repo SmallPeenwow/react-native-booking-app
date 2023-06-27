@@ -6,7 +6,6 @@ import { useSendToPage } from '../hooks/useSendToPage';
 import { io } from 'socket.io-client';
 import { API_URL } from '@env';
 
-//TODO: Change to server
 // export const socket = io('http://192.168.1.51:3001', {
 export const socket = io(API_URL, {
 	transports: ['websocket'],

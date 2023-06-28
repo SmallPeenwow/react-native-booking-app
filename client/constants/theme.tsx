@@ -10,7 +10,6 @@ const SHADOWS = {
 
 const COLORS = {
 	primary: '#0085FF',
-
 	white: '#FFFFFF',
 	black: '#000000',
 };

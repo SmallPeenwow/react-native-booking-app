@@ -38,7 +38,14 @@ const AcceptedBookings = () => {
 				}}
 			/>
 
-			{acceptedBookings?.length === 0 && <Text>Yes</Text>}
+			{acceptedBookings?.length === 0 && (
+				<View className='p-4 items-center'>
+					<Text className='text-xl'>
+						There are currently no Booked Dates being tracked in the{' '}
+						<Text className='text-red-700'>7 Day</Text> period.
+					</Text>
+				</View>
+			)}
 
 			{acceptedBookings === undefined ? (
 				<PlainActivityIndicator />
